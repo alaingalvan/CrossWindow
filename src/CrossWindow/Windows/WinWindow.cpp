@@ -1,19 +1,19 @@
 #include "WinWindow.h"
 
-namespace mwin
+namespace xwin
 {
-	WinWindow::WinWindow()
+	WinWindow::WinWindow(const WindowDesc& desc)
 	{
 	};
 
-	void WinWindow::create(WindowDesc desc, HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+	bool WinWindow::create(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 	{
 
 		this->hInstance = hInstance;
 
 		wndClass.cbSize = sizeof(WNDCLASSEX);
 		wndClass.style = CS_HREDRAW | CS_VREDRAW;
-		wndClass.lpfnWndProc = Window::WindowProcStatic;
+		wndClass.lpfnWndProc = WinWindow::WindowProcStatic;
 		wndClass.cbClsExtra = 0;
 		wndClass.cbWndExtra = 0;
 		wndClass.hInstance = hInstance;
@@ -21,7 +21,7 @@ namespace mwin
 		wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		wndClass.lpszMenuName = NULL;
-		wndClass.lpszClassName = state.name.c_str();
+		wndClass.lpszClassName = mDesc.name.c_str();
 		wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
 
 		if (!RegisterClassEx(&wndClass))
@@ -60,7 +60,7 @@ namespace mwin
 		DWORD dwStyle;
 
 
-		if (fullscreen)
+		if (desc.fullscreen)
 		{
 			dwExStyle = WS_EX_APPWINDOW;
 			dwStyle = WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -120,7 +120,7 @@ namespace mwin
 
 	LRESULT CALLBACK WinWindow::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		Window* _this;
+		WinWindow* _this;
 		if (_windowBeingCreated != nullptr)
 		{
 			_hwndMap[hwnd] = _windowBeingCreated;

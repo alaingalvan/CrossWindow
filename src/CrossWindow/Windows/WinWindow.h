@@ -6,40 +6,42 @@
 #include "../Common/WindowDesc.h"
 #include "../CrossWindow.h"
 
-namespace mwin
+namespace xwin
 {
-	class WinWindow
-	{
+    class WinWindow
+    {
 
-		WinWindow(WindowDesc desc);
+        WinWindow(const WindowDesc& desc);
 
-		static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+        bool create(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
-		LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
+        static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	private:
-	  // Application Handle
-		HINSTANCE hInstance;
+        LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
 
-		// Window Handle
-		HWND _hwnd;
+    protected:
+        // Application Handle
+        HINSTANCE hInstance;
 
-		// Window State
-		WNDCLASSEX wndClass;
+        // Window Handle
+        HWND _hwnd;
 
-		// Window Size/Position
-		RECT windowRect;
+        // Window State
+        WNDCLASSEX wndClass;
 
-		// Screen State
-		DEVMODE dmScreenSettings;
+        // Window Size/Position
+        RECT windowRect;
 
-    // Window Behavior
-		DWORD dwExStyle;
-	  DWORD dwStyle;
-		
-		static thread_local WinWindow* _windowBeingCreated;
-		static thread_local std::unordered_map<HWND, WinWindow*> _hwndMap;
-	};
+        // Screen State
+        DEVMODE dmScreenSettings;
 
-	 typedef WinWindow WindowDelegate;
+        // Window Behavior
+        DWORD dwExStyle;
+        DWORD dwStyle;
+
+        static thread_local WinWindow* _windowBeingCreated;
+        static thread_local std::unordered_map<HWND, WinWindow*> _hwndMap;
+    };
+
+    typedef WinWindow WindowDelegate;
 }

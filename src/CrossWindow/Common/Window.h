@@ -3,58 +3,54 @@
 #include "WindowDesc.h"
 #include "../Macros.h"
 
-#ifdef MAG_NOOP
-#include "noop/nodevice.h"
-#elif WIN32
-#ifdef MAG_DX
-#include "directx/dxdevice.h"
-#elif MAG_OGL
-#include "OpenGL/gldevice.h"
-#else
-#include "../vulkan/vkdevice.h"
-#endif
-#elif __APPLE__
-#if MAG_OGL
-#include "../OpenGL/ogldevice.h"
-#else
-#include "metal/mtdevice.h"
-#endif
+#ifdef XWIN_WINDOWS
+#include "../Windows/WinWindow.h"
+#elif XWIN_MACOS
+#include "../MacOS/MacOSWindow.h"
+#elif XWIN_LINUX
+#include "../Linux/LinuxWindow.h"
+#elif XWIN_ANDROID
+#include "../Android/AndroidWindow.h"
+#elif XWIN_IOS
+#include "../iOS/iOSWindow.h"
+#elif XWIN_WASM
+#include "../WASM/WASMWindow.h"
+#elif XWIN_NOOP
+#include "../Noop/NoopWindow.h"
 #endif
 
-namespace mwin
+namespace xwin
 {
-  class Window
-  {
-  public:
-    
-    Window(const WindowDesc& desc);
+    class Window
+    {
+    public:
 
-    ~Window();
-    
-    mag::Surface getSurface(mag::Instance &instance);
+        Window(const WindowDesc& desc);
 
-    bool eventLoop();
+        ~Window();
 
-    void setTitle(char* title);
+        bool eventLoop();
 
-    void close();
+        void setTitle(char* title);
 
-    void minimize();
+        void close();
 
-    void maximize();
+        void minimize();
 
-    virtual void onResize();
+        void maximize();
 
-    virtual void onKey();
+        virtual void onResize();
 
-    virtual void onMove();
+        virtual void onKey();
 
-    virtual void onTouch();
+        virtual void onMove();
 
-    virtual void onClose();
+        virtual void onTouch();
 
-  private:
-    WindowDesc desc;
-    WindowDelegate delegate;
-  };
+        virtual void onClose();
+
+    protected:
+        WindowDesc mDesc;
+        WindowDelegate mDelegate;
+    };
 }

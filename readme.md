@@ -11,106 +11,54 @@ A basic cross platform windowing library for Windows, Mac, Linux, Android, iOS, 
 
 - Basic Input
 
-- File Systems
+- OS Dialogs
 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
+#include "CrossWindow/MagCrossWindow.h"
 
+// Macro for OS specific main function
 xmain(MainArgs)
 {
-  xwin::init(MainArgs);
+    // Initialize Mag Window with main function args
+    xwin::init(MainArgs);
 
-  xwin::Window window();
+    // Create Window Object
+    xwin::WindowDesc windowDesc;
+    windowDesc.title = "My Title";
+    xwin::Window window(windowDesc);
 
-  while(window.eventLoop())
-  {
-    // ...
-  }
+    while (window.eventLoop())
+    {
+        // Perform Renderer specific tasks
+    }
 }
 ```
 
-### Checking Inputs
+For more examples visit the [Documentation](/docs).
 
-```cpp
-#include "CrossWindow/CrossWindow.h"
-#include <iostream>
+## Development
 
-xmain(MainArgs)
-{
-  xwin::init(MainArgs);
+Be sure to have [CMake](https://cmake.org) Installed.
 
-  xwin::WindowDesc desc();
+| CMake Options | Description |
+|:-------------:|:-----------:|
+| `BUILD_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
+| `OPERATING_SYSTEM ` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`.  |
 
-  xwin::Window window(desc);
+We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
 
-  while (window.eventLoop())
-  {
-    window.subscribe(xwin::Event::MouseMove, [](xwin::MouseMove e) {
-      std::cout << "X: " << e.x << "Y: " << e.y << "\n";
-    });
+```bash
+# ⚗️ To build solution with tests
+cmake -DBUILD_TESTS=ON ..
 
-    window.subscribe(xwin::Event::MouseClick, [](xwin::MouseClick e) {
-      std::cout << "Left: " << e.left << "Right: " << e.right << "\n";
-    });
+# Or...
 
-    window.subscribe(xwin::Event::KeyPress, [](xwin::KeyPress e) {
-      std::cout << "Key Press: " << xwin::KeyString[e.keycode] << "\n";
-    });
-
-    window.subscribe(xwin::Event::KeyRelease, []() {
-      std::cout << "Key Release: " << xwin::KeyString[e.keycode] << "\n";
-    });
-
-    window.subscribe(xwin::Event::Touch, [](xwin::Touch e) {
-      for (auto it = e.touches.begin(); it != e.touches.end() ++it)
-      {
-        std::cout << "Touch " << it - e.touches.begin() << ": X: " << it->x << " Y: " << it-> y<< "\n";
-      }
-    });
-
-    window.subscribe(xwin::Event::Resize, []() {
-      std::cout << "Resized!"
-    });
-
-    window.subscribe(xwin::Event::Maximize, []() {
-      std::cout << "Maximized!";
-    });
-
-    window.subscribe(xwin::Event::Minimize, []() {
-      std:cout << "Minimized!";
-    });
-
-    window.subscribe(xwin::Event::Close, []() {
-      window.close();
-    });
-
-
-  }
-}
+# 🍎 To build solution for MacOS with tests and for x64 machines
+cmake -DBUILD_TESTS=ON -DOPERATING_SYSTEM=MACOS -A x64 ..
 ```
 
-### Creating Multiple Windows
-
-```cpp
-#include "CrossWindow/CrossWindow.h"
-
-xmain(MainArgs)
-{
-  xwin::init(MainArgs);
-
-  xwin::WindowDesc desc1();
-  xwin::Window window1(desc);
-
-  xwin::WindowDesc desc2();
-  desc2.monitor = 1;
-  xwin::Window window2(desc);
-
-  while (window1.eventLoop() && window2.eventLoop())
-  {
-    // Update engine
-  }
-}
-```
+Whenever you add new files to the project, run `cmake ..`, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
 
 [cmake-img]: https://img.shields.io/badge/cmake-3.9-1f9948.svg?style=flat-square
 [cmake-url]: https://cmake.org/

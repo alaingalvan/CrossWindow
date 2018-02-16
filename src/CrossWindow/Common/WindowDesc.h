@@ -3,7 +3,7 @@
 /**
   * Initial window description
   */
-namespace mwin
+namespace xwin
 {
   struct WindowDesc
   {
@@ -23,7 +23,7 @@ namespace mwin
     unsigned height;
 
     WindowDesc();
-  }
+  };
 
 
 }

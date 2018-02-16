@@ -1,12 +1,12 @@
 ```cpp
 // Initialize Mag Window with main function args
-mwin::init(MainArgs);
+xwin::init(MainArgs);
 
 // Initialize Window Description
-mwin::WindowDesc desc();
+xwin::WindowDesc desc();
 
 // Create Window Object
-mwin::Window window(desc);
+xwin::Window window(desc);
 
 // Initialize Mag
 mag::Instance instance = mag::createInstance();
