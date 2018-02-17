@@ -16,20 +16,26 @@ A basic cross platform windowing library for Windows, Mac, Linux, Android, iOS, 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
 
-// Macro for OS specific main function
 xmain(MainArgs)
 {
-    // Initialize Mag Window with main function args
+    // Initialize CrossWindow with main function args
     xwin::init(MainArgsVars);
 
     // Create Window Object
     xwin::WindowDesc windowDesc;
+    windowDesc.name = "Test";
     windowDesc.title = "My Title";
-    xwin::Window window(windowDesc);
+    windowDesc.visible = true;
+    windowDesc.width = 1280;
+    windowDesc.height = 720;
 
-    while (window.eventLoop())
+    xwin::Window window;
+    if (window.create(windowDesc))
     {
-        // Perform Renderer specific tasks
+        while (window.eventLoop())
+        {
+            // Run renderer logic here
+        }
     }
 }
 ```
