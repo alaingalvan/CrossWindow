@@ -1,21 +1,21 @@
 #include "WindowDesc.h"
 
-namespace mwin
+namespace xwin
 {
   WindowDesc::WindowDesc()
   {
-    visible = true;
-    fullscreen = true;
+    visible = false;
+    fullscreen = false;
     resizable = false;
     monitor = 0;
 
-    title = "";
-    name = "";
+    title = "XWin";
+    name = "XWinApp";
     iconPath = "";
 
     x = 0;
     y = 0;
-    width = 0;
-    height = 0;
+    width = 640;
+    height = 360;
   }
 }

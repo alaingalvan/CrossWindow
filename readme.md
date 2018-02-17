@@ -15,13 +15,12 @@ A basic cross platform windowing library for Windows, Mac, Linux, Android, iOS, 
 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
-#include "CrossWindow/MagCrossWindow.h"
 
 // Macro for OS specific main function
 xmain(MainArgs)
 {
     // Initialize Mag Window with main function args
-    xwin::init(MainArgs);
+    xwin::init(MainArgsVars);
 
     // Create Window Object
     xwin::WindowDesc windowDesc;

@@ -9,6 +9,7 @@ enable_language(CXX)
 set(CMAKE_SUPPRESS_REGENERATION true)
 set(DCMAKE_GENERATOR_PLATFORM "x64")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_AUTOMOC ON)
 
 # =============================================================
 
@@ -18,7 +19,7 @@ set_property(CACHE OPERATING_SYSTEM PROPERTY STRINGS AUTO VULKAN OPENGL DIRECTX 
 
 if(OPERATING_SYSTEM STREQUAL "AUTO")
     if (WIN32)
-    set(OPERATING_SYSTEM "WIN32" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
+    set(OPERATING_SYSTEM "WINDOWS" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
     endif (WIN32)
     if (APPLE)
     set(OPERATING_SYSTEM "MACOS" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
@@ -96,7 +97,6 @@ if (BUILD_TESTS)
 
     set(GOOGLETEST_SOURCES
         ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest-all.cc
-        ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest_main.cc
         )
 
     foreach(_source ${GOOGLETEST_SOURCES})
@@ -122,10 +122,18 @@ if (BUILD_TESTS)
         source_group("${test_path_final}" FILES "${test}")
     endforeach()
 
-    add_executable(
-        Tests
-        ${tests_list}
-        )
+    if(WIN32)
+        add_executable(
+            Tests
+            WIN32
+            ${tests_list}
+            )
+    else()
+        add_executable(
+            Tests
+            ${tests_list}
+            )
+    endif()
     target_link_libraries(
         Tests
         ${PROJECT_NAME}
@@ -142,6 +150,8 @@ if (BUILD_TESTS)
         unit 
         ${PROJECT_BINARY_DIR}/tests
     )
+
+    target_compile_definitions(Tests PRIVATE XWIN_${OPERATING_SYSTEM}=1)
 
 endif()
 

@@ -2,15 +2,21 @@
 
 namespace xwin
 {
-    Window::Window(const WindowDesc& desc) : mDesc(desc)
+    Window::Window()
     {
-
     }
+
     Window::~Window()
     {
     }
+
+    bool Window::create(const WindowDesc& desc)
+    {
+        return mDelegate.create(desc);
+    }
+
     bool Window::eventLoop()
     {
-        return false;
+        return mDelegate.eventLoop();
     }
 }

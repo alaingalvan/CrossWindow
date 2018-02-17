@@ -1,7 +1,6 @@
 #pragma once
 
 #include "WindowDesc.h"
-#include "../Macros.h"
 
 #ifdef XWIN_WINDOWS
 #include "../Windows/WinWindow.h"
@@ -25,29 +24,13 @@ namespace xwin
     {
     public:
 
-        Window(const WindowDesc& desc);
+        Window();
 
         ~Window();
 
+        bool create(const WindowDesc& desc);
+
         bool eventLoop();
-
-        void setTitle(char* title);
-
-        void close();
-
-        void minimize();
-
-        void maximize();
-
-        virtual void onResize();
-
-        virtual void onKey();
-
-        virtual void onMove();
-
-        virtual void onTouch();
-
-        virtual void onClose();
 
     protected:
         WindowDesc mDesc;

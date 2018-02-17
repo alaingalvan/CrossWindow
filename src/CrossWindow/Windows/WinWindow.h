@@ -1,25 +1,33 @@
 #pragma once
 
-
-#include <Windows.h>
-#include <unordered_map>
 #include "../Common/WindowDesc.h"
-#include "../CrossWindow.h"
+#include "../Common/Init.h"
+
+#include <unordered_map>
+
 
 namespace xwin
 {
     class WinWindow
     {
+    public:
+        WinWindow();
 
-        WinWindow(const WindowDesc& desc);
+        bool create(const WindowDesc& desc);
 
-        bool create(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+        bool eventLoop();
+
+        bool close();
 
         static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
         LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
 
     protected:
+        const WindowDesc* mDesc;
+
+        bool mCloseWindow;
+
         // Application Handle
         HINSTANCE hInstance;
 
@@ -39,9 +47,10 @@ namespace xwin
         DWORD dwExStyle;
         DWORD dwStyle;
 
-        static thread_local WinWindow* _windowBeingCreated;
-        static thread_local std::unordered_map<HWND, WinWindow*> _hwndMap;
     };
+
+    static thread_local WinWindow* _windowBeingCreated = nullptr;
+    static thread_local std::unordered_map<HWND, WinWindow*> _hwndMap = {};
 
     typedef WinWindow WindowDelegate;
 }

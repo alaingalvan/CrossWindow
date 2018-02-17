@@ -2,14 +2,19 @@
 
 namespace xwin
 {
-	WinWindow::WinWindow(const WindowDesc& desc)
+	WinWindow::WinWindow()
 	{
+        mCloseWindow = false;
 	};
 
-	bool WinWindow::create(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+	bool WinWindow::create(const WindowDesc& desc)
 	{
+        hInstance = getXWinState().hInstance;
+        HINSTANCE hPrevInstance = getXWinState().hPrevInstance;
+        LPSTR lpCmdLine = getXWinState().lpCmdLine;
+        int nCmdShow = getXWinState().nCmdShow;
 
-		this->hInstance = hInstance;
+		mDesc = &desc;
 
 		wndClass.cbSize = sizeof(WNDCLASSEX);
 		wndClass.style = CS_HREDRAW | CS_VREDRAW;
@@ -21,19 +26,19 @@ namespace xwin
 		wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		wndClass.lpszMenuName = NULL;
-		wndClass.lpszClassName = mDesc.name.c_str();
+        wndClass.lpszClassName = mDesc->name.c_str();
 		wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
 
 		if (!RegisterClassEx(&wndClass))
 		{
 			fflush(stdout);
-			exit(1);
+			exit(GetLastError());
 		}
 
 		int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 		int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-		if (desc.fullscreen)
+		if (mDesc->fullscreen)
 		{
 			DEVMODE dmScreenSettings;
 			memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
@@ -49,7 +54,6 @@ namespace xwin
 				{
 					if (MessageBox(NULL, "Fullscreen Mode not supported!\n Switch to window mode?", "Error", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 					{
-						desc.fullscreen = false;
 					}
 				}
 			}
@@ -60,7 +64,7 @@ namespace xwin
 		DWORD dwStyle;
 
 
-		if (desc.fullscreen)
+		if (mDesc->fullscreen)
 		{
 			dwExStyle = WS_EX_APPWINDOW;
 			dwStyle = WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -72,17 +76,17 @@ namespace xwin
 		}
 
 		RECT windowRect;
-		windowRect.left = desc.x;
-		windowRect.top = desc.y;
-		windowRect.right = fullscreen ? (long)screenWidth : (long)desc.width;
-		windowRect.bottom = fullscreen ? (long)screenHeight : (long)desc.height;
+		windowRect.left = mDesc->x;
+		windowRect.top = mDesc->y;
+		windowRect.right = mDesc->fullscreen ? (long)screenWidth : (long)desc.width;
+		windowRect.bottom = mDesc->fullscreen ? (long)screenHeight : (long)desc.height;
 
 		AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
 
 		_windowBeingCreated = this;
 		_hwnd = CreateWindowEx(0,
-			desc.name,
-			desc.title,
+            mDesc->name.c_str(),
+            mDesc->title.c_str(),
 			dwStyle | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 			0,
 			0,
@@ -93,9 +97,14 @@ namespace xwin
 			hInstance,
 			NULL);
 
+		if (!_hwnd)
+		{
+			printf("Could not create window!\n");
+			fflush(stdout);
+			exit(GetLastError());
+		}
 
-
-		if (!fullscreen)
+		if (!mDesc->fullscreen)
 		{
 			// Center on screen
 			unsigned x = (GetSystemMetrics(SM_CXSCREEN) - windowRect.right) / 2;
@@ -103,27 +112,38 @@ namespace xwin
 			SetWindowPos(_hwnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 		}
 
-		if (!_hwnd)
-		{
-			printf("Could not create window!\n");
-			fflush(stdout);
-			exit(1);
-		}
-
-		if (desc.visible)
+		if (mDesc->visible)
 		{
 			ShowWindow(_hwnd, SW_SHOW);
 			SetForegroundWindow(_hwnd);
 			SetFocus(_hwnd);
 		}
+
+        return true;
 	}
+
+    bool WinWindow::eventLoop()
+    {
+        MSG msg;
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+        return !mCloseWindow;
+    }
+
+    bool WinWindow::close()
+    {
+        return mCloseWindow = true;
+    }
 
 	LRESULT CALLBACK WinWindow::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
 		WinWindow* _this;
 		if (_windowBeingCreated != nullptr)
 		{
-			_hwndMap[hwnd] = _windowBeingCreated;
+            _hwndMap.emplace(hwnd, _windowBeingCreated);
 			_windowBeingCreated->_hwnd = hwnd;
 			_this = _windowBeingCreated;
 			_windowBeingCreated = nullptr;
@@ -138,12 +158,14 @@ namespace xwin
 	}
 
 	LRESULT WinWindow::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
-	{
-		// Propigate Events
-		  // Call all input handler events with a struct of this signature.
-		for (auto &handle : inputHandlers)
-		{
-			handle.event(_hwnd, msg, wparam, lparam);
-		}
-	}
+    {
+        if (msg == WM_CLOSE)
+        {
+            mCloseWindow = true;
+            //PostQuitMessage(0);
+        }
+        else
+            return DefWindowProc(_hwnd, msg, wparam, lparam);
+        return 0;
+    };
 }
