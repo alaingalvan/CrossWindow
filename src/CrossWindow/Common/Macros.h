@@ -2,17 +2,27 @@
 
 #ifdef XWIN_WINDOWS
 #include <Windows.h>
+#elif XWIN_MACOS
+#import <Cocoa/Cocoa.h>
+#elif XWIN_LINUX
+
+#elif XWIN_ANDROID
+#include <android/log.h>
+#include <dlfcn.h>
+#elif XWIN_IOS
+#import <UIKit/UIKit.h>
+#endif
+
+#ifdef XWIN_WINDOWS
 #define xmain int WINAPI WinMain
 #define MainArgs HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
 #define MainArgsVars hInstance, hPrevInstance, lpCmdLine, nCmdShow
 #elif XWIN_ANDROID
-#define MainArgsType android_app
-#define MainArgsVars state
-#define MainArgs android_app* state
 #define xmain void android_main
-#else
-#define MainArgsType int, char**
+#define MainArgs android_app* state
+#define MainArgsVars state
+#elif XWIN_LINUX || XWIN_MACOS || XWIN_IOS || XWIN_WASM
+#define xmain int main
+#define MainArgs int argc, const char* argv[]
 #define MainArgsVars argc, argv
-#define MainArgs int argc, char **argv
-#define xmain int	main
 #endif

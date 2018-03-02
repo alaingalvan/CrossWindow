@@ -1,5 +1,18 @@
 #include "MacOSWindow.h"
 
+@interface XLayoutListener : NSObject
+@end
+
+@implementation XLayoutListener
+
+- (void)selectedKeyboardInputSourceChanged:(NSObject* )object
+{
+	//updateUnicodeDataNS();
+}
+
+@end
+
+
 namespace xwin
 {
 	MacWindow::MacWindow()
@@ -9,7 +22,6 @@ namespace xwin
 	MacWindow::~MacWindow()
 	{
 	}
-	
 	
 	bool MacWindow::create(const WindowDesc &desc) {
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);

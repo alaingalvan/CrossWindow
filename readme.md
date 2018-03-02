@@ -13,14 +13,15 @@ A basic cross platform windowing library for Windows, Mac, Linux, Android, iOS, 
 
 - OS Dialogs
 
+## Usage
+
+First create a main delegate function `xmain` where you'll put your application logic:
+
 ```cpp
 #include "CrossWindow/CrossWindow.h"
 
-xmain(MainArgs)
+int xmain(int argc, const char** argv)
 {
-    // Initialize CrossWindow with main function args
-    xwin::init(MainArgsVars);
-
     // Create Window Object
     xwin::WindowDesc windowDesc;
     windowDesc.name = "Test";
@@ -39,6 +40,8 @@ xmain(MainArgs)
     }
 }
 ```
+
+This xmain function will be called from a platform specific main function that can be included in your main project by CMake or manually inserted by copying all files in `/src/Main/`. If you ever need to access something from that main function for whatever reason, you'll find it in `xwin::getXWinState()`.
 
 For more examples visit the [Documentation](/docs).
 
@@ -59,8 +62,7 @@ cmake -DBUILD_TESTS=ON ..
 
 # Or...
 
-# 🍎 To build solution for MacOS with tests and for x64 machines
-cmake -DBUILD_TESTS=ON -DOPERATING_SYSTEM=MACOS -A x64 ..
+cmake -G Xcode -DBUILD_TESTS=ON -DOPERATING_SYSTEM=MACOS ..
 ```
 
 Whenever you add new files to the project, run `cmake ..`, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.

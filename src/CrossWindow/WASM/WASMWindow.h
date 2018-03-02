@@ -1,6 +1,8 @@
 #pragma once
 
-namespace mwin
+#include "html5.h"
+
+namespace xwin
 {
 	class WASMWindow
 	{
