@@ -9,7 +9,7 @@ namespace mwin
 	class LinuxWindow
 	{
 		LinuxWindow();
-	}
+	};
 	
 	 typedef LinuxWindow WindowDelegate;
 }

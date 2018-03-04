@@ -1,18 +1,5 @@
 #include "MacOSWindow.h"
 
-@interface XLayoutListener : NSObject
-@end
-
-@implementation XLayoutListener
-
-- (void)selectedKeyboardInputSourceChanged:(NSObject* )object
-{
-	//updateUnicodeDataNS();
-}
-
-@end
-
-
 namespace xwin
 {
 	MacWindow::MacWindow()
@@ -21,9 +8,11 @@ namespace xwin
 	
 	MacWindow::~MacWindow()
 	{
+		destroy();
 	}
 	
 	bool MacWindow::create(const WindowDesc &desc) {
+
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
 		
@@ -37,9 +26,11 @@ namespace xwin
 		
 		[window setTitle: @"New Window"];
 		[window center];
+		
+		NSPoint point = NSMakePoint(desc.x, desc.y);
+		[window setFrameOrigin: point];
 		[window makeKeyAndOrderFront:nil];
 		[app run];
-		[pool release];
 	return true;
 	}
 	
@@ -58,14 +49,33 @@ namespace xwin
 
 }
 
-@interface CrossApplication : NSApplication
+@implementation AppDelegate
+
+@synthesize window;
+
+- (void)dealloc
 {
-	NSArray* nibObjects;
+    [super dealloc];
+}
+	
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Insert code here to initialize your application
+	//xmain();
 }
 
 @end
 
-@implementation CrossApplication
+@implementation XLayoutListener
+
+- (void)selectedKeyboardInputSourceChanged:(NSObject* )object
+{
+	//updateUnicodeDataNS();
+}
+
+@end
+
+@implementation XwinApplication
 
 // From http://cocoadev.com/index.pl?GameKeyboardHandlingAlmost
 // This works around an AppKit bug, where key up events while holding

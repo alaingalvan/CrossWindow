@@ -9,7 +9,7 @@ namespace mwin
 	class AndroidWindow
 	{
 		AndroidWindow();
-	}
+	};
 	
 	 typedef AndroidWindow WindowDelegate;
 }

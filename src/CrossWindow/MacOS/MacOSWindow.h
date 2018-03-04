@@ -25,3 +25,19 @@ namespace xwin
 		NSWindow* window;
 	};
 }
+
+@interface AppDelegate : NSObject <NSApplicationDelegate>
+
+@property (assign) NSWindow *window;
+
+@end
+
+@interface XwinApplication : NSApplication
+{
+	NSArray* nibObjects;
+}
+
+@end
+
+@interface XLayoutListener : NSObject
+@end

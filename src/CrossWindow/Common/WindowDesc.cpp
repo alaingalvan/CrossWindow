@@ -15,6 +15,8 @@ namespace xwin
 
     x = 0;
     y = 0;
+    centered = true;
+
     width = 640;
     height = 360;
   }

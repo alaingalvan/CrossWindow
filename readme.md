@@ -67,6 +67,10 @@ cmake -G Xcode -DBUILD_TESTS=ON -DOPERATING_SYSTEM=MACOS ..
 
 Whenever you add new files to the project, run `cmake ..`, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
 
+## License
+
+CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would prefer.
+
 [cmake-img]: https://img.shields.io/badge/cmake-3.9-1f9948.svg?style=flat-square
 [cmake-url]: https://cmake.org/
 [license-img]: https://img.shields.io/:license-©-blue.svg?style=flat-square

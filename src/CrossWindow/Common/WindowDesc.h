@@ -19,8 +19,9 @@ namespace xwin
     std::string name;
     std::string iconPath;
     // Transform
-    unsigned x;
-    unsigned y;
+    long x;
+    long y;
+    bool centered;
     unsigned width;
     unsigned height;
 

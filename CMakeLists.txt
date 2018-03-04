@@ -8,6 +8,9 @@ enable_language(CXX)
 # CMake Settings
 set(CMAKE_SUPPRESS_REGENERATION true)
 set(DCMAKE_GENERATOR_PLATFORM "x64")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_AUTOMOC ON)
 
@@ -19,14 +22,12 @@ set_property(CACHE OPERATING_SYSTEM PROPERTY STRINGS AUTO VULKAN OPENGL DIRECTX 
 
 if(OPERATING_SYSTEM STREQUAL "AUTO")
     if (WIN32)
-    set(OPERATING_SYSTEM "WINDOWS" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
-    endif (WIN32)
-    if (APPLE)
-    set(OPERATING_SYSTEM "MACOS" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
-    endif (APPLE)
-    if (UNIX && !APPLE)
-    set(OPERATING_SYSTEM "LINUX" CACHE STRING "Choose the current graphics API, defaults to AUTO, but can be VULKAN, OPENGL, DIRECTX, METAL, or NOOP" FORCE)
-    endif (UNIX)
+    set(OPERATING_SYSTEM "WINDOWS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(OPERATING_SYSTEM "MACOS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    elseif (UNIX)
+    set(OPERATING_SYSTEM "LINUX" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    endif()
 endif()
 
 set(OPERATING_SYSTEM_PATH "Noop")
@@ -122,6 +123,7 @@ if (BUILD_TESTS)
         source_group("${test_path_final}" FILES "${test}")
     endforeach()
 
+    # Uses WinMain for windows
     if(WIN32)
         add_executable(
             Tests
@@ -134,6 +136,7 @@ if (BUILD_TESTS)
             ${tests_list}
             )
     endif()
+    
     target_link_libraries(
         Tests
         ${PROJECT_NAME}
@@ -147,7 +150,7 @@ if (BUILD_TESTS)
     include(CTest)
     enable_testing()
     add_test(
-        unit 
+        UnitTests 
         ${PROJECT_BINARY_DIR}/tests
     )
 
