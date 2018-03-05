@@ -86,6 +86,14 @@ set(XMAIN_FILES MAIN_SOURCES PARENT_SCOPE)
 
 # =============================================================
 
+# CrossWindow Functions
+
+function(xwin_add_executable varName)
+  SET(${varName} ${${varName}}${${varName}} PARENT_SCOPE)
+endfunction()
+
+# =============================================================
+
 # Finalize Library
 add_library(
     ${PROJECT_NAME}

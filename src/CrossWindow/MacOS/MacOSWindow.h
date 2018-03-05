@@ -2,10 +2,6 @@
 
 #include "../Common/WindowDesc.h"
 
-class NSWindow;
-class NSApplication;
-class NSAutoreleasePool;
-
 namespace xwin
 {
 	class MacWindow
@@ -22,9 +18,9 @@ namespace xwin
 		bool eventLoop();
 		
 	protected:
-		NSAutoreleasePool* pool;
-		NSApplication* app;
-		NSWindow* window;
+		int pool;
+		int app;
+		int window;
 	};
 	
 	typedef MacWindow WindowDelegate;

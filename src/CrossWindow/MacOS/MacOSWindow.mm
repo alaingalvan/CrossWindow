@@ -1,7 +1,16 @@
 #include "MacOSWindow.h"
 #import <Cocoa/Cocoa.h>
+
 namespace xwin
 {
+
+	NSString* stringToNSString(const std::string& string)
+	{
+		NSString* str = [NSString stringWithCString:string.c_str() encoding:NSUTF8StringEncoding];
+		return str;
+	}
+
+	
 	MacWindow::MacWindow()
 	{
 	}
@@ -15,26 +24,26 @@ namespace xwin
 
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
-		
+		/*
 		window = [[NSWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
 							backing: NSBackingStoreBuffered
 							defer: NO];
-		
-		[window setTitle: @"New Window"];
-		[window center];
+		*/
+		//[window setTitle: @"New Window"];
+		//[window center];
 		
 		NSPoint point = NSMakePoint(desc.x, desc.y);
-		[window setFrameOrigin: point];
-		[window makeKeyAndOrderFront:nil];
+		//[window setFrameOrigin: point];
+		//[window makeKeyAndOrderFront:nil];
 
 	return true;
 	}
 	
 	void MacWindow::destroy()
 	{
-		[pool release];
+		//[pool release];
 	}
 	
 	bool MacWindow::eventLoop() {
@@ -46,81 +55,3 @@ namespace xwin
 	
 
 }
-
-@interface AppDelegate : NSObject <NSApplicationDelegate>
-
-@property (assign) NSWindow *window;
-
-@end
-
-@interface XwinApplication : NSApplication
-{
-	NSArray* nibObjects;
-}
-
-@end
-
-@interface XLayoutListener : NSObject
-@end
-
-
-@implementation AppDelegate
-
-@synthesize window;
-
-- (void)dealloc
-{
-    [super dealloc];
-}
-	
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
-	//xmain();
-}
-
-@end
-
-@implementation XLayoutListener
-
-- (void)selectedKeyboardInputSourceChanged:(NSObject* )object
-{
-	//updateUnicodeDataNS();
-}
-
-@end
-
-@implementation XwinApplication
-
-// From http://cocoadev.com/index.pl?GameKeyboardHandlingAlmost
-// This works around an AppKit bug, where key up events while holding
-// down the command key don't get sent to the key window.
-- (void)sendEvent:(NSEvent *)event
-{
-	if ([event type] == NSEventTypeKeyUp &&
-		([event modifierFlags] & NSEventModifierFlagCommand))
-	{
-		[[self keyWindow] sendEvent:event];
-	}
-	else
-		[super sendEvent:event];
-}
-
-
-// No-op thread entry point
-//
-- (void)doNothing:(id)object
-{
-}
-
-- (void)loadMainMenu
-{
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 100800
-	[[NSBundle mainBundle] loadNibNamed:@"MainMenu"
-								  owner:NSApp
-						topLevelObjects:&nibObjects];
-#else
-	[[NSBundle mainBundle] loadNibNamed:@"MainMenu" owner:NSApp];
-#endif
-}
-@end

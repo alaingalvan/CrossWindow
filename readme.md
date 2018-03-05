@@ -5,13 +5,59 @@
 [![Unit Tests][travis-img]][travis-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
-A basic cross platform windowing library for Windows, Mac, Linux, Android, iOS, and WebAssembly.
+A basic cross platform system abstraction library for managing windows and performing OS tasks. 
+
+## Features
 
 - Window Creation
 
-- Basic Input
+- Basic Input (Keyboard, Mouse, Touch)
 
 - OS Dialogs
+
+- Platform specific features (Mac Transparency, Touch Bar, etc.)
+
+## Supports
+
+- Windows
+
+- Mac
+
+- Linux
+
+- Android
+
+- iOS
+
+- WebAssembly
+
+## Installation
+
+First add the repo as a submodule in your dependencies folder such as `external/`:
+
+```
+cd external
+git submodule add https://github.com/alaingalvan/CrossWindow.git
+```
+
+Then in your `CMakeLists.txt` file, include the following:
+
+```cmake
+# ⬇ Add your dependency:
+add_subdirectories(external/CrossWindow)
+
+# ❎ When creating your executable use CrossWindow's abstraction function:
+xwin_add_executable(
+    ${PROJECT_NAME}
+    # Source files...
+)
+
+# 🔗 Link CrossWindow to your project:
+target_link_libraries(
+    ${PROJECT_NAME}
+    CrossWindow
+)
+```
 
 ## Usage
 
@@ -20,7 +66,7 @@ First create a main delegate function `xmain` where you'll put your application 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
 
-int xmain(int argc, const char** argv)
+void xmain(int argc, const char* argv[])
 {
     // Create Window Object
     xwin::WindowDesc windowDesc;
@@ -41,7 +87,7 @@ int xmain(int argc, const char** argv)
 }
 ```
 
-This xmain function will be called from a platform specific main function that can be included in your main project by CMake or manually inserted by copying all files in `/src/Main/`. If you ever need to access something from that main function for whatever reason, you'll find it in `xwin::getXWinState()`.
+This `xmain` function will be called from a platform specific main function that will be included in your main project by CMake. If you ever need to access something from that main function for whatever reason, you'll find it in `xwin::getXWinState()`.
 
 For more examples visit the [Documentation](/docs).
 
