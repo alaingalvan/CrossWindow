@@ -1,5 +1,5 @@
 #include "MacOSWindow.h"
-
+#import <Cocoa/Cocoa.h>
 namespace xwin
 {
 	MacWindow::MacWindow()
@@ -16,8 +16,6 @@ namespace xwin
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
 		
-		pool = [[NSAutoreleasePool alloc] init];
-		app = [[NSApplication alloc] init];
 		window = [[NSWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
@@ -30,7 +28,7 @@ namespace xwin
 		NSPoint point = NSMakePoint(desc.x, desc.y);
 		[window setFrameOrigin: point];
 		[window makeKeyAndOrderFront:nil];
-		[app run];
+
 	return true;
 	}
 	
@@ -48,6 +46,23 @@ namespace xwin
 	
 
 }
+
+@interface AppDelegate : NSObject <NSApplicationDelegate>
+
+@property (assign) NSWindow *window;
+
+@end
+
+@interface XwinApplication : NSApplication
+{
+	NSArray* nibObjects;
+}
+
+@end
+
+@interface XLayoutListener : NSObject
+@end
+
 
 @implementation AppDelegate
 

@@ -54,7 +54,7 @@ MESSAGE( STATUS "Building CrossWindow for " ${OPERATING_SYSTEM_PATH} )
 
 # Sources
 
-file(GLOB_RECURSE mag_sources RELATIVE
+file(GLOB_RECURSE LIB_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.h
@@ -67,19 +67,29 @@ file(GLOB_RECURSE mag_sources RELATIVE
 )
 
 # Solution Filters
-foreach(source IN LISTS mag_sources)
+foreach(source IN LISTS LIB_SOURCES)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
     string(REPLACE "src" "" source_path_final "${source_path_msvc}")
     source_group("${source_path_final}" FILES "${source}")
 endforeach()
 
+# Main files
+file(GLOB_RECURSE MAIN_SOURCES RELATIVE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/Main.h
+)
+
+set(XMAIN_FILES MAIN_SOURCES PARENT_SCOPE) 
+
 # =============================================================
 
 # Finalize Library
 add_library(
     ${PROJECT_NAME}
-    ${mag_sources}
+    ${LIB_SOURCES}
     )
 
 # =============================================================
@@ -113,6 +123,7 @@ if (BUILD_TESTS)
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.hpp
+    XMAIN_FILES
     )
 
     # Solution Filters
@@ -129,11 +140,13 @@ if (BUILD_TESTS)
             Tests
             WIN32
             ${tests_list}
+            ${MAIN_SOURCES}
             )
     else()
         add_executable(
             Tests
             ${tests_list}
+            ${MAIN_SOURCES}
             )
     endif()
     

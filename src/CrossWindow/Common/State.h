@@ -27,9 +27,9 @@ struct XWinState
 #else
 
     int argc;
-    char **argv;
+    const char **argv;
 
-    XWinState(int argc, char **argv) : argc(argc), argv(argv)
+    XWinState(int argc, const char **argv) : argc(argc), argv(argv)
     {
     }
 

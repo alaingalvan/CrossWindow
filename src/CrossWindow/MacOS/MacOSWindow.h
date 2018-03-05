@@ -2,7 +2,9 @@
 
 #include "../Common/WindowDesc.h"
 
-#include <Cocoa/Cocoa.h>
+class NSWindow;
+class NSApplication;
+class NSAutoreleasePool;
 
 namespace xwin
 {
@@ -24,20 +26,8 @@ namespace xwin
 		NSApplication* app;
 		NSWindow* window;
 	};
+	
+	typedef MacWindow WindowDelegate;
 }
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (assign) NSWindow *window;
-
-@end
-
-@interface XwinApplication : NSApplication
-{
-	NSArray* nibObjects;
-}
-
-@end
-
-@interface XLayoutListener : NSObject
-@end

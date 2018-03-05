@@ -1,5 +1,8 @@
-#ifdef XWIN_WINDOWS
+#include "Main.h"
+#include "../Common/Init.h"
+
 #include <Windows.h>
+
 
 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -59,24 +62,3 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 
     return 0;
 }
-#elif XWIN_ANDROID
-#include <android/native_activity.h>
-#include <android/asset_manager.h>
-#include <android_native_app_glue.h>
-#include <sys/system_properties.h>
-
-void android_main(android_app* state)
-{
-    int vulkanSupport = InitVulkan();
-    if (vulkanSupport == 0) return;
-    
-    xmain(0, nullptr);
-    
-}
-#elif XWIN_LINUX || XWIN_WASM || WIN_NOOP
-int main(int argc, const char* argv[])
-{
-    xmain(argc, argv);
-    return 0;
-}
-#endif
