@@ -45,11 +45,17 @@ Then in your `CMakeLists.txt` file, include the following:
 ```cmake
 # ⬇ Add your dependency:
 add_subdirectories(external/CrossWindow)
+include(xwin_add_executable)
 
 # ❎ When creating your executable use CrossWindow's abstraction function:
 xwin_add_executable(
     ${PROJECT_NAME}
-    # Source files...
+    1
+    0
+    0
+    0
+    "My Company"
+    SOURCE_FILES
 )
 
 # 🔗 Link CrossWindow to your project:

@@ -14,6 +14,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_AUTOMOC ON)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
+include(generate_win32_files)
+include(generate_macos_files)
+
 # =============================================================
 
 # Options
@@ -82,18 +86,26 @@ file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/Main.h
 )
 
-set(XMAIN_FILES MAIN_SOURCES PARENT_SCOPE) 
-
 # =============================================================
 
 # CrossWindow Functions
 
-function(xwin_add_executable targetProject targetSources)
+function(xwin_add_executable targetProject VersionMajor VersionMinor VersionPatch VersionRevision CompanyName targetSources)
     if(OPERATING_SYSTEM STREQUAL "WINDOWS")
+        generate_win32_files(ProductVersionFiles
+        NAME ${targetProject}
+        VERSION_MAJOR ${VersionMajor}
+        VERSION_MINOR ${VersionMinor}
+        VERSION_PATCH ${VersionPatch}
+        VERSION_REVISION ${VersionRevision}
+        COMPANY_NAME ${CompanyName})
+
+
         add_executable(
             ${targetProject}
             WIN32
             XMAIN_FILES
+            ${ProductVersionFiles}
             ${targetSources}
         )
     elseif(OPERATING_SYSTEM STREQUAL "MACOS")
