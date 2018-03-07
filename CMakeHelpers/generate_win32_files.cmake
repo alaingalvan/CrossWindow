@@ -95,11 +95,11 @@ function(generate_win32_files outfiles)
     set (_VersionInfoFile ${CMAKE_CURRENT_BINARY_DIR}/VersionInfo.h)
     set (_VersionResourceFile ${CMAKE_CURRENT_BINARY_DIR}/VersionResource.rc)
     configure_file(
-        ${GenerateProductVersionCurrentDir}/VersionInfo.in
+        ${GenerateWin32FilesCurrentDir}/VersionInfo.in
         ${_VersionInfoFile}
         @ONLY)
     configure_file(
-        ${GenerateProductVersionCurrentDir}/VersionResource.rc
+        ${GenerateWin32FilesCurrentDir}/VersionResource.rc
         ${_VersionResourceFile}
         COPYONLY)
     list(APPEND ${outfiles} ${_VersionInfoFile} ${_VersionResourceFile})

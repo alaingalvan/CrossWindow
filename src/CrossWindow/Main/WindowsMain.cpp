@@ -1,14 +1,11 @@
-#include "Main.h"
 #include "../Common/Init.h"
+#include "Main.h"
 
-#include <Windows.h>
 
-
-WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     //setup cmdline
     MSG msg;    // message
-    bool done;  // flag saying when app is complete
     int argc;
     char **argv;
 
@@ -46,7 +43,6 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
     }
 
     xwin::init(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-
     xmain(argc, argv);
 
 

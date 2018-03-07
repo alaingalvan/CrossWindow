@@ -4,6 +4,7 @@
 #include "../Common/Init.h"
 
 #include <unordered_map>
+#include <Windows.h>
 
 
 namespace xwin

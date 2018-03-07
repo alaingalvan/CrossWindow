@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined(XWIN_WINDOWS)
+#include <Windows.h>
+#endif
+
 namespace xwin
 {
 struct XWinState

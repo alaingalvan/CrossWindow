@@ -55,7 +55,7 @@ xwin_add_executable(
     0
     0
     "My Company"
-    SOURCE_FILES
+    "${SOURCE_FILES}"
 )
 
 # 🔗 Link CrossWindow to your project:

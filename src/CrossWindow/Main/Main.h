@@ -1,3 +1,3 @@
 #pragma once
 
-void xmain(int argc, const char* argv []);
+void xmain(int argc, char** argv);

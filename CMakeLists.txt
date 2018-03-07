@@ -16,7 +16,7 @@ set(CMAKE_AUTOMOC ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
 include(generate_win32_files)
-include(generate_macos_files)
+#include(generate_macos_files)
 
 # =============================================================
 
@@ -85,6 +85,9 @@ file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/Main.h
 )
+foreach(source IN LISTS MAIN_SOURCES)
+    source_group("XMain" FILES "${source}")
+endforeach()
 
 # =============================================================
 
@@ -99,44 +102,42 @@ function(xwin_add_executable targetProject VersionMajor VersionMinor VersionPatc
         VERSION_PATCH ${VersionPatch}
         VERSION_REVISION ${VersionRevision}
         COMPANY_NAME ${CompanyName})
-
+        #${ProductVersionFiles}
+        set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
 
         add_executable(
             ${targetProject}
             WIN32
-            XMAIN_FILES
-            ${ProductVersionFiles}
-            ${targetSources}
+            ${XWIN_FILES}
         )
     elseif(OPERATING_SYSTEM STREQUAL "MACOS")
         add_executable(
             ${targetProject}
             MACOSX_BUNDLE
-            XMAIN_FILES
+
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "IOS")
+        add_executable(
+            ${targetProject}
+            ${MAIN_SOURCES}
             ${targetSources}
         )
     elseif(OPERATING_SYSTEM STREQUAL "LINUX")
         add_executable(
             ${targetProject}
-            XMAIN_FILES
+            ${MAIN_SOURCES}
             ${targetSources}
         )
     elseif(OPERATING_SYSTEM STREQUAL "ANDROID")
         add_executable(
             ${targetProject}
-            XMAIN_FILES
-            ${targetSources}
-        )
-    elseif(OPERATING_SYSTEM STREQUAL "IOS")
-        add_executable(
-            ${targetProject}
-            XMAIN_FILES
+            ${MAIN_SOURCES}
             ${targetSources}
         )
     elseif(OPERATING_SYSTEM STREQUAL "WASM")
         add_executable(
             ${targetProject}
-            XMAIN_FILES
+            ${MAIN_SOURCES}
             ${targetSources}
         )
     elseif(OPERATING_SYSTEM STREQUAL "NOOP")
@@ -186,7 +187,6 @@ if (BUILD_TESTS)
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.hpp
-    XMAIN_FILES
     )
 
     # Solution Filters
@@ -196,22 +196,16 @@ if (BUILD_TESTS)
         string(REPLACE "tests" "" test_path_final "${test_path_msvc}")
         source_group("${test_path_final}" FILES "${test}")
     endforeach()
-
     # Uses WinMain for windows
-    if(WIN32)
-        add_executable(
-            Tests
-            WIN32
-            ${tests_list}
-            ${MAIN_SOURCES}
-            )
-    else()
-        add_executable(
-            Tests
-            ${tests_list}
-            ${MAIN_SOURCES}
-            )
-    endif()
+    xwin_add_executable(
+        Tests
+        1
+        0
+        0
+        0
+        "AlainGalvan"
+        "${tests_list}"
+        )
     
     target_link_libraries(
         Tests
