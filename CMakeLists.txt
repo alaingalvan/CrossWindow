@@ -88,8 +88,51 @@ set(XMAIN_FILES MAIN_SOURCES PARENT_SCOPE)
 
 # CrossWindow Functions
 
-function(xwin_add_executable varName)
-  SET(${varName} ${${varName}}${${varName}} PARENT_SCOPE)
+function(xwin_add_executable targetProject targetSources)
+    if(OPERATING_SYSTEM STREQUAL "WINDOWS")
+        add_executable(
+            ${targetProject}
+            WIN32
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "MACOS")
+        add_executable(
+            ${targetProject}
+            MACOSX_BUNDLE
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "LINUX")
+        add_executable(
+            ${targetProject}
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "ANDROID")
+        add_executable(
+            ${targetProject}
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "IOS")
+        add_executable(
+            ${targetProject}
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "WASM")
+        add_executable(
+            ${targetProject}
+            XMAIN_FILES
+            ${targetSources}
+        )
+    elseif(OPERATING_SYSTEM STREQUAL "NOOP")
+        add_executable(
+            ${targetProject}
+            ${targetSources}
+        )
+    endif()
 endfunction()
 
 # =============================================================
