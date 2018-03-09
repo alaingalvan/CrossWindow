@@ -92,16 +92,20 @@ endforeach()
 # =============================================================
 
 # CrossWindow Functions
+function(xwin_setup versionMajor versionMinor versionPatch versionRevision companyName iconPath)
+    # @TODO - implement
+    message("Warning: xwin_setup has not yet been implemented.")
+endfunction()
 
-function(xwin_add_executable targetProject VersionMajor VersionMinor VersionPatch VersionRevision CompanyName targetSources)
+function(xwin_add_executable targetProject targetSources)
     if(OPERATING_SYSTEM STREQUAL "WINDOWS")
-        generate_win32_files(ProductVersionFiles
-        NAME ${targetProject}
-        VERSION_MAJOR ${VersionMajor}
-        VERSION_MINOR ${VersionMinor}
-        VERSION_PATCH ${VersionPatch}
-        VERSION_REVISION ${VersionRevision}
-        COMPANY_NAME ${CompanyName})
+        #generate_win32_files(ProductVersionFiles
+        #NAME ${targetProject}
+        #VERSION_MAJOR ${VersionMajor}
+        #VERSION_MINOR ${VersionMinor}
+        #VERSION_PATCH ${VersionPatch}
+        #VERSION_REVISION ${VersionRevision}
+        #COMPANY_NAME ${CompanyName})
         #${ProductVersionFiles}
         set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
 

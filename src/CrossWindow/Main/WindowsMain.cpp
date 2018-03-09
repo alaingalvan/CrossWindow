@@ -1,7 +1,6 @@
 #include "../Common/Init.h"
 #include "Main.h"
 
-
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     //setup cmdline

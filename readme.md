@@ -45,16 +45,23 @@ Then in your `CMakeLists.txt` file, include the following:
 ```cmake
 # ⬇ Add your dependency:
 add_subdirectories(external/CrossWindow)
-include(xwin_add_executable)
+
+# ⚪ Setup CrossWindow for OS specific functionality
+xwin_setup(
+    # Major Minor Patch Build
+    1 0 0 0
+    # Company Name
+    "MyCompany"     
+    # File Icon Path
+    # Cross Window will look for OS specific icons with the name corresponding to the icon size.
+    "${CMAKE_CURRENT_SOURCE_DIR}/OsFiles/Icons"
+)
 
 # ❎ When creating your executable use CrossWindow's abstraction function:
 xwin_add_executable(
+    # Target
     ${PROJECT_NAME}
-    1
-    0
-    0
-    0
-    "My Company"
+    # Source Files (make sure to surround in quotations)
     "${SOURCE_FILES}"
 )
 
@@ -104,7 +111,7 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | CMake Options | Description |
 |:-------------:|:-----------:|
 | `BUILD_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
-| `OPERATING_SYSTEM ` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`.  |
+| `OPERATING_SYSTEM` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
 
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
 
