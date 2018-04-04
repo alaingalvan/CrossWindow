@@ -15,7 +15,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_AUTOMOC ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
-include(generate_win32_files)
+#include(generate_win32_files)
 #include(generate_macos_files)
 
 # =============================================================
@@ -70,13 +70,12 @@ file(GLOB_RECURSE LIB_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.h
 )
 
-# Solution Filters
-foreach(source IN LISTS LIB_SOURCES)
-    get_filename_component(source_path "${source}" PATH)
-    string(REPLACE "/" "\\" source_path_msvc "${source_path}")
-    string(REPLACE "src" "" source_path_final "${source_path_msvc}")
-    source_group("${source_path_final}" FILES "${source}")
-endforeach()
+file(GLOB_RECURSE CROSSWINDOW_INCLUDE_DIR RELATIVE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.h
+)
 
 # Main files
 file(GLOB_RECURSE MAIN_SOURCES RELATIVE
@@ -159,6 +158,8 @@ add_library(
     ${PROJECT_NAME}
     ${LIB_SOURCES}
     )
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 # =============================================================
 
