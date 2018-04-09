@@ -14,9 +14,11 @@ namespace xwin
     public:
         WinWindow();
 
-        bool create(const WindowDesc& desc);
+        bool create(WindowDesc& desc);
 
         bool eventLoop();
+
+        std::vector<EventType>& pollEvents();
 
         bool close();
 
@@ -25,7 +27,7 @@ namespace xwin
         LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
 
     protected:
-        const WindowDesc* mDesc;
+        WindowDesc* mDesc;
 
         bool mCloseWindow;
 
@@ -47,6 +49,8 @@ namespace xwin
         // Window Behavior
         DWORD dwExStyle;
         DWORD dwStyle;
+
+        std::vector<EventType> mEventQueue;
 
     };
 

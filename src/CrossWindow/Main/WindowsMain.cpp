@@ -44,7 +44,6 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     xwin::init(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
     xmain(argc, argv);
 
-
     // Free up the items we had to allocate for the command line arguments.
     if (argc > 0 && argv != NULL) {
         for (int iii = 0; iii < argc; iii++) {

@@ -14,7 +14,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_AUTOMOC ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
 #include(generate_win32_files)
 #include(generate_macos_files)
 
@@ -58,7 +58,7 @@ MESSAGE( STATUS "Building CrossWindow for " ${OPERATING_SYSTEM_PATH} )
 
 # Sources
 
-file(GLOB_RECURSE LIB_SOURCES RELATIVE
+file(GLOB_RECURSE FILE_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.h
@@ -70,23 +70,23 @@ file(GLOB_RECURSE LIB_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.h
 )
 
-file(GLOB_RECURSE CROSSWINDOW_INCLUDE_DIR RELATIVE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/CrossWindow.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.h
-)
+# Solution Filters
+foreach(source IN LISTS FILE_SOURCES)
+    get_filename_component(source_path "${source}" PATH)
+    string(REPLACE "/" "\\" source_path_msvc "${source_path}")
+    string(REPLACE "src" "" source_path_final "${source_path_msvc}")
+    source_group("${source_path_final}" FILES "${source}")
+endforeach()
 
 # Main files
 file(GLOB_RECURSE MAIN_SOURCES RELATIVE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_HOME_DIRECTORY}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.mm
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/Main.h
 )
-foreach(source IN LISTS MAIN_SOURCES)
-    source_group("XMain" FILES "${source}")
-endforeach()
+
+
+set(XMAIN_SOURCES ${MAIN_SOURCES} PARENT_SCOPE)
 
 # =============================================================
 
@@ -97,17 +97,15 @@ function(xwin_setup versionMajor versionMinor versionPatch versionRevision compa
 endfunction()
 
 function(xwin_add_executable targetProject targetSources)
-    if(OPERATING_SYSTEM STREQUAL "WINDOWS")
-        #generate_win32_files(ProductVersionFiles
-        #NAME ${targetProject}
-        #VERSION_MAJOR ${VersionMajor}
-        #VERSION_MINOR ${VersionMinor}
-        #VERSION_PATCH ${VersionPatch}
-        #VERSION_REVISION ${VersionRevision}
-        #COMPANY_NAME ${CompanyName})
-        #${ProductVersionFiles}
-        set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
+    message("Creating CrossWindow executable:")
 
+    foreach(source IN LISTS XMAIN_SOURCES)
+        source_group("" FILES "${source}")
+    endforeach()
+
+    set(XWIN_FILES ${XMAIN_SOURCES} ${targetSources})
+
+    if(OPERATING_SYSTEM STREQUAL "WINDOWS")
         add_executable(
             ${targetProject}
             WIN32
@@ -156,7 +154,7 @@ endfunction()
 # Finalize Library
 add_library(
     ${PROJECT_NAME}
-    ${LIB_SOURCES}
+    ${FILE_SOURCES}
     )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
@@ -236,5 +234,5 @@ endif()
 # =============================================================
 
 # Preprocessor Definitions
-target_compile_definitions(${PROJECT_NAME} PRIVATE XWIN_${OPERATING_SYSTEM}=1)
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${OPERATING_SYSTEM}=1)
 

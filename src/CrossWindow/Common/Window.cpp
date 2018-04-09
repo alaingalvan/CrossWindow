@@ -12,11 +12,16 @@ namespace xwin
 
     bool Window::create(const WindowDesc& desc)
     {
-        return mDelegate.create(desc);
+        mDesc = desc;
+        return mDelegate.create(mDesc);
     }
 
-    bool Window::eventLoop()
+    std::vector<EventType>& Window::pollEvents()
     {
-        return mDelegate.eventLoop();
+        return mDelegate.pollEvents();
+    }
+    void Window::close()
+    {
+        mDelegate.close();
     }
 }

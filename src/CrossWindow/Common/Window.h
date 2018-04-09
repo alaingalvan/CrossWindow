@@ -18,8 +18,11 @@
 #include "../Noop/NoopWindow.h"
 #endif
 
+#include <memory>
+
 namespace xwin
 {
+
     class Window
     {
     public:
@@ -30,10 +33,14 @@ namespace xwin
 
         bool create(const WindowDesc& desc);
 
-        bool eventLoop();
+        std::vector<EventType>& pollEvents();
+
+        void close();
 
     protected:
         WindowDesc mDesc;
         WindowDelegate mDelegate;
     };
+
+    typedef std::shared_ptr<Window> WindowPtr;
 }
