@@ -24,8 +24,7 @@ Win32
 *.user
 *.userosscache
 *.sln.docstates
-#!visualstudio/*.sln
-#!visualstudio/*.vcxproj
+visualstudio
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
