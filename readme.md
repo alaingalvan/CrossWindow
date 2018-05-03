@@ -19,17 +19,17 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Supports
 
-- Windows
+- 🖼️ Windows
 
-- Mac
+- 🍎 Mac
 
-- Linux
+- 🐧 Linux
 
-- Android
+- 🤖 Android
 
-- iOS
+- 📱 iOS
 
-- WebAssembly
+- 🌐 WebAssembly
 
 ## Installation
 
@@ -110,18 +110,18 @@ Be sure to have [CMake](https://cmake.org) Installed.
 
 | CMake Options | Description |
 |:-------------:|:-----------:|
-| `BUILD_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
+| `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
 | `OPERATING_SYSTEM` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
 
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
 
 ```bash
 # ⚗️ To build solution with tests
-cmake -DBUILD_TESTS=ON ..
+cmake -DXWIN_TESTS=ON ..
 
 # Or...
 
-cmake -G Xcode -DBUILD_TESTS=ON -DOPERATING_SYSTEM=MACOS ..
+cmake -G Xcode -DXWIN_TESTS=ON -DOPERATING_SYSTEM=MACOS ..
 ```
 
 Whenever you add new files to the project, run `cmake ..`, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
@@ -132,7 +132,7 @@ CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would
 
 [cmake-img]: https://img.shields.io/badge/cmake-3.9-1f9948.svg?style=flat-square
 [cmake-url]: https://cmake.org/
-[license-img]: https://img.shields.io/:license-©-blue.svg?style=flat-square
+[license-img]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
 [travis-img]: https://img.shields.io/travis/alaingalvan/crosswindow.svg?style=flat-square
 [travis-url]: https://travis-ci.org/alaingalvan/crosswindow
