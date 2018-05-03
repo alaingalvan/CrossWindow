@@ -161,9 +161,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sr
 
 # =============================================================
 
-option(BUILD_TESTS "If enabled, compile the tests." OFF)
+option(XWIN_TESTS "If enabled, compile the tests." OFF)
 
-if (BUILD_TESTS)
+if (XWIN_TESTS)
     MESSAGE( STATUS "Building CrossWindow Tests..." )
     # Unit Tests
     set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
