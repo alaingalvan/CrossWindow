@@ -37,6 +37,10 @@ namespace xwin
 
         void close();
 
+        WindowDesc getDesc() const;
+
+        WindowDelegate& getDelegate();
+
     protected:
         WindowDesc mDesc;
         WindowDelegate mDelegate;

@@ -24,4 +24,14 @@ namespace xwin
     {
         mDelegate.close();
     }
+
+    WindowDelegate& Window::getDelegate()
+    {
+        return mDelegate;
+    }
+
+    WindowDesc Window::getDesc() const
+    {
+        return mDesc;
+    }
 }

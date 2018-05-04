@@ -1,0 +1,25 @@
+sudo: false
+
+language:
+  - cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+
+before_install:
+  - pip install --user cpp-coveralls
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - ./unit_tests
+
+after_success:
+  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"
+
+notifications:
+  email: false

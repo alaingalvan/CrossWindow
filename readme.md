@@ -21,15 +21,15 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 🖼️ Windows
 
-- 🍎 Mac
+- 🍎 Mac (In Progress)
 
-- 🐧 Linux
+- 🐧 Linux (In Progress)
 
-- 🤖 Android
+- 🤖 Android (In Progress)
 
-- 📱 iOS
+- 📱 iOS (In Progress)
 
-- 🌐 WebAssembly
+- 🌐 WebAssembly (In Progress)
 
 ## Installation
 
