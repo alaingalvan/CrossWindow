@@ -79,7 +79,7 @@ First create a main delegate function `xmain` where you'll put your application 
 
 void xmain(int argc, const char* argv[])
 {
-    // Create Window Object
+    // 🖼️ Create Window Description
     xwin::WindowDesc windowDesc;
     windowDesc.name = "Test";
     windowDesc.title = "My Title";
@@ -88,28 +88,31 @@ void xmain(int argc, const char* argv[])
     windowDesc.height = 720;
 
     bool closed = false;
+    
+    // ⚪ Initialize
     xwin::Window window;
+    if (!window.create(windowDesc))
+    { return; }
 
-    if (window.create(windowDesc))
+    // 🏁 Engine loop
+    while(!closed)
     {
-        while(!closed)
-        {
-            // Insert application logic here
+        // ↘️ Insert Applciation Logic Here:
 
-            auto events = win->pollEvents();
-            for (xwin::EventType e : events)
+        auto events = win->pollEvents();
+        for (xwin::EventType e : events)
+        {
+            //Check for events
+            if (e == xwin::EventType::Close)
             {
-                //Check for events
-                if (e == xwin::EventType::Close)
-                {
-                    window.close();
-                    closed = true;
-                    break;
-                }
-            
+                window.close();
+                closed = true;
+                break;
             }
+        
         }
     }
+
 }
 ```
 
