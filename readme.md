@@ -13,8 +13,6 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - Basic Input (Keyboard, Mouse, Touch)
 
-- OS Dialogs
-
 - Platform specific features (Mac Transparency, Touch Bar, etc.)
 
 ## Supports
@@ -89,12 +87,27 @@ void xmain(int argc, const char* argv[])
     windowDesc.width = 1280;
     windowDesc.height = 720;
 
+    bool closed = false;
     xwin::Window window;
+
     if (window.create(windowDesc))
     {
-        while (window.eventLoop())
+        while(!closed)
         {
-            // Run renderer logic here
+            // Insert application logic here
+
+            auto events = win->pollEvents();
+            for (xwin::EventType e : events)
+            {
+                //Check for events
+                if (e == xwin::EventType::Close)
+                {
+                    window.close();
+                    closed = true;
+                    break;
+                }
+            
+            }
         }
     }
 }

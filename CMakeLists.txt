@@ -14,10 +14,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_AUTOMOC ON)
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeHelpers")
-#include(generate_win32_files)
-#include(generate_macos_files)
-
 # =============================================================
 
 # Options
@@ -115,36 +111,34 @@ function(xwin_add_executable targetProject targetSources)
         add_executable(
             ${targetProject}
             MACOSX_BUNDLE
+            ${XWIN_FILES}
 
         )
     elseif(OPERATING_SYSTEM STREQUAL "IOS")
         add_executable(
             ${targetProject}
-            ${MAIN_SOURCES}
-            ${targetSources}
+            MACOSX_BUNDLE
+            ${XWIN_FILES}
         )
     elseif(OPERATING_SYSTEM STREQUAL "LINUX")
         add_executable(
             ${targetProject}
-            ${MAIN_SOURCES}
-            ${targetSources}
+            ${XWIN_FILES}
         )
     elseif(OPERATING_SYSTEM STREQUAL "ANDROID")
         add_executable(
             ${targetProject}
-            ${MAIN_SOURCES}
-            ${targetSources}
+            ${XWIN_FILES}
         )
     elseif(OPERATING_SYSTEM STREQUAL "WASM")
         add_executable(
             ${targetProject}
-            ${MAIN_SOURCES}
-            ${targetSources}
+            ${XWIN_FILES}
         )
     elseif(OPERATING_SYSTEM STREQUAL "NOOP")
         add_executable(
             ${targetProject}
-            ${targetSources}
+            ${XWIN_FILES}
         )
     endif()
 endfunction()
