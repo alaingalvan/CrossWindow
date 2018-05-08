@@ -44,17 +44,6 @@ Then in your `CMakeLists.txt` file, include the following:
 # ⬇ Add your dependency:
 add_subdirectories(external/CrossWindow)
 
-# ⚪ Setup CrossWindow for OS specific functionality
-xwin_setup(
-    # Major Minor Patch Build
-    1 0 0 0
-    # Company Name
-    "MyCompany"     
-    # File Icon Path
-    # Cross Window will look for OS specific icons with the name corresponding to the icon size.
-    "${CMAKE_CURRENT_SOURCE_DIR}/OsFiles/Icons"
-)
-
 # ❎ When creating your executable use CrossWindow's abstraction function:
 xwin_add_executable(
     # Target
