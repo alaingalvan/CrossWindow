@@ -91,7 +91,7 @@ void xmain(int argc, const char* argv[])
         auto events = win->pollEvents();
         for (xwin::EventType e : events)
         {
-            //Check for events
+            // 🔄 Check for events
             if (e == xwin::EventType::Close)
             {
                 window.close();

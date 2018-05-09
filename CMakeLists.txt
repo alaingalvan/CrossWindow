@@ -196,11 +196,6 @@ if (XWIN_TESTS)
     # Uses WinMain for windows
     xwin_add_executable(
         Tests
-        1
-        0
-        0
-        0
-        "AlainGalvan"
         "${tests_list}"
         )
     
@@ -217,7 +212,7 @@ if (XWIN_TESTS)
     include(CTest)
     enable_testing()
     add_test(
-        UnitTests 
+        UnitTests
         ${PROJECT_BINARY_DIR}/tests
     )
 
