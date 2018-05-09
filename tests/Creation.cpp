@@ -13,8 +13,4 @@ TEST(Creation, create)
 
     xwin::Window window;
     EXPECT_TRUE(window.create(windowDesc));
-
-    while (window.eventLoop())
-    {
-    }
 }

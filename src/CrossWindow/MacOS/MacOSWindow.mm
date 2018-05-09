@@ -48,6 +48,16 @@ namespace xwin
 	
 	bool MacWindow::eventLoop() {
 		//check Common Window events with Mac Events
+		NSEvent *event =
+			[self
+				nextEventMatchingMask:NSAnyEventMask
+				untilDate:[NSDate distantFuture]
+				inMode:NSDefaultRunLoopMode
+				dequeue:YES];
+		
+		[self sendEvent:event];
+		[self updateWindows];
+
 		return false;
 	}
 	

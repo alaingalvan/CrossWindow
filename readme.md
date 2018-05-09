@@ -66,7 +66,7 @@ First create a main delegate function `xmain` where you'll put your application 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
 
-void xmain(int argc, const char* argv[])
+void xmain(int argc, const char** argv)
 {
     // 🖼️ Create Window Description
     xwin::WindowDesc windowDesc;
@@ -86,7 +86,7 @@ void xmain(int argc, const char* argv[])
     // 🏁 Engine loop
     while(!closed)
     {
-        // ↘️ Insert Applciation Logic Here:
+        // ↘️ Insert Application Logic Here:
 
         auto events = win->pollEvents();
         for (xwin::EventType e : events)
@@ -121,15 +121,18 @@ Be sure to have [CMake](https://cmake.org) Installed.
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
 
 ```bash
-# ⚗️ To build solution with tests
-cmake -DXWIN_TESTS=ON ..
+# 🖼️ To build your Visual Studio solution on Windows
+cd crosswindow
+mkdir visualstudio
+cmake  -DXWIN_TESTS=ON .. -A x64
 
-# Or...
-
-cmake -G Xcode -DXWIN_TESTS=ON -DOPERATING_SYSTEM=MACOS ..
+# 🍎 To build your XCode project On Mac OS
+cd crosswindow
+mkdir xcode
+cmake -G Xcode -DXWIN_TESTS=ON .. -A x64
 ```
 
-Whenever you add new files to the project, run `cmake ..`, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
+Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
 
 ## License
 
