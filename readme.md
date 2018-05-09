@@ -129,7 +129,7 @@ cmake  -DXWIN_TESTS=ON .. -A x64
 # 🍎 To build your XCode project On Mac OS
 cd crosswindow
 mkdir xcode
-cmake -G Xcode -DXWIN_TESTS=ON .. -A x64
+cmake -G Xcode -DXWIN_TESTS=ON ..
 ```
 
 Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
