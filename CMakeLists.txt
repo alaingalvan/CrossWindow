@@ -161,7 +161,6 @@ if (XWIN_TESTS)
     MESSAGE( STATUS "Building CrossWindow Tests..." )
 
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-    set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
 
     # Unit Tests
     set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
@@ -221,6 +220,7 @@ if (XWIN_TESTS)
     )
 
     target_compile_definitions(Tests PRIVATE XWIN_${OPERATING_SYSTEM}=1)
+    set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
 
 endif()
 
