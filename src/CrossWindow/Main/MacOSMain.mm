@@ -3,8 +3,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-int XWinApplicationMain(int argc, const char **argv);
-
 @interface XWinApplication : NSApplication
 {
 
@@ -14,8 +12,25 @@ int XWinApplicationMain(int argc, const char **argv);
 
 @end
 
+@implementation XWinApplication
 
-int XWinApplicationMain(int argc, const char **argv)
+- (void)run
+{
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName:NSApplicationWillFinishLaunchingNotification
+		object:NSApp];
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName:NSApplicationDidFinishLaunchingNotification
+		object:NSApp];
+	
+	const XWinState& state = getXWinState();
+	xmain(state.argc, state.argv);
+}
+
+@end
+
+
+int main(int argc, char** argv)
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -41,27 +56,4 @@ int XWinApplicationMain(int argc, const char **argv)
 	[pool release];
 	
 	return 0;
-}
-
-@implementation XWinApplication
-
-- (void)run
-{
-	[[NSNotificationCenter defaultCenter]
-		postNotificationName:NSApplicationWillFinishLaunchingNotification
-		object:NSApp];
-	[[NSNotificationCenter defaultCenter]
-		postNotificationName:NSApplicationDidFinishLaunchingNotification
-		object:NSApp];
-	
-	const XWinState& state = getXWinState();
-	xmain(state.argc, state.argv);
-}
-
-@end
-
-
-int main(int argc, char** argv)
-{
-	return XWinApplicationMain(argc, argv);
 }

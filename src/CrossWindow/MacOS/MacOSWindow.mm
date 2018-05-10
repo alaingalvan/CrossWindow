@@ -20,10 +20,14 @@ namespace xwin
 		destroy();
 	}
 	
-	bool MacWindow::create(const WindowDesc &desc) {
+	bool MacWindow::create(const WindowDesc &desc)
+	{
+		NSApplication* nsApp = (NSApplication*)getXWinState().nsApp;
 
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
+		
+		// Setup NSWindow
 		mWindow = [[NSWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
@@ -32,24 +36,31 @@ namespace xwin
 
 		mTitle = [NSString stringWithCString:desc.title.c_str() 
                                    encoding:[NSString defaultCStringEncoding]];
-		[mWindow setTitle: mTitle];
-		[mWindow center];
+		[(NSWindow*)mWindow setTitle: (NSString*)mTitle];
+		[(NSWindow*)mWindow center];
 		
 		NSPoint point = NSMakePoint(desc.x, desc.y);
-		[window setFrameOrigin: point];
-		[window makeKeyAndOrderFront:nil];
+		[(NSWindow*)mWindow setFrameOrigin: point];
+		
+		// Setup NSView
+		mView = [[NSView alloc] initWithFrame:rect];
+		[mView setHidden:NO];
+		[mView setNeedsDisplay:YES];
+		[(NSWindow*)mWindow setContentView:tmpView];
+		[(NSWindow*)mWindow makeKeyAndOrderFront:nsApp];
 
 	return true;
 	}
 	
 	void MacWindow::destroy()
 	{
-		[mWindow release];
+		[(NSWindow*)mWindow release];
+		[(NSView*)mView release]
 	}
 	
 	bool MacWindow::eventLoop()
 	{
-		NSApplication* nsApp = getXWinState().nsApp;
+		NSApplication* nsApp = (NSApplication*)getXWinState().nsApp;
 
 		while( NSEvent* e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES] )
 		{
@@ -58,7 +69,7 @@ namespace xwin
 			//TODO: fill event loop with event abstractions
 		}
 
-		// This may be redundant ~ ag
+		// This may be redundant with multiple windows, but is probably fine ~ ag
 		[nsApp updateWindows];
 
 		return false;
