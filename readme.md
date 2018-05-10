@@ -19,7 +19,7 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 🖼️ Windows
 
-- 🍎 Mac (In Progress)
+- 🍎 Mac
 
 - 🐧 Linux (In Progress)
 

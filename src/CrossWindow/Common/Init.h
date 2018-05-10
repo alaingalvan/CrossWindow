@@ -17,5 +17,5 @@ namespace xwin
 {
     bool init(MainArgs);
 
-    XWinState& getXWinState();
+    const XWinState& getXWinState();
 }

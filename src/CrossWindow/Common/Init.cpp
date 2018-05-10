@@ -14,7 +14,7 @@ bool xwin::init(MainArgs)
   xWinState = XWinState(MainArgsVars);
   return true;
 }
-xwin::XWinState &xwin::getXWinState()
+const xwin::XWinState& xwin::getXWinState()
 {
   return xWinState;
 }

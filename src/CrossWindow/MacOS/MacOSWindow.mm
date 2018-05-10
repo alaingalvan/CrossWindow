@@ -24,39 +24,42 @@ namespace xwin
 
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
-		/*
-		window = [[NSWindow alloc]
+		mWindow = [[NSWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
 							backing: NSBackingStoreBuffered
 							defer: NO];
-		*/
-		//[window setTitle: @"New Window"];
-		//[window center];
+
+		mTitle = [NSString stringWithCString:desc.title.c_str() 
+                                   encoding:[NSString defaultCStringEncoding]];
+		[mWindow setTitle: mTitle];
+		[mWindow center];
 		
 		NSPoint point = NSMakePoint(desc.x, desc.y);
-		//[window setFrameOrigin: point];
-		//[window makeKeyAndOrderFront:nil];
+		[window setFrameOrigin: point];
+		[window makeKeyAndOrderFront:nil];
 
 	return true;
 	}
 	
 	void MacWindow::destroy()
 	{
-		//[pool release];
+		[mWindow release];
 	}
 	
-	bool MacWindow::eventLoop() {
-		//check Common Window events with Mac Events
-		NSEvent *event =
-			[self
-				nextEventMatchingMask:NSAnyEventMask
-				untilDate:[NSDate distantFuture]
-				inMode:NSDefaultRunLoopMode
-				dequeue:YES];
-		
-		[self sendEvent:event];
-		[self updateWindows];
+	bool MacWindow::eventLoop()
+	{
+		NSApplication* nsApp = getXWinState().nsApp;
+
+		while( NSEvent* e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES] )
+		{
+			[nsApp sendEvent:event];
+
+			//TODO: fill event loop with event abstractions
+		}
+
+		// This may be redundant ~ ag
+		[nsApp updateWindows];
 
 		return false;
 	}

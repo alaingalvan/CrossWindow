@@ -9,10 +9,12 @@ namespace xwin
 
     bool WinWindow::create(WindowDesc& desc)
     {
-        hInstance = getXWinState().hInstance;
-        HINSTANCE hPrevInstance = getXWinState().hPrevInstance;
-        LPSTR lpCmdLine = getXWinState().lpCmdLine;
-        int nCmdShow = getXWinState().nCmdShow;
+        const XWinState& xwinState = getXWinState();
+        
+        hInstance = .hInstance;
+        HINSTANCE hPrevInstance = xwinState.hPrevInstance;
+        LPSTR lpCmdLine = xwinState.lpCmdLine;
+        int nCmdShow = xwinState.nCmdShow;
 
         mDesc = &desc;
 

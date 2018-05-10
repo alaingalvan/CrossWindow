@@ -27,6 +27,15 @@ struct XWinState
     XWinState(android_app *state) : state(state)
     {
     }
+#elif defined(XWIN_MACOS) || defined(XWIN_IOS)
+
+    int argc;
+    const char **argv;
+    void* nsApp;
+
+    XWinState(int argc, const char **argv, void* nsApp) : argc(argc), argv(argv), nsApp(nsApp)
+    {
+    }
 
 #else
 

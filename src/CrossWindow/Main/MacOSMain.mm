@@ -3,26 +3,27 @@
 
 #import <Cocoa/Cocoa.h>
 
-int MyApplicationMain(int argc, const char **argv);
+int XWinApplicationMain(int argc, const char **argv);
 
-@interface MyApplication : NSApplication
+@interface XWinApplication : NSApplication
 {
-	bool shouldKeepRunning;
+
 }
 
 - (void)run;
-- (void)terminate:(id)sender;
 
 @end
 
 
-int MyApplicationMain(int argc, const char **argv)
+int XWinApplicationMain(int argc, const char **argv)
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+	NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
 	Class principalClass = NSClassFromString([infoDictionary objectForKey:@"NSPrincipalClass"]);
-	NSApplication *applicationObject = [principalClass sharedApplication];
+	NSApplication* applicationObject = [principalClass sharedApplication];
+	
+	xwin::init(argc, argv, applicationObject);
 
 	NSString *mainNibName = [infoDictionary objectForKey:@"NSMainNibFile"];
 	NSNib *mainNib = [[NSNib alloc] initWithNibNamed:mainNibName bundle:[NSBundle mainBundle]];
@@ -42,11 +43,10 @@ int MyApplicationMain(int argc, const char **argv)
 	return 0;
 }
 
-@implementation MyApplication
+@implementation XWinApplication
 
 - (void)run
 {
-//	[self finishLaunching];
 	[[NSNotificationCenter defaultCenter]
 		postNotificationName:NSApplicationWillFinishLaunchingNotification
 		object:NSApp];
@@ -54,29 +54,8 @@ int MyApplicationMain(int argc, const char **argv)
 		postNotificationName:NSApplicationDidFinishLaunchingNotification
 		object:NSApp];
 	
-	// TODO: this should be called in MacOSWindow.mm
-	/*
-	shouldKeepRunning = YES;
-	do
-	{
-		NSEvent *event =
-			[self
-				nextEventMatchingMask:NSAnyEventMask
-				untilDate:[NSDate distantFuture]
-				inMode:NSDefaultRunLoopMode
-				dequeue:YES];
-		
-		[self sendEvent:event];
-		[self updateWindows];
-	} while (shouldKeepRunning);
-	*/
-	XWinState& state = getXWinState();
+	const XWinState& state = getXWinState();
 	xmain(state.argc, state.argv);
-}
-
-- (void)terminate:(id)sender
-{
-	shouldKeepRunning = NO;
 }
 
 @end
@@ -84,6 +63,5 @@ int MyApplicationMain(int argc, const char **argv)
 
 int main(int argc, char** argv)
 {
-	xwin::init(argc, argv);
-	return MyApplicationMain(argc, argv);
+	return XWinApplicationMain(argc, argv);
 }

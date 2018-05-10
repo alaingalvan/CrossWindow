@@ -18,9 +18,8 @@ namespace xwin
 		bool eventLoop();
 		
 	protected:
-		int pool;
-		int app;
-		int window;
+		void* mWindow;
+		void* mTitle;
 	};
 	
 	typedef MacWindow WindowDelegate;
