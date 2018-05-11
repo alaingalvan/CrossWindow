@@ -1,16 +1,68 @@
 #include "MacOSWindow.h"
 #import <Cocoa/Cocoa.h>
 
-namespace xwin
+@interface XWinWindow : NSWindow
 {
 
-	NSString* stringToNSString(const std::string& string)
-	{
-		NSString* str = [NSString stringWithCString:string.c_str() encoding:NSUTF8StringEncoding];
-		return str;
-	}
+}
+@end
 
-	
+@interface XWinView : NSView
+{
+//TODO: implement virtual event functions
+//view events would be translated to xwin events and put into the eventloop queue
+//users can then capture those enents and do whatever they want.
+@public
+	std::vector<xwin::Event> mEventQueue;
+}
+
+
+}
+- (BOOL)	acceptsFirstResponder;
+- (BOOL)	isOpaque;
+
+- (void)	keyUp:(NSEvent*)event;
+- (void)	keyDown:(NSEvent*)event;
+@end
+
+@implementation XWinView
+
+-(void)keyUp:(NSEvent*)event
+{
+    NSLog(@"Key %@", event);
+}
+
+-(void)keyDown:(NSEvent*)event
+{   
+    switch( [event keyCode] )
+		{
+        case 126:
+        case 125:
+        case 124: 
+        case 123:       
+  // Arrow Keys
+   break;
+        default:
+   // Key not supported
+   break;
+    }
+}
+
+- (BOOL)acceptsFirstResponder
+{
+	return YES;
+}
+
+- (BOOL)isOpaque
+{
+	return YES;
+}
+
+@end
+
+
+namespace xwin
+{	
 	MacWindow::MacWindow()
 	{
 	}
@@ -28,7 +80,7 @@ namespace xwin
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
 		
 		// Setup NSWindow
-		mWindow = [[NSWindow alloc]
+		mWindow = [[XWinWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
 							backing: NSBackingStoreBuffered
@@ -36,41 +88,41 @@ namespace xwin
 
 		mTitle = [NSString stringWithCString:desc.title.c_str() 
                                    encoding:[NSString defaultCStringEncoding]];
-		[(NSWindow*)mWindow setTitle: (NSString*)mTitle];
-		[(NSWindow*)mWindow center];
+		[(XWinWindow*)mWindow setTitle: (NSString*)mTitle];
+		[(XWinWindow*)mWindow center];
 		
 		NSPoint point = NSMakePoint(desc.x, desc.y);
-		[(NSWindow*)mWindow setFrameOrigin: point];
+		[(XWinWindow*)mWindow setFrameOrigin: point];
 		
 		// Setup NSView
-		mView = [[NSView alloc] initWithFrame:rect];
+		mView = [[XWinView alloc] initWithFrame:rect];
 		[mView setHidden:NO];
 		[mView setNeedsDisplay:YES];
-		[(NSWindow*)mWindow setContentView:tmpView];
-		[(NSWindow*)mWindow makeKeyAndOrderFront:nsApp];
+		[(XWinWindow*)mWindow setContentView:tmpView];
+		[(XWinWindow*)mWindow makeKeyAndOrderFront:nsApp];
 
 	return true;
 	}
 	
 	void MacWindow::destroy()
 	{
-		[(NSWindow*)mWindow release];
+		[(XWinWindow*)mWindow release];
 		[(NSView*)mView release]
 	}
 	
 	bool MacWindow::eventLoop()
 	{
+		// Update Application
 		NSApplication* nsApp = (NSApplication*)getXWinState().nsApp;
 
 		while( NSEvent* e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES] )
 		{
 			[nsApp sendEvent:event];
-
-			//TODO: fill event loop with event abstractions
 		}
 
-		// This may be redundant with multiple windows, but is probably fine ~ ag
 		[nsApp updateWindows];
+
+		//return mView.eventQueue;
 
 		return false;
 	}

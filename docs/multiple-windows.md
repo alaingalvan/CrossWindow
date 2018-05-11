@@ -14,37 +14,42 @@ void xmain(int argc, const char* argv[])
     windowDesc.height = 720;
 
     // ⚪ Initialize
+    xwin::EventQueue eventQueue;
     std::vector<xwin::WindowPtr> windows = {new Window(), new Window()};
     for( xwin::WindowPtr& w : windows )
-    { w->create(windowDesc); }
+    { w->create(windowDesc, eventQueue); }
 
     // 🏁 Engine loop
     bool engineRunning = true;
     while( engineRunning )
     {
-    for (auto itr = windows.begin(); itr != windows.end();)
-    {
-        bool closed = false;
-        WindowPtr win = itr->window;
-        auto events = win->pollEvents();
-        for (xwin::EventType e : events)
-        {
-            // ↘️ Insert Applciation Logic Here:
 
-            // 🔄 Check for events
-            if (e == xwin::EventType::Close)
+        // ↘️ Insert Applciation Logic Here:
+
+        // ♻️ And update windows
+
+        eventQueue.update();
+
+        // Iterate through that queue:
+        while (!eventQueue.empty())
+        {
+            const xwin::Event event = eventQueue.pop();
+
+            switch(e.type)
             {
-                win->close();
-                itr = windows.erase(itr);
-                closed = true;
-                break;
+            case xwin::EventType::Close:
+                event.window.close();
+                windows.erase(event.window);
+            break;
+            default:
+                // Do nothing
             }
         }
-        if (!closed)
+        
+        if(windows.empty())
         {
-            ++itr;
+            engineRunning = false;
         }
-    }
     }
   
   ```

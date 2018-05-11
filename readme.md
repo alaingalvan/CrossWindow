@@ -80,27 +80,26 @@ void xmain(int argc, const char** argv)
     
     // ⚪ Initialize
     xwin::Window window;
-    if (!window.create(windowDesc))
+    xwin::EventQueue eventQueue;
+
+    if (!window.create(windowDesc, eventQueue))
     { return; }
 
     // 🏁 Engine loop
-    while(!closed)
-    {
-        // ↘️ Insert Application Logic Here:
+    bool isRunning = true;
 
-        auto events = win->pollEvents();
-        for (xwin::EventType e : events)
-        {
-            // 🔄 Check for events
-            if (e == xwin::EventType::Close)
-            {
-                window.close();
-                closed = true;
-                break;
-            }
-        
-        }
+    while (isRunning)
+    {
+    // ♻️ Update the event queue
+    eventQueue.update();
+
+    // 🎈 Iterate through that queue:
+    while (!eventQueue.empty())
+    {
+        const xwin::Event event = eventQueue.pop();
+        // ...
     }
+}
 
 }
 ```

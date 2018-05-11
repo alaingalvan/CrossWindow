@@ -21,10 +21,10 @@ namespace xwin
 		//NSString*
 		void* mTitle;
 
-		//NSWindow*
+		//XWinWindow*
 		void* mWindow;
 		
-		//NSView*
+		//XWinView*
 		void* mView;
 	};
 	
