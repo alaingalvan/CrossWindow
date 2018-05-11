@@ -1,12 +1,3 @@
-<p align="center">
-    <img style="width: 16%" src="docs/images/windows.svg" alt="Windows"/>
-    <img style="width: 16%" src="docs/images/macos.svg" alt="Windows"/>
-    <img style="width: 16%" src="docs/images/linux.svg" alt="Windows"/>
-    <img style="width: 16%" src="docs/images/ios.svg" alt="Windows"/>
-    <img style="width: 16%" src="docs/images/android.svg" alt="Windows"/>
-    <img style="width: 16%" src="docs/images/webassembly.svg" alt="Windows"/>
-</p>
-
 # CrossWindow
 
 [![cmake-img]][cmake-url]
@@ -26,17 +17,31 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Supports
 
-- 🖼️ Windows
+<table style="width:100%">
+<tbody>
+<tr>
+<td align="center"><a target="_blank" href="docs/images/windows.svg"><img src="docs/images/windows.svg" alt="Windows" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/macos.svg"><img src="docs/images/macos.svg" alt="MacOS" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/linux.svg"><img src="docs/images/linux.svg" alt="Linux" style="max-width:100%;"></a></td>
+</tr>
+<tr>
+<td align="center"><g-emoji class="g-emoji" alias="framed_picture" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f5bc.png">🖼️</g-emoji> Windows</td>
+<td align="center"><g-emoji class="g-emoji" alias="apple" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f34e.png">🍎</g-emoji> Mac</td>
+<td align="center"><g-emoji class="g-emoji" alias="penguin" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f427.png">🐧</g-emoji> Linux (In Progress)</td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" href="docs/images/android.svg"><img src="docs/images/android.svg" alt="Android" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/ios.svg"><img src="docs/images/ios.svg" alt="iOS" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/webassembly.svg"><img src="docs/images/webassembly.svg" alt="WebAssembly" style="max-width:100%;"></a></td>
+</tr>
+<tr>
+<td align="center"><g-emoji class="g-emoji" alias="robot" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f916.png">🤖</g-emoji> Android (In Progress)</td>
+<td align="center"><g-emoji class="g-emoji" alias="iphone" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4f1.png">📱</g-emoji> iOS (In Progress)</td>
+<td align="center"><g-emoji class="g-emoji" alias="globe_with_meridians" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f310.png">🌐</g-emoji> WebAssembly (In Progress)</td>
+</tr></tbody></table>
 
-- 🍎 Mac
 
-- 🐧 Linux (In Progress)
 
-- 🤖 Android (In Progress)
-
-- 📱 iOS (In Progress)
-
-- 🌐 WebAssembly (In Progress)
 
 ## Installation
 
