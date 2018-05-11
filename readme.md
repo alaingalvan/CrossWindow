@@ -9,11 +9,11 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Features
 
-- Window Creation
+- ⚪ Window Creation
 
-- Basic Input (Keyboard, Mouse, Touch)
+- ⌨️ 🖱️ 👆 Basic Input (Keyboard, Mouse, Touch)
 
-- Platform specific features (Mac Transparency, Touch Bar, etc.)
+- 👻 Platform specific features (Mac Transparency, Touch Bar, etc.)
 
 ## Supports
 
@@ -48,7 +48,7 @@ add_subdirectories(external/CrossWindow)
 xwin_add_executable(
     # Target
     ${PROJECT_NAME}
-    # Source Files (make sure to surround in quotations)
+    # Source Files (make sure to surround in quotations so CMake treats it as a list)
     "${SOURCE_FILES}"
 )
 
