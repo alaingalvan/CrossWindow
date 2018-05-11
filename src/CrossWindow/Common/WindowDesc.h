@@ -147,7 +147,7 @@ namespace xwin
       DigitalInputKeysMax,
 
       // Gamepad
-      DPadUp = DigitalInputKeysMax,
+      DPadUp,
       DPadDown,
       DPadLeft,
       DPadRight,

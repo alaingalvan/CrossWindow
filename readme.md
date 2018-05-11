@@ -1,3 +1,12 @@
+<p align="center">
+    <img style="width: 16%" src="docs/images/windows.svg" alt="Windows"/>
+    <img style="width: 16%" src="docs/images/macos.svg" alt="Windows"/>
+    <img style="width: 16%" src="docs/images/linux.svg" alt="Windows"/>
+    <img style="width: 16%" src="docs/images/ios.svg" alt="Windows"/>
+    <img style="width: 16%" src="docs/images/android.svg" alt="Windows"/>
+    <img style="width: 16%" src="docs/images/webassembly.svg" alt="Windows"/>
+</p>
+
 # CrossWindow
 
 [![cmake-img]][cmake-url]
@@ -61,7 +70,7 @@ target_link_libraries(
 
 ## Usage
 
-First create a main delegate function `xmain` where you'll put your application logic:
+Then create a main delegate function `void xmain(int argc, const char** argv)` in a `.cpp` file in your project (for example "`XMain.cpp`") where you'll put your application logic:
 
 ```cpp
 #include "CrossWindow/CrossWindow.h"
@@ -90,21 +99,31 @@ void xmain(int argc, const char** argv)
 
     while (isRunning)
     {
-    // ♻️ Update the event queue
-    eventQueue.update();
+        // ♻️ Update the event queue
+        eventQueue.update();
 
-    // 🎈 Iterate through that queue:
-    while (!eventQueue.empty())
-    {
-        const xwin::Event event = eventQueue.pop();
-        // ...
+        // 🎈 Iterate through that queue:
+        while (!eventQueue.empty())
+        {
+            const xwin::Event event = eventQueue.pop();
+            switch(event.type)
+            {
+            case xwin::EventType::MouseMove:
+            xwin::MouseData* mouse = static_cast<xwin::MouseData*>(e.data);
+            //mouse.x, mouse.y
+            break;
+            case xwin::EventType::Close:
+            window.close();
+            break;
+            default:
+            // Do nothing
+            }
+        }
     }
-}
-
 }
 ```
 
-This `xmain` function will be called from a platform specific main function that will be included in your main project by CMake. If you ever need to access something from that main function for whatever reason, you'll find it in `xwin::getXWinState()`.
+This `xmain` function will be called from a *platform specific main function* that will be included in your main project by CMake. If you ever need to access something from the platform specific main function for whatever reason, you'll find it in `xwin::getXWinState()`.
 
 For more examples visit the [Documentation](/docs).
 
@@ -123,7 +142,7 @@ We would recommend making a folder where solution files will be built to to avoi
 # 🖼️ To build your Visual Studio solution on Windows
 cd crosswindow
 mkdir visualstudio
-cmake  -DXWIN_TESTS=ON .. -A x64
+cmake -DXWIN_TESTS=ON .. -A x64
 
 # 🍎 To build your XCode project On Mac OS
 cd crosswindow

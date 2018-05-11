@@ -31,9 +31,9 @@ struct XWinState
 
     int argc;
     const char **argv;
-    void* nsApp;
+    void* application;
 
-    XWinState(int argc, const char **argv, void* nsApp) : argc(argc), argv(argv), nsApp(nsApp)
+    XWinState(int argc, const char **argv, void* application) : argc(argc), argv(argv), application(application)
     {
     }
 
