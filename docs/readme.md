@@ -8,7 +8,7 @@
 
 - [Platform Behavior](platform-behavior.md) | How to access platform specific data structures and use those for platform specific tasks.
 
-- [Dialogs, File Windows](dialogs.md) | Creating dialog boxes and file windows.
+- [Dialogs, File Windows](dialogs-file-windows.md) | Creating dialog boxes and file windows.
 
 - [Using Graphics APIs](graphics-apis.md) | How to hook CrossGraphics with Vulkan/OpenGL/DirectX/Metal.
 

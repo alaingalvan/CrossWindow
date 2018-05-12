@@ -1,3 +1,17 @@
+<table style="width:100%">
+<tbody>
+<tr>
+<td align="center"><a target="_blank" href="docs/images/windows.svg"><img src="docs/images/windows.svg" alt="Windows" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/macos.svg"><img src="docs/images/macos.svg" alt="MacOS" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/linux.svg"><img src="docs/images/linux.svg" alt="Linux" style="max-width:100%;"></a></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" href="docs/images/android.svg"><img src="docs/images/android.svg" alt="Android" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/ios.svg"><img src="docs/images/ios.svg" alt="iOS" style="max-width:100%;"></a></td>
+<td align="center"><a target="_blank" href="docs/images/webassembly.svg"><img src="docs/images/webassembly.svg" alt="WebAssembly" style="max-width:100%;"></a></td>
+</tr>
+</tbody></table>
+
 # CrossWindow
 
 [![cmake-img]][cmake-url]
@@ -17,30 +31,17 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Supports
 
-<table style="width:100%">
-<tbody>
-<tr>
-<td align="center"><a target="_blank" href="docs/images/windows.svg"><img src="docs/images/windows.svg" alt="Windows" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/macos.svg"><img src="docs/images/macos.svg" alt="MacOS" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/linux.svg"><img src="docs/images/linux.svg" alt="Linux" style="max-width:100%;"></a></td>
-</tr>
-<tr>
-<td align="center"><g-emoji class="g-emoji" alias="framed_picture" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f5bc.png">🖼️</g-emoji> Windows</td>
-<td align="center"><g-emoji class="g-emoji" alias="apple" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f34e.png">🍎</g-emoji> Mac</td>
-<td align="center"><g-emoji class="g-emoji" alias="penguin" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f427.png">🐧</g-emoji> Linux (In Progress)</td>
-</tr>
-<tr>
-<td align="center"><a target="_blank" href="docs/images/android.svg"><img src="docs/images/android.svg" alt="Android" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/ios.svg"><img src="docs/images/ios.svg" alt="iOS" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/webassembly.svg"><img src="docs/images/webassembly.svg" alt="WebAssembly" style="max-width:100%;"></a></td>
-</tr>
-<tr>
-<td align="center"><g-emoji class="g-emoji" alias="robot" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f916.png">🤖</g-emoji> Android (In Progress)</td>
-<td align="center"><g-emoji class="g-emoji" alias="iphone" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4f1.png">📱</g-emoji> iOS (In Progress)</td>
-<td align="center"><g-emoji class="g-emoji" alias="globe_with_meridians" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f310.png">🌐</g-emoji> WebAssembly (In Progress)</td>
-</tr></tbody></table>
+- 🖼️ Windows
 
+- 🍎 Mac
 
+- 🐧 Linux (In Progress)
+
+- 🤖 Android (In Progress)
+
+- 📱 iOS (In Progress)
+
+- 🌐 WebAssembly (In Progress)
 
 
 ## Installation
@@ -139,7 +140,7 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | CMake Options | Description |
 |:-------------:|:-----------:|
 | `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
-| `OPERATING_SYSTEM` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
+| `XWIN_OS` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
 
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
 

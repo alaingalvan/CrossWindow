@@ -17,38 +17,38 @@ set(CMAKE_AUTOMOC ON)
 # =============================================================
 
 # Options
-set(OPERATING_SYSTEM AUTO CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM") 
-set_property(CACHE OPERATING_SYSTEM PROPERTY STRINGS AUTO VULKAN OPENGL DIRECTX METAL NOOP)
+set(XWIN_OS AUTO CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM") 
+set_property(CACHE XWIN_OS PROPERTY STRINGS AUTO WINDOWS MACOS LINUX ANDROID IOS WASM NOOP)
 
-if(OPERATING_SYSTEM STREQUAL "AUTO")
+if(XWIN_OS STREQUAL "AUTO")
     if (WIN32)
-    set(OPERATING_SYSTEM "WINDOWS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    set(XWIN_OS "WINDOWS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
     elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(OPERATING_SYSTEM "MACOS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    set(XWIN_OS "MACOS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
     elseif (UNIX)
-    set(OPERATING_SYSTEM "LINUX" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+    set(XWIN_OS "LINUX" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
     endif()
 endif()
 
-set(OPERATING_SYSTEM_PATH "Noop")
+set(XWIN_OS_PATH "Noop")
 
-if(OPERATING_SYSTEM STREQUAL "WINDOWS")
-    set(OPERATING_SYSTEM_PATH "Windows")
-elseif(OPERATING_SYSTEM STREQUAL "MACOS")
-    set(OPERATING_SYSTEM_PATH "MacOS")
-elseif(OPERATING_SYSTEM STREQUAL "LINUX")
-    set(OPERATING_SYSTEM_PATH "Linux")
-elseif(OPERATING_SYSTEM STREQUAL "ANDROID")
-    set(OPERATING_SYSTEM_PATH "Android")
-elseif(OPERATING_SYSTEM STREQUAL "IOS")
-    set(OPERATING_SYSTEM_PATH "iOS")
-elseif(OPERATING_SYSTEM STREQUAL "WASM")
-    set(OPERATING_SYSTEM_PATH "WASM")
-elseif(OPERATING_SYSTEM STREQUAL "NOOP")
-    set(OPERATING_SYSTEM_PATH "Noop")
+if(XWIN_OS STREQUAL "WINDOWS")
+    set(XWIN_OS_PATH "Windows")
+elseif(XWIN_OS STREQUAL "MACOS")
+    set(XWIN_OS_PATH "MacOS")
+elseif(XWIN_OS STREQUAL "LINUX")
+    set(XWIN_OS_PATH "Linux")
+elseif(XWIN_OS STREQUAL "ANDROID")
+    set(XWIN_OS_PATH "Android")
+elseif(XWIN_OS STREQUAL "IOS")
+    set(XWIN_OS_PATH "iOS")
+elseif(XWIN_OS STREQUAL "WASM")
+    set(XWIN_OS_PATH "WASM")
+elseif(XWIN_OS STREQUAL "NOOP")
+    set(XWIN_OS_PATH "Noop")
 endif()
 
-MESSAGE( STATUS "Building CrossWindow for " ${OPERATING_SYSTEM_PATH} )
+MESSAGE( STATUS "Building CrossWindow for " ${XWIN_OS_PATH} )
 
 # =============================================================
 
@@ -61,9 +61,9 @@ file(GLOB_RECURSE FILE_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.mm
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${OPERATING_SYSTEM_PATH}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.h
 )
 
 # Solution Filters
@@ -77,8 +77,8 @@ endforeach()
 # Main files
 file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_HOME_DIRECTORY}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${OPERATING_SYSTEM_PATH}Main.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_OS_PATH}Main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_OS_PATH}Main.mm
 )
 
 
@@ -101,41 +101,41 @@ function(xwin_add_executable targetProject targetSources)
 
     set(XWIN_FILES ${XMAIN_SOURCES} ${targetSources})
 
-    if(OPERATING_SYSTEM STREQUAL "WINDOWS")
+    if(XWIN_OS STREQUAL "WINDOWS")
         add_executable(
             ${targetProject}
             WIN32
             ${XWIN_FILES}
         )
-    elseif(OPERATING_SYSTEM STREQUAL "MACOS")
+    elseif(XWIN_OS STREQUAL "MACOS")
         add_executable(
             ${targetProject}
             MACOSX_BUNDLE
             ${XWIN_FILES}
 
         )
-    elseif(OPERATING_SYSTEM STREQUAL "IOS")
+    elseif(XWIN_OS STREQUAL "IOS")
         add_executable(
             ${targetProject}
             MACOSX_BUNDLE
             ${XWIN_FILES}
         )
-    elseif(OPERATING_SYSTEM STREQUAL "LINUX")
+    elseif(XWIN_OS STREQUAL "LINUX")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(OPERATING_SYSTEM STREQUAL "ANDROID")
+    elseif(XWIN_OS STREQUAL "ANDROID")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(OPERATING_SYSTEM STREQUAL "WASM")
+    elseif(XWIN_OS STREQUAL "WASM")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(OPERATING_SYSTEM STREQUAL "NOOP")
+    elseif(XWIN_OS STREQUAL "NOOP")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
@@ -219,7 +219,7 @@ if (XWIN_TESTS)
         ${PROJECT_BINARY_DIR}/tests
     )
 
-    target_compile_definitions(Tests PRIVATE XWIN_${OPERATING_SYSTEM}=1)
+    target_compile_definitions(Tests PRIVATE XWIN_${XWIN_OS}=1)
     set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
 
 endif()
@@ -227,5 +227,5 @@ endif()
 # =============================================================
 
 # Preprocessor Definitions
-target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${OPERATING_SYSTEM}=1)
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${XWIN_OS}=1)
 
