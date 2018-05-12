@@ -1,16 +1,7 @@
-<table style="width:100%">
-<tbody>
-<tr>
-<td align="center"><a target="_blank" href="docs/images/windows.svg"><img src="docs/images/windows.svg" alt="Windows" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/macos.svg"><img src="docs/images/macos.svg" alt="MacOS" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/linux.svg"><img src="docs/images/linux.svg" alt="Linux" style="max-width:100%;"></a></td>
-</tr>
-<tr>
-<td align="center"><a target="_blank" href="docs/images/android.svg"><img src="docs/images/android.svg" alt="Android" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/ios.svg"><img src="docs/images/ios.svg" alt="iOS" style="max-width:100%;"></a></td>
-<td align="center"><a target="_blank" href="docs/images/webassembly.svg"><img src="docs/images/webassembly.svg" alt="WebAssembly" style="max-width:100%;"></a></td>
-</tr>
-</tbody></table>
+<p align="center">
+  <img src="docs/images/cover.gif" alt="Logo"/>
+</p>
+
 
 # CrossWindow
 
