@@ -1,12 +1,24 @@
-<!--We distribute an official library for hooking CrossWindow to your operating system specific operating system.-->
+`CrossWindow-Graphics` is a helper library that can take a `xwin::Window` and graphics API specific data structures , and returning a Vulkan `vk::Surface`, an OpenGL context, a DirectX `ComPtr<IDXGISwapChain>`, or Metal `MTLView`. 
 
-## Vulkan
+You can try out this demo in the [`demos/graphics-api-seed/`](/demos/graphics-api-seed/) folder.
 
-For this example we'll use the Vulkan C++ library:
+```mm
+//Since this includes C++ and Objective C++ according to preprocessor definitions
+//We're using the `.mm` file type:
 
-```cpp
 #include "CrossWindow/CrossWindow.h"
+
+#if defined(XGFX_VULKAN)
 #include "vulkan/vulkan.hpp"
+#elif defined(XGFX_OPENGL)
+#include "glad/glad.h"
+#elif defined(XGFX_DIRECTX)
+#include <directx12.h>
+#elif defined(XGFX_METAL)
+#import <Metal/Metal.h>
+#endif
+
+#include "CrossWindow/Graphics.h"
 
 void xmain(int argc, const char** argv)
 {
@@ -26,6 +38,10 @@ void xmain(int argc, const char** argv)
 
     if (!window.create(windowDesc, eventQueue))
     { return; }
+```
+
+```mm
+    // Initialize each graphics API
 
     // 🏁 Engine loop
     bool isRunning = true;
