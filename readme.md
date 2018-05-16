@@ -139,11 +139,13 @@ We would recommend making a folder where solution files will be built to to avoi
 # 🖼️ To build your Visual Studio solution on Windows
 cd crosswindow
 mkdir visualstudio
+cd visualstudio
 cmake -DXWIN_TESTS=ON .. -A x64
 
 # 🍎 To build your XCode project On Mac OS
 cd crosswindow
 mkdir xcode
+cd xcode
 cmake -G Xcode -DXWIN_TESTS=ON ..
 ```
 
