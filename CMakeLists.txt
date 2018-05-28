@@ -171,6 +171,11 @@ if (XWIN_TESTS)
 
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+    # we use this to get code coverage
+    if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+    endif()
+
     # Unit Tests
     set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
     include_directories(
