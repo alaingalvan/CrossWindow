@@ -12,5 +12,8 @@ TEST(Creation, create)
     windowDesc.height = 720;
 
     xwin::Window window;
-    EXPECT_TRUE(window.create(windowDesc));
+    xwin::EventQueue eventQueue;
+	bool created = window.create(windowDesc, eventQueue);
+	
+	EXPECT_TRUE(created);
 }

@@ -38,8 +38,14 @@ void xmain(int argc, const char* argv[])
             switch(e.type)
             {
             case xwin::EventType::Close:
+                // Close the window
                 event.window.close();
+                
+                // Deallocate the Window
                 windows.erase(event.window);
+
+                // Clear the weak pointer to that window from the queue
+                eventQueue.erase(event.window);
             break;
             default:
                 // Do nothing

@@ -12,6 +12,13 @@ CTestTestfile.cmake
 *_autogen
 *.dir
 Win32
+build/
+visualstudio/
+xcode/
+androidstudio/
+make/
+webassembly/
+
 
 ## Visual Studio
 # User-specific files
@@ -24,7 +31,7 @@ Win32
 *.user
 *.userosscache
 *.sln.docstates
-visualstudio
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

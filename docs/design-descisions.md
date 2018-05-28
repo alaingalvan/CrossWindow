@@ -2,9 +2,9 @@
 
 ### [Vulkan-WSIWindow](https://github.com/renelindsay/Vulkan-WSIWindow)
 
-Vulkan WSIWindow is a cross platform windowing API that targets all Vulkan 1.0 operating system targets. While the library is easy to ues and robust, it was coupled to Vulkan and lacked important features like resizing. There was a need for either improving on the library to add those features or to fork it. 
+Vulkan WSIWindow is a cross platform windowing API that targets all Vulkan 1.0 operating system targets. While the library is easy to use and robust, it was coupled to Vulkan and lacked important features like resizing. There was a need for either improving on the library to add those features or to fork it. 
 
-At the same time, the library had great ideas like wrappers to Vulkan data structures to automatically attach critical extensions needed for Vulkan to work with Operating System windows. Some of those ideas were integrated into [CrossWindow-Vulkan](https://github.com/alaingalvan/crosswindow-vulkan).
+At the same time, the library had great ideas like wrappers to Vulkan data structures to automatically attach critical extensions needed for Vulkan to work with Operating System windows. Some of those ideas were integrated into [CrossWindow-Graphics](https://github.com/alaingalvan/crosswindow-graphics).
 
 ### [Winit](https://github.com/tomaka/winit)
 

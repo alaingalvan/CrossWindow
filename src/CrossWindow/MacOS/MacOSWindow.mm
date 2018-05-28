@@ -7,14 +7,14 @@
 }
 @end
 
+@implementation XWinWindow
+
+@end
+
 @interface XWinView : NSView
 {
-//TODO: implement virtual event functions
-//view events would be translated to xwin events and put into the eventloop queue
-//users can then capture those enents and do whatever they want.
 @public
 	std::vector<xwin::Event> mEventQueue;
-}
 
 
 }
@@ -74,7 +74,7 @@ namespace xwin
 	
 	bool MacWindow::create(const WindowDesc &desc)
 	{
-		NSApplication* nsApp = (NSApplication*)getXWinState().nsApp;
+		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 
 		NSRect rect = NSMakeRect(desc.x, desc.y, desc.width, desc.height);
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
@@ -96,9 +96,9 @@ namespace xwin
 		
 		// Setup NSView
 		mView = [[XWinView alloc] initWithFrame:rect];
-		[mView setHidden:NO];
-		[mView setNeedsDisplay:YES];
-		[(XWinWindow*)mWindow setContentView:tmpView];
+		[(XWinView*)mView setHidden:NO];
+		[(XWinView*)mView setNeedsDisplay:YES];
+		[(XWinWindow*)mWindow setContentView:(XWinView*)mView];
 		[(XWinWindow*)mWindow makeKeyAndOrderFront:nsApp];
 
 	return true;
@@ -107,19 +107,25 @@ namespace xwin
 	void MacWindow::destroy()
 	{
 		[(XWinWindow*)mWindow release];
-		[(NSView*)mView release]
+		[(XWinView*)mView release];
 	}
 	
 	bool MacWindow::eventLoop()
 	{
 		// Update Application
-		NSApplication* nsApp = (NSApplication*)getXWinState().nsApp;
-
-		while( NSEvent* e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES] )
+		NSApplication* nsApp = (NSApplication*)getXWinState().application;
+		@autoreleasepool
 		{
-			[nsApp sendEvent:event];
+			NSEvent* e = nil;
+			
+			do
+			{
+				e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES];
+				[NSApp sendEvent:e];
+			}
+			while (e);
+			
 		}
-
 		[nsApp updateWindows];
 
 		//return mView.eventQueue;

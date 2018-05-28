@@ -4,14 +4,19 @@ namespace xwin
 {
     WinWindow::WinWindow()
     {
-        mCloseWindow = false;
     };
 
-    bool WinWindow::create(WindowDesc& desc)
+    WinWindow::~WinWindow()
+    {
+        DestroyWindow(_hwnd);
+        _hwndMap.erase(_hwndMap.find(_hwnd), _hwndMap.end());
+    }
+
+    bool WinWindow::create(WindowDesc& desc, EventQueue& eventQueue)
     {
         const XWinState& xwinState = getXWinState();
         
-        hInstance = .hInstance;
+        hInstance = xwinState.hInstance;
         HINSTANCE hPrevInstance = xwinState.hPrevInstance;
         LPSTR lpCmdLine = xwinState.lpCmdLine;
         int nCmdShow = xwinState.nCmdShow;
@@ -123,44 +128,6 @@ namespace xwin
         return true;
     }
 
-    bool WinWindow::eventLoop()
-    {
-        MSG msg = {};
-
-        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-        return !mCloseWindow;
-    }
-
-    std::vector<EventType>& WinWindow::pollEvents()
-    {
-        mEventQueue.clear();
-        MSG msg = {};
-
-
-        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-        if (mCloseWindow)
-        {
-            DestroyWindow(_hwnd);
-        }
-
-        return mEventQueue;
-    }
-
-    bool WinWindow::close()
-    {
-        return mCloseWindow = true;
-    }
-
     LRESULT CALLBACK WinWindow::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     {
         WinWindow* _this;
@@ -182,62 +149,6 @@ namespace xwin
 
     LRESULT WinWindow::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     {
-        //case WM_SIZE:
-        switch (msg)
-        {
-        case WM_CREATE:
-
-            // Get the metrics of the current font. 
-            //hdc = GetDC(hwndMain);
-            //GetTextMetrics(hdc, &tm);
-            //ReleaseDC(hwndMain, hdc);
-
-            // Save the average character width and height. 
-
-            //dwCharX = tm.tmAveCharWidth;
-            //dwCharY = tm.tmHeight;
-
-            // Allocate a buffer to store keyboard input. 
-
-            //pchInputBuf = (LPTSTR)GlobalAlloc(GPTR,
-            //    BUFSIZE * sizeof(TCHAR));
-            return 0;
-            break;
-        case WM_SETFOCUS:
-            break;
-        case WM_KILLFOCUS:
-            break;
-
-        case WM_KEYDOWN:
-            switch (wparam)
-            {
-            case VK_UP:     // UP ARROW 
-            case VK_DOWN:   // DOWN ARROW 
-                break;
-            }
-            break;
-        case WM_CHAR:
-            break;
-        case WM_PAINT:
-            break;
-        case WM_SIZE:
-            UINT width, height;
-            width = (UINT)(UINT64)lparam & 0xFFFF;
-            height = (UINT)(UINT64)lparam >> 16;
-            mDesc->width = width;
-            mDesc->height = height;
-
-            // Add xwin::EventType::Resize to event queue.
-            mEventQueue.push_back(EventType::Resize);
-            break;
-
-        case WM_DESTROY:
-            mEventQueue.push_back(xwin::EventType::Close);
-            break;
-        default:
             return DefWindowProc(_hwnd, msg, wparam, lparam);
-        }
-
-        return 0;
     };
 }

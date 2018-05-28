@@ -2,13 +2,16 @@
 
 #include "State.h"
 
-#ifdef XWIN_WINDOWS
+#if defined(XWIN_WINDOWS)
 #define MainArgs HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
 #define MainArgsVars hInstance, hPrevInstance, lpCmdLine, nCmdShow
-#elif XWIN_ANDROID
+#elif defined(XWIN_ANDROID)
 #define MainArgs android_app* state
 #define MainArgsVars state
-#elif XWIN_LINUX || XWIN_MACOS || XWIN_IOS || XWIN_WASM
+#elif defined(XWIN_MACOS) || defined(XWIN_IOS)
+#define MainArgs int argc, const char* argv[], void* application
+#define MainArgsVars argc, argv, application
+#elif defined(XWIN_LINUX) || defined(XWIN_WASM) || defined(XWIN_NOOP)
 #define MainArgs int argc, const char* argv[]
 #define MainArgsVars argc, argv
 #endif

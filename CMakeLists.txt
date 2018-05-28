@@ -1,6 +1,6 @@
 # Project Info
-cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-cmake_policy(VERSION 3.9)
+cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
+cmake_policy(VERSION 3.6)
 project(CrossWindow)
 enable_language(C)
 enable_language(CXX)
@@ -95,11 +95,11 @@ endfunction()
 function(xwin_add_executable targetProject targetSources)
     message("Creating CrossWindow executable:")
 
-    foreach(source IN LISTS XMAIN_SOURCES)
+    foreach(source IN LISTS MAIN_SOURCES)
         source_group("" FILES "${source}")
     endforeach()
 
-    set(XWIN_FILES ${XMAIN_SOURCES} ${targetSources})
+    set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
 
     if(XWIN_OS STREQUAL "WINDOWS")
         add_executable(
@@ -153,6 +153,15 @@ add_library(
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
+# =============================================================
+
+# CrossWindow Dependencies
+
+if(XWIN_OS STREQUAL "MACOS")
+  ADD_DEFINITIONS("-x objective-c++")
+  find_library(COCOA_LIBRARY Cocoa)
+  target_link_libraries (${PROJECT_NAME} ${COCOA_LIBRARY})
+endif()
 # =============================================================
 
 option(XWIN_TESTS "If enabled, compile the tests." OFF)

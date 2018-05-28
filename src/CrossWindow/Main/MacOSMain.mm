@@ -1,5 +1,5 @@
 #include "../Common/Init.h"
-#include "Main.h"
+#include "./Main.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -23,8 +23,8 @@
 		postNotificationName:NSApplicationDidFinishLaunchingNotification
 		object:NSApp];
 	
-	const XWinState& state = getXWinState();
-	xmain(state.argc, state.argv);
+	const xwin::XWinState& state = xwin::getXWinState();
+	xmain(state.argc, (const char**)state.argv);
 }
 
 @end
@@ -34,15 +34,9 @@ int main(int argc, char** argv)
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
-	Class principalClass = NSClassFromString([infoDictionary objectForKey:@"NSPrincipalClass"]);
-	NSApplication* applicationObject = [principalClass sharedApplication];
+	NSApplication* applicationObject = [XWinApplication alloc];
 	
-	xwin::init(argc, argv, applicationObject);
-
-	NSString *mainNibName = [infoDictionary objectForKey:@"NSMainNibFile"];
-	NSNib *mainNib = [[NSNib alloc] initWithNibNamed:mainNibName bundle:[NSBundle mainBundle]];
-	[mainNib instantiateNibWithOwner:applicationObject topLevelObjects:nil];
+	xwin::init(argc, (const char**)argv, applicationObject);
 
 	if ([applicationObject respondsToSelector:@selector(run)])
 	{
@@ -52,7 +46,6 @@ int main(int argc, char** argv)
 			waitUntilDone:YES];
 	}
 	
-	[mainNib release];
 	[pool release];
 	
 	return 0;

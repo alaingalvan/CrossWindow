@@ -2,6 +2,7 @@
 
 #include "../Common/WindowDesc.h"
 #include "../Common/Init.h"
+#include "../Common/EventQueue.h"
 
 #include <unordered_map>
 #include <Windows.h>
@@ -9,18 +10,26 @@
 
 namespace xwin
 {
+    /**
+     * Currently WinWindow uses the Win32 windowing protocol for the best backwards
+     * compatibility possible. 
+     * 
+     * WinTouch is limited to the Windows 8 pointer api.
+     * 
+     * UWP Will probably be adopted as the default in the future 
+     * for Xbox / Hololens support though. 
+     * A flag XWIN_WINDOWS_PROTOCOL=AUTO will default to Win32 but can be UWP.
+     * 
+     * ~ ag
+     */ 
     class WinWindow
     {
     public:
         WinWindow();
 
-        bool create(WindowDesc& desc);
+        ~WinWindow();
 
-        bool eventLoop();
-
-        std::vector<EventType>& pollEvents();
-
-        bool close();
+        bool create(WindowDesc& desc, EventQueue& eventQueue);
 
         static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
@@ -28,8 +37,6 @@ namespace xwin
 
     protected:
         WindowDesc* mDesc;
-
-        bool mCloseWindow;
 
         // Application Handle
         HINSTANCE hInstance;
@@ -49,8 +56,6 @@ namespace xwin
         // Window Behavior
         DWORD dwExStyle;
         DWORD dwStyle;
-
-        std::vector<EventType> mEventQueue;
 
     };
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Common/WindowDesc.h"
+#include "../Common/Init.h"
+#include <vector>
 
 namespace xwin
 {

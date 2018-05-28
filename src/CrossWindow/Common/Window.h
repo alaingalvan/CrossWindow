@@ -2,6 +2,8 @@
 
 #include "WindowDesc.h"
 
+#include "EventQueue.h"
+
 #ifdef XWIN_WINDOWS
 #include "../Windows/WinWindow.h"
 #elif XWIN_MACOS
@@ -31,9 +33,11 @@ namespace xwin
 
         ~Window();
 
-        bool create(const WindowDesc& desc);
-
-        std::vector<EventType>& pollEvents();
+        /**
+         * Initialize the OS specific data structures needed to create a window.
+         * Pass a description of your window, as well as a queue that will hold a weak pointer to that window.
+         */ 
+        bool create(const WindowDesc& desc, EventQueue& queue);
 
         void close();
 

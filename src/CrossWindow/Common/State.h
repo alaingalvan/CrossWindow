@@ -30,7 +30,7 @@ struct XWinState
 #elif defined(XWIN_MACOS) || defined(XWIN_IOS)
 
     int argc;
-    const char **argv;
+    const char** argv;
     void* application;
 
     XWinState(int argc, const char **argv, void* application) : argc(argc), argv(argv), application(application)
@@ -40,7 +40,7 @@ struct XWinState
 #else
 
     int argc;
-    const char **argv;
+    const char** argv;
 
     XWinState(int argc, const char **argv) : argc(argc), argv(argv)
     {

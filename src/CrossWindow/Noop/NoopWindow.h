@@ -1,10 +1,11 @@
 #pragma once
 
-namespace mwin
+namespace xwin
 {
 	class NoopWindow
 	{
-		NoopWindow();
+		public:
+		bool create(WindowDesc& desc, EventQueue& eventQueue);
 	};
 
 	 typedef NoopWindow	WindowDelegate;

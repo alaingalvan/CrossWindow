@@ -1,9 +1,9 @@
 #import "Main.h"
 #include "../Common/Init.h"
 
-int main(int argc, const char* argv[])
+int main()
 {
-    xwin::init(argc, argv);
-    xmain(argc, argv);
+    xwin::init(0, nullptr);
+    xmain(0, nullptr);
     return 0;
 }

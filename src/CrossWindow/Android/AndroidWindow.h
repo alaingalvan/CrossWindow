@@ -9,6 +9,9 @@ namespace mwin
 	class AndroidWindow
 	{
 		AndroidWindow();
+
+		protected:
+			ANativeWindow* mWindow;
 	};
 	
 	 typedef AndroidWindow WindowDelegate;

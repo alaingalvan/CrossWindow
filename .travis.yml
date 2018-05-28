@@ -2,9 +2,11 @@ sudo: false
 
 language:
   - cpp
-
+compiler:
+  - clang
 addons:
   apt:
+    update: true
     sources:
       - ubuntu-toolchain-r-test
 
@@ -16,7 +18,7 @@ script:
   - cd build
   - cmake .. -DXWIN_OS=NOOP
   - make
-  - ./unit_tests
+  - ./Tests
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"

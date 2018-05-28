@@ -7,7 +7,7 @@ namespace xwin
 	class WASMWindow
 	{
 		WASMWindow();
-	}
+	};
 	
 	 typedef WASMWindow WindowDelegate;
 }

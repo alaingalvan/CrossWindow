@@ -10,19 +10,10 @@ namespace xwin
     {
     }
 
-    bool Window::create(const WindowDesc& desc)
+    bool Window::create(const WindowDesc& desc, EventQueue& queue)
     {
         mDesc = desc;
-        return mDelegate.create(mDesc);
-    }
-
-    std::vector<EventType>& Window::pollEvents()
-    {
-        return mDelegate.pollEvents();
-    }
-    void Window::close()
-    {
-        mDelegate.close();
+        return mDelegate.create(mDesc, queue);
     }
 
     WindowDelegate& Window::getDelegate()
