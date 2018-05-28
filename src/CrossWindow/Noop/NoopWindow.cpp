@@ -2,7 +2,7 @@
 
 namespace xwin
 {
-  bool NoopWindow::create(WindowDesc& desc, EventQueue& eventQueue);
+  bool NoopWindow::create(WindowDesc& desc, EventQueue& eventQueue)
   {
     return true;
   }
