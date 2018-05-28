@@ -16,7 +16,7 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP
+  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
   - make
   - ./Tests
 
