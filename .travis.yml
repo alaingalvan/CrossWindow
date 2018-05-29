@@ -20,9 +20,8 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
-  - make
-  - ./Tests
+  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON --build
+  - ctest
 
 after_success:
   - lcov --directory . --capture --output-file coverage.info

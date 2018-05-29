@@ -235,8 +235,8 @@ if (XWIN_TESTS)
     include(CTest)
     enable_testing()
     add_test(
-        UnitTests
-        ${PROJECT_BINARY_DIR}/tests
+        NAME UnitTests
+        COMMAND Tests
     )
 
     target_compile_definitions(Tests PRIVATE XWIN_${XWIN_OS}=1)
