@@ -1,8 +1,8 @@
-#include "WinEventQueue.h"
+#include "Win32EventQueue.h"
 
 namespace xwin
 {
-  bool WinEventQueue::update()
+  bool Win32EventQueue::update()
   {
     MSG msg = {};
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -21,7 +21,7 @@ namespace xwin
     return true;
   }
 
-  void WinEventQueue::pushEvent(MSG msg)
+  void Win32EventQueue::pushEvent(MSG msg)
   {
     UINT message = msg.message;
 
@@ -69,17 +69,17 @@ namespace xwin
     }
   }
 
-  const Event& WinEventQueue::front()
+  const Event& Win32EventQueue::front()
   {
       return mQueue.front();
   }
 
-  void WinEventQueue::pop()
+  void Win32EventQueue::pop()
   {
       mQueue.pop();
   }
 
-  bool WinEventQueue::empty()
+  bool Win32EventQueue::empty()
   {
       return mQueue.empty();
   }

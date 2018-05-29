@@ -1,18 +1,18 @@
-#include "WinWindow.h"
+#include "Win32Window.h"
 
 namespace xwin
 {
-    WinWindow::WinWindow()
+    Win32Window::Win32Window()
     {
     };
 
-    WinWindow::~WinWindow()
+    Win32Window::~Win32Window()
     {
         DestroyWindow(_hwnd);
         _hwndMap.erase(_hwndMap.find(_hwnd), _hwndMap.end());
     }
 
-    bool WinWindow::create(WindowDesc& desc, EventQueue& eventQueue)
+    bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue)
     {
         const XWinState& xwinState = getXWinState();
         
@@ -25,7 +25,7 @@ namespace xwin
 
         wndClass.cbSize = sizeof(WNDCLASSEX);
         wndClass.style = CS_HREDRAW | CS_VREDRAW;
-        wndClass.lpfnWndProc = WinWindow::WindowProcStatic;
+        wndClass.lpfnWndProc = Win32Window::WindowProcStatic;
         wndClass.cbClsExtra = 0;
         wndClass.cbWndExtra = 0;
         wndClass.hInstance = hInstance;
@@ -128,9 +128,9 @@ namespace xwin
         return true;
     }
 
-    LRESULT CALLBACK WinWindow::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+    LRESULT CALLBACK Win32Window::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     {
-        WinWindow* _this;
+        Win32Window* _this;
         if (_windowBeingCreated != nullptr)
         {
             _hwndMap.emplace(hwnd, _windowBeingCreated);
@@ -147,7 +147,7 @@ namespace xwin
         return _this->WindowProc(msg, wparam, lparam);
     }
 
-    LRESULT WinWindow::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
+    LRESULT Win32Window::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     {
             return DefWindowProc(_hwnd, msg, wparam, lparam);
     };

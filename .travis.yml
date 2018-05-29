@@ -16,7 +16,6 @@ addons:
       - cmake
       - cmake-data
 before_install:
-  - pip install --user cpp-coveralls
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 script:
   - mkdir build

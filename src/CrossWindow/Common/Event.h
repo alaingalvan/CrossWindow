@@ -12,6 +12,8 @@ namespace xwin
       AnalogInput,
       Mouse,
       Touch,
+      Focus,
+      Unfocus,
       EventTypeMax
   };
 

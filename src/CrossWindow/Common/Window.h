@@ -35,11 +35,9 @@ namespace xwin
 
         /**
          * Initialize the OS specific data structures needed to create a window.
-         * Pass a description of your window, as well as a queue that will hold a weak pointer to that window.
+         * Pass a description of your window, as well as an event queue to listen to events from that window.
          */ 
         bool create(const WindowDesc& desc, EventQueue& queue);
-
-        void close();
 
         WindowDesc getDesc() const;
 

@@ -1,29 +1,11 @@
 #pragma once
 
-#include "../Common/Event.h"
-#include <Windows.h>
-#include <queue>
+// For now Win32 will be the default, later it'll be UMP
+#define XWIN_WINDOWS_WIN32 0
+#define XWIN_WINDOWS_UMP 1
 
-namespace xwin
-{
-  class WinEventQueue
-  {
-public:
-  bool update();
+#define XWIN_WINDOWS_PROTOCOL XWIN_WINDOWS_WIN32
 
-  const Event& front();
-
-  void pop();
-
-  bool empty();
-
-
-protected:
-
-  void pushEvent(MSG msg);
-
-  std::queue<Event> mQueue;
-  };
-
-  typedef WinEventQueue EventQueueDelegate;
-}
+#if XWIN_WINDOWS_PROTOCOL == XWIN_WINDOWS_WIN32
+#include "Win32EventQueue.h"
+#endif

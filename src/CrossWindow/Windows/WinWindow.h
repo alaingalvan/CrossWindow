@@ -1,66 +1,13 @@
 #pragma once
 
-#include "../Common/WindowDesc.h"
-#include "../Common/Init.h"
-#include "../Common/EventQueue.h"
+// For now Win32 will be the default, later it'll be UMP
+#define XWIN_WINDOWS_WIN32 0
+#define XWIN_WINDOWS_UMP 1
 
-#include <unordered_map>
-#include <Windows.h>
+#define XWIN_WINDOWS_PROTOCOL XWIN_WINDOWS_WIN32
 
-
-namespace xwin
-{
-    /**
-     * Currently WinWindow uses the Win32 windowing protocol for the best backwards
-     * compatibility possible. 
-     * 
-     * WinTouch is limited to the Windows 8 pointer api.
-     * 
-     * UWP Will probably be adopted as the default in the future 
-     * for Xbox / Hololens support though. 
-     * A flag XWIN_WINDOWS_PROTOCOL=AUTO will default to Win32 but can be UWP.
-     * 
-     * ~ ag
-     */ 
-    class WinWindow
-    {
-    public:
-        WinWindow();
-
-        ~WinWindow();
-
-        bool create(WindowDesc& desc, EventQueue& eventQueue);
-
-        static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-
-        LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
-
-    protected:
-        WindowDesc* mDesc;
-
-        // Application Handle
-        HINSTANCE hInstance;
-
-        // Window Handle
-        HWND _hwnd;
-
-        // Window State
-        WNDCLASSEX wndClass;
-
-        // Window Size/Position
-        RECT windowRect;
-
-        // Screen State
-        DEVMODE dmScreenSettings;
-
-        // Window Behavior
-        DWORD dwExStyle;
-        DWORD dwStyle;
-
-    };
-
-    static thread_local WinWindow* _windowBeingCreated = nullptr;
-    static thread_local std::unordered_map<HWND, WinWindow*> _hwndMap = {};
-
-    typedef WinWindow WindowDelegate;
-}
+#if XWIN_WINDOWS_PROTOCOL == XWIN_WINDOWS_WIN32
+#include "Win32Window.h"
+#elif XWIN_WINDOWS_PROTOCOL == XWIN_WINDOWS_UMP
+#include "WinUMPWindow.h"
+#endif

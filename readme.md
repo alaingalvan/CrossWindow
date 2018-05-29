@@ -235,9 +235,9 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 - [ ] **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
 
-- [ ] ❎ Xbox One support with Universal Windows Protocol (WMP).
+- [ ] ❎ Xbox One support with Universal Windows Platform (WMP).
 
-- [ ] 🅿️ Playstation 4 support (a private branch will be maintained on `https://alain.xyz/libraries/crosswindow/git` and will be accessible once verifying your Sony licensing.)
+- [ ] 🅿️ Playstation 4 support (a private branch will be maintained on `https://alain.xyz/libraries/crosswindow/git` and would be accessible once verifying your Sony licensing via email/twitter/whatever.)
 
 ## License
 
