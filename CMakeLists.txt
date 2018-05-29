@@ -210,17 +210,23 @@ if (XWIN_TESTS)
         string(REPLACE "tests" "" test_path_final "${test_path_msvc}")
         source_group("${test_path_final}" FILES "${test}")
     endforeach()
-    # Uses WinMain for windows
+
     xwin_add_executable(
         Tests
         "${tests_list}"
         )
+
+    if(NOT MSVC)
+        find_package(Threads REQUIRED)
+        set(PThreadLib -pthread)
+    endif()
     
     target_link_libraries(
         Tests
         ${PROJECT_NAME}
+        ${PThreadLib}
         GoogleTest
-        )
+    )
     add_dependencies(
         Tests
         ${PROJECT_NAME}

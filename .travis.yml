@@ -1,5 +1,8 @@
 sudo: false
-
+env:
+  global:
+    # Global build options and C++ flags
+    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
 language:
   - cpp
 compiler:
@@ -18,8 +21,7 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage
-  - ctest
+  - cmake .. -DXWIN_OS=NOOP ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"
