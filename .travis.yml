@@ -20,7 +20,7 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON --build
+  - cmake --build .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
   - ctest
 
 after_success:
