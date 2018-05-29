@@ -3,6 +3,7 @@
 
 TEST(State, state)
 {
-  XWinState state = xwin::getXWinState();
-	EXPECT_TRUE(sizeof(state) > 0);
+  xwin::XWinState state = xwin::getXWinState();
+  bool t = sizeof(state) > 0;
+	EXPECT_TRUE(t);
 }
