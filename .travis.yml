@@ -14,12 +14,11 @@ addons:
 
 before_install:
   - pip install --user cpp-coveralls
-  - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
+  - cmake .. -DXWIN_OS=NOOP -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"
