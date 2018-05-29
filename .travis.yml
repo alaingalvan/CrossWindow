@@ -18,7 +18,7 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DXWIN_OS=NOOP -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
+  - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"
