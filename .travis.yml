@@ -21,7 +21,7 @@ script:
   - mkdir build
   - cd build
   - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
-  - ctest
+  - ./Tests
 
 after_success:
   - lcov --directory . --capture --output-file coverage.info
