@@ -5,12 +5,14 @@ env:
 language:
   - cpp
 compiler:
-  - gcc
+  - g++
 addons:
   apt:
     update: true
     sources:
       - ubuntu-toolchain-r-test
+    packages:
+      - lcov
 
 before_install:
   - pip install --user cpp-coveralls
@@ -21,7 +23,10 @@ script:
   - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
 
 after_success:
-  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*tests/.*.cpp.*"
+  - lcov --directory . --capture --output-file coverage.info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+  - lcov --list coverage.info
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
 notifications:
   email: false
