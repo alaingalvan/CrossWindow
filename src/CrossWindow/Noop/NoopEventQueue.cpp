@@ -2,6 +2,9 @@
 
 namespace xwin
 {
+  NoopEventQueue::NoopEventQueue()
+  {
+  }
 
   bool NoopEventQueue::update()
   {

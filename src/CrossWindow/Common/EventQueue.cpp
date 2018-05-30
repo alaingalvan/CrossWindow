@@ -2,6 +2,10 @@
 
 namespace xwin
 {
+    EventQueue::EventQueue()
+    {
+    }
+    
     bool EventQueue::update()
     {
         return mDelegate.update();

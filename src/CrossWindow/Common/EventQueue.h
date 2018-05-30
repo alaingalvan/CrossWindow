@@ -27,6 +27,7 @@ namespace xwin
     class EventQueue
     {
         public:
+        EventQueue();
 
         bool update();
 

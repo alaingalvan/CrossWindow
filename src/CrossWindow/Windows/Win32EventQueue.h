@@ -9,6 +9,8 @@ namespace xwin
   class Win32EventQueue
   {
 public:
+  Win32EventQueue();
+
   bool update();
 
   const Event& front();

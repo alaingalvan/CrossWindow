@@ -2,6 +2,10 @@
 
 namespace xwin
 {
+Win32EventQueue::Win32EventQueue()
+{
+}
+
 bool Win32EventQueue::update()
 {
     MSG msg = {};
