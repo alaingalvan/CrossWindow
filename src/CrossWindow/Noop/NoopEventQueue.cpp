@@ -10,7 +10,6 @@ namespace xwin
 
   const Event& NoopEventQueue::front()
   {
-    e = Event(EventType::Close);
     return e;
   }
 
