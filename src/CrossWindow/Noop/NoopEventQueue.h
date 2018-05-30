@@ -12,6 +12,9 @@ namespace xwin
     const Event& front();
 
     void pop();
+
+    protected:
+    Event e;
   };
 
   typedef NoopEventQueue EventQueueDelegate;

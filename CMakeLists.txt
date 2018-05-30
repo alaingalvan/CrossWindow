@@ -157,8 +157,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sr
 
 # CrossWindow Dependencies
 
-if(XWIN_OS STREQUAL "MACOS")
-  ADD_DEFINITIONS("-x objective-c++")
+if(XWIN_OS STREQUAL "MACOS" OR XWIN_OS STREQUAL "IOS")
+  add_definitions("-x objective-c++")
   find_library(COCOA_LIBRARY Cocoa)
   target_link_libraries (${PROJECT_NAME} ${COCOA_LIBRARY})
 endif()
@@ -249,3 +249,8 @@ endif()
 # Preprocessor Definitions
 target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${XWIN_OS}=1)
 
+if(XWIN_OS STREQUAL "WINDOWS")
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_PROTOCOL=0)
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_WIN32=0)
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_UMP=1)
+endif()
