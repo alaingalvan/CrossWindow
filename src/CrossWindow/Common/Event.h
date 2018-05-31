@@ -199,7 +199,7 @@ namespace xwin
 
     class DigitalInputData
     {
-        public:
+    public:
         DigitalInput key;
         DigitalInputData(DigitalInput key);
     };

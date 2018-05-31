@@ -32,12 +32,27 @@ void Win32EventQueue::pushEvent(MSG msg)
     {
     case WM_CREATE:
 
-        break;
+    break;
+    case WM_DESTROY:
+
+    break;
     case WM_SETFOCUS:
         mQueue.emplace(xwin::EventType::Focus);
         break;
     case WM_KILLFOCUS:
         mQueue.emplace(xwin::EventType::Unfocus);
+        break;
+    case WM_MOUSEWHEEL:
+        (short) HIWORD(msg.wParam);
+        break;
+    case WM_LBUTTONDOWN:
+        mQueue.emplace(xwin::EventType::Mouse);
+        break;
+    case WM_LBUTTONUP:
+        mQueue.emplace(xwin::EventType::Mouse);
+        break;
+    case WM_MOUSEMOVE:
+        mQueue.emplace(xwin::EventType::Mouse);
         break;
     case WM_KEYDOWN:
 
@@ -198,6 +213,13 @@ void Win32EventQueue::pushEvent(MSG msg)
         case VK_RIGHT:
             d = DigitalInput::Right;
             break;
+        case VK_SPACE:
+            d = DigitalInput::Space;
+            break;
+        case VK_HOME:
+            d = DigitalInput::Home;
+            break;
+
         default:
             d = DigitalInput::DigitalInputKeysMax;
             break;

@@ -2,7 +2,6 @@
   <img src="docs/images/cover.gif" alt="Logo"/>
 </p>
 
-
 # CrossWindow
 
 [![cmake-img]][cmake-url]
@@ -14,7 +13,7 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Features
 
-- ⚪ Window Creation
+- 🌟 Simple Window Creation
 
 - ⌨️ 🖱️ 👆 🎮 Basic Input (Keyboard, Mouse, Touch, and Gamepad)
 
@@ -65,17 +64,16 @@ target_link_libraries(
 )
 ```
 
-Fill out the rest of your `CMakeLists.txt` file with any other source files and dependencies you may have, then:
+Fill out the rest of your `CMakeLists.txt` file with any other source files and dependencies you may have, then in your project root:
 
 ```bash
+
 # 🖼️ To build your Visual Studio solution on Windows x64
-cd crosswindow
 mkdir visualstudio
 cd visualstudio
 cmake .. -A x64
 
 # 🍎 To build your XCode project On Mac OS for Mac OS / iOS
-cd crosswindow
 mkdir xcode
 cd xcode
 cmake .. -G Xcode
@@ -84,7 +82,8 @@ cmake .. -G Xcode
 mkdir make
 cd make
 cmake ..
-make
+cmake --build .
+
 # CrossWindow comes with a make function to generate Ubuntu `.deb` files:
 make ubuntu
 ```
@@ -208,20 +207,22 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
 | `XWIN_OS` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
 
-We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for. `cd` to that directory and type in your terminal:
+We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for:
 
 ```bash
-# 🖼️ To build your Visual Studio solution on Windows x64
+# 👯 Clone the repo
+git clone https://github.com/alaingalvan/crosswindow.git --recurse-submodules
 cd crosswindow
+
+# 🖼️ To build your Visual Studio solution on Windows x64
 mkdir visualstudio
 cd visualstudio
 cmake .. -DXWIN_TESTS=ON -A x64
 
 # 🍎 To build your XCode project On Mac OS for Mac OS / iOS
-cd crosswindow
 mkdir xcode
 cd xcode
-cmake .. -G Xcode -DXWIN_TESTS=ON
+cmake .. -DXWIN_TESTS=ON -G Xcode
 
 # 🐧 To build your makefile on Linux
 mkdir make
@@ -229,15 +230,19 @@ cd make
 cmake .. -DXWIN_TESTS=ON
 ```
 
-Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete your `CMakeCache.txt` and `CMakeFiles/` and run Cmake again.
+Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete the generated files and run Cmake again.
 
 ## Future Goals
 
-- [ ] **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
-
 - [ ] ❎ Xbox One support with Universal Windows Platform (WMP).
 
-- [ ] 🅿️ Playstation 4 support (a private branch will be maintained on `https://alain.xyz/libraries/crosswindow/git` and would be accessible once verifying your Sony licensing via email/twitter/whatever.)
+- [ ] 🅿️ Playstation 4 support
+
+- [ ] 💞 Nintendo Switch support
+
+- [ ] **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
+
+> **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms.
 
 ## License
 
