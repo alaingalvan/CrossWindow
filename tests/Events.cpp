@@ -17,7 +17,7 @@ TEST(EventQueue, Update)
 TEST(Events, DigitalInput)
 {
   {
-    xwin::Event e( xwin::EventType::DigitalInput, new xwin::DigitalInputData(DigitalInput::Z));
+    xwin::Event e( xwin::EventType::DigitalInput, new xwin::DigitalInputData(xwin::DigitalInput::Z));
   }
   // Event data should dealloc
 }
