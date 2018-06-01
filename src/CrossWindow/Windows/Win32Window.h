@@ -14,13 +14,10 @@ namespace xwin
      * Currently Win32Window uses the Win32 windowing protocol for the best backwards
      * compatibility possible. 
      * 
-     * WinTouch is limited to the Windows 8 pointer api.
+     * WinTouch is limited to the Windows 8 pointer API.
      * 
-     * UWP Will probably be adopted as the default in the future 
-     * for Xbox / Hololens support though. 
-     * A flag XWIN_WINDOWS_PROTOCOL=AUTO will default to Win32 but can be UWP.
+     * Events - https://msdn.microsoft.com/en-us/library/windows/desktop/ms644958%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
      * 
-     * ~ ag
      */ 
     class Win32Window
     {

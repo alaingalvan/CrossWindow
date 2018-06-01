@@ -6,6 +6,9 @@
 
 namespace xwin
 {
+  /**
+   * Events - https://xcb.freedesktop.org/tutorial/events/
+   */ 
   class LinuxEventQueue
   {
   public:

@@ -6,8 +6,8 @@
 #define MainArgs HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
 #define MainArgsVars hInstance, hPrevInstance, lpCmdLine, nCmdShow
 #elif defined(XWIN_ANDROID)
-#define MainArgs android_app* state
-#define MainArgsVars state
+#define MainArgs android_app* app
+#define MainArgsVars app
 #elif defined(XWIN_MACOS) || defined(XWIN_IOS)
 #define MainArgs int argc, const char* argv[], void* application
 #define MainArgsVars argc, argv, application

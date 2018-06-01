@@ -32,37 +32,68 @@ namespace xwin
         case XCB_EXPOSE:
             // TODO: Resize window
             break;
+            case XCB_ENTER_NOTIFY: {
+                //focus
+                break;
+            }
+            case XCB_LEAVE_NOTIFY: {
+                //lose focus
+                break;
+            }
         case XCB_CLIENT_MESSAGE:
-            if ((*(xcb_client_message_event_t *)event).data.data32[0] == (*demo->atom_wm_delete_window).atom) {
-                demo->quit = true;
+            if ((*(xcb_client_message_event_t *)event).data.data32[0] == (*demo->atom_wm_delete_window).atom)
+            {
+                //quit
             }
             break;
+            case XCB_KEY_PRESS: {
+                xcb_key_press_event_t *kp = (xcb_key_press_event_t *)event
+                   break;
+            }
         case XCB_KEY_RELEASE: {
             const xcb_key_release_event_t *key = (const xcb_key_release_event_t *)event;
 
             switch (key->detail) {
                 case 0x9:  // Escape
-                    demo->quit = true;
+
                     break;
                 case 0x71:  // left arrow key
-                    demo->spin_angle -= demo->spin_increment;
+
                     break;
                 case 0x72:  // right arrow key
-                    demo->spin_angle += demo->spin_increment;
+
                     break;
                 case 0x41:  // space bar
-                    demo->pause = !demo->pause;
+
                     break;
             }
-        } break;
-        case XCB_CONFIGURE_NOTIFY: {
-            const xcb_configure_notify_event_t *cfg = (const xcb_configure_notify_event_t *)event;
-            if ((demo->width != cfg->width) || (demo->height != cfg->height)) {
-                demo->width = cfg->width;
-                demo->height = cfg->height;
-                demo_resize(demo);
+            break;
+        } 
+        case XCB_BUTTON_PRESS: {
+            xcb_button_press_event_t *bp = (xcb_button_press_event_t *)event;
+
+            switch (bp->detail) {
+            case 4: //wheel button up
+
+                break;
+            case 5: //wheel button down
+
+                break;
+            default:
+
+                break;
             }
-        } break;
+            break;
+        }
+        case XCB_BUTTON_RELEASE: {
+            xcb_button_release_event_t *br = (xcb_button_release_event_t *)event;
+
+            break;
+        }
+        case XCB_CONFIGURE_NOTIFY: {
+
+            break;
+        } 
         default:
             break;
     }

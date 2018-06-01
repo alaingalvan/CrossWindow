@@ -2,6 +2,7 @@
 
 #include <android/input.h>
 
+#include "../Common/Init.h"
 #include "../Common/Event.h"
 
 #include <queue>
@@ -20,6 +21,9 @@ namespace xwin
     bool empty();
 
   protected:
+    /**
+     * https://developer.android.com/ndk/reference/group/input
+     */ 
     void pushEvent(AInputEvent e);
 
     std::queue<Event> mQueue;

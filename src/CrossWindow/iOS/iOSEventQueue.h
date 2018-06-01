@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Common/Event.h"
-
+#include "../Common/Init.h"
 #include <queue>
 
 namespace xwin

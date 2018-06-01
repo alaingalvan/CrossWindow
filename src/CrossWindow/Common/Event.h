@@ -4,6 +4,8 @@
 
 namespace xwin
 {
+  class Window;
+
   enum class EventType : size_t
   {
       Close = 0,
@@ -187,6 +189,9 @@ namespace xwin
 
         // Pointer to a CrossWindow event data type, is destroyed when the event is destructed.
 		void* data;
+
+        // Pointer to a CrossWindow window
+        Window* window;
 	};
 
     class ResizeData

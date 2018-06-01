@@ -10,8 +10,18 @@
 
 #include <sys/system_properties.h>
 
-void android_main(android_app* state)
+void android_main(android_app* app)
 {
-    xwin::init(state);
-    xmain(0, nullptr);
+    xwin::init(app);
+
+    // Get arguments
+    const char key[] = "args";
+    char *appTag = (char *)APP_SHORT_NAME;
+    int argc = 0;
+    char **argv = get_args(app, key, appTag, &argc);
+
+    xmain(argc, (const char**)argv);
+
+    // Free arguments
+    for (int i = 0; i < argc; i++) free(argv[i]);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Common/Event.h"
-
+#include "../Common/Init.h"
 #include <queue>
 
 namespace xwin
@@ -11,6 +11,10 @@ namespace xwin
 
   }
 
+  /**
+   * 
+   * Events - https://developer.apple.com/documentation/appkit/nsevent
+   */ 
   class MacOSEventQueue
   {
   public:

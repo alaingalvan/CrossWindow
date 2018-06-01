@@ -19,17 +19,17 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 👻 Platform specific features (Mac Transparency, Touch Bar, Mobile Accelerometer, etc.)
 
-## Supports
+### Supported Platforms
 
-- 🖼️ Windows
+- 🖼️ Windows (Win32)
 
-- 🍎 Mac
+- 🍎 Mac (Cocoa)
+
+- 📱 iOS (AppKit)
 
 - 🐧 Linux (XCB)
 
 - 🤖 Android
-
-- 📱 iOS
 
 - 🌐 WebAssembly
 
@@ -155,7 +155,7 @@ void xmain(int argc, const char** argv)
 
     bool closed = false;
     
-    // ⚪ Initialize
+    // 🌟 Initialize
     xwin::Window window;
     xwin::EventQueue eventQueue;
 

@@ -22,9 +22,9 @@ struct XWinState
 
 #elif XWIN_ANDROID
 
-    android_app *state;
+    android_app *app;
 
-    XWinState(android_app *state) : state(state)
+    XWinState(android_app *app) : app(app)
     {
     }
 #elif defined(XWIN_MACOS) || defined(XWIN_IOS)
