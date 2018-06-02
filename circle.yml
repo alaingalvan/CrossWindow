@@ -20,6 +20,9 @@ dependencies:
     - ./install-cmake.sh
     #------------------
     - echo "ndk.dir=/home/ubuntu/android-ndk-r12b" > local.properties
+  - pwd
+  - ls -la
+  - chmod +x /.gradlew
 
 test:
   override:

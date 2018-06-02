@@ -34,6 +34,5 @@ notifications:
     to:
       - '{{commitAuthorEmail}}'
     on_build_success: false
-    on_build_success: false
     on_build_failure: false
     on_build_status_changed: false
