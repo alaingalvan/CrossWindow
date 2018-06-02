@@ -15,5 +15,11 @@ namespace xwin
   }
 
   DigitalInputData::DigitalInputData(DigitalInput key) : key(key)
-  {}
+  {
+  }
+
+  ResizeData::ResizeData(unsigned width, unsigned height) : width(width), height(height)
+  {
+  }
+
 }

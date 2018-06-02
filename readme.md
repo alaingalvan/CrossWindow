@@ -89,17 +89,14 @@ mkdir make
 cd make
 cmake ..
 cmake --build .
-
-# CrossWindow comes with a make function to generate Ubuntu `.deb` files:
-make ubuntu
 ```
 
 For WebAssembly you'll need to have [Emscripten](http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html) installed. Assuming you have the SDK installed, do the following to build a WebAssembly project:
 
 ```bash
 # 🌐 For WebAssembly Projects
-mkdir wasm
-cd wasm
+mkdir webassembly
+cd webassembly
 cmake .. -DXWIN_OS=WASM -DCMAKE_TOOLCHAIN_FILE="$EMSDK/emscripten/1.38.1/cmake/Modules/Platform/Emscripten.cmake" -DCMAKE_BUILD_TYPE=Release
 
 # Run emconfigure with the normal configure command as an argument.

@@ -345,6 +345,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+*.db
 
 ## Xcode
 *.xcworkspace

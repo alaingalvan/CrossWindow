@@ -9,6 +9,7 @@ namespace xwin
   enum class EventType : size_t
   {
       Close = 0,
+      Create,
       Resize,
       DigitalInput,
       AnalogInput,

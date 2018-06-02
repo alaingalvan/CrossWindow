@@ -31,11 +31,11 @@ void Win32EventQueue::pushEvent(MSG msg)
     switch (message)
     {
     case WM_CREATE:
-
+        mQueue.emplace(xwin::EventType::Create);
     break;
     case WM_DESTROY:
-
-    break;
+        mQueue.emplace(xwin::EventType::Close);
+        break;
     case WM_SETFOCUS:
         mQueue.emplace(xwin::EventType::Focus);
         break;
@@ -233,10 +233,6 @@ void Win32EventQueue::pushEvent(MSG msg)
         height = (unsigned)(UINT)(UINT64)msg.lParam >> 16;
 
         mQueue.emplace(EventType::Resize, new ResizeData(width, height));
-        break;
-
-    case WM_DESTROY:
-        mQueue.emplace(xwin::EventType::Close);
         break;
     default:
         // Do nothing
