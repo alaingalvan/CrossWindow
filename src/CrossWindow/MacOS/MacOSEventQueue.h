@@ -9,7 +9,7 @@ namespace xwin
   struct MacEvent
   {
 
-  }
+  };
 
   /**
    * 

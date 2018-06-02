@@ -1,0 +1,35 @@
+
+# Windows Build Configuration for AppVeyor
+# http://www.appveyor.com/docs/appveyor-yml
+
+# build version format
+version: "{build}"
+
+os: Visual Studio 2016
+
+platform:
+  - x64
+
+configuration:
+  - Release
+
+branches:
+  only:
+    - master
+
+build:
+  parallel: true
+  verbosity: minimal
+
+build_script:
+  - mkdir visualstudio && cd visualstudio
+  - cmake .. -DXWIN_TESTS=ON
+  - cmake --build .
+  - ctest .
+
+test_script:
+
+notifications:
+    on_build_success: false
+    on_build_failure: false
+    on_build_status_changed: true

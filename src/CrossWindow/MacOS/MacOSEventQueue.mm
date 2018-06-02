@@ -62,7 +62,7 @@ namespace xwin
 
 						if (d != DigitalInput::DigitalInputMax)
 						{
-							 mQueue.emplace(xwin::EventType::DigitalInput, d);
+							 mQueue.emplace(xwin::EventType::DigitalInput, new DigitalInputData(d));
 						}
 					}
 						break;
@@ -102,6 +102,8 @@ namespace xwin
 			
 		}
 		[nsApp updateWindows];
+		
+		return true;
 	}
 	
 	

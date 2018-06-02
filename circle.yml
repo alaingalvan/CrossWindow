@@ -1,0 +1,27 @@
+machine:
+  environment:
+    ANDROID_NDK: $HOME/android-ndk-r12b
+    ANDROID_NDK_HOME: $ANDROID_NDK
+    PATH: $PATH:$ANDROID_NDK
+
+general:
+
+dependencies:
+  cache_directories:
+    - ~/android-ndk-r12b
+  pre:
+    #-- Install NDK r12b --
+    - if [[ ! -e ~/android-ndk-r12b ]]; then wget http://dl.google.com/android/repository/android-ndk-r12b-linux-x86_64.zip && unzip -d ~ android-ndk-r12b-linux-x86_64.zip; fi
+    #-- Intall Android SDK Build-tools, revision 24.0.0 --
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.0"
+    #---Install CMake--
+    - wget https://github.com/Commit451/android-cmake-installer/releases/download/1.1.0/install-cmake.sh
+    - chmod +x install-cmake.sh
+    - ./install-cmake.sh
+    #------------------
+    - echo "ndk.dir=/home/ubuntu/android-ndk-r12b" > local.properties
+
+test:
+  override:
+#    - mv -f circle.properties local.properties
+    - ./gradlew assembleDebug

@@ -6,7 +6,9 @@
 
 [![cmake-img]][cmake-url]
 [![License][license-img]][license-url]
-[![Unit Tests][travis-img]][travis-url]
+[![Travis Tests][travis-img]][travis-url]
+[![Appveyor Tests][appveyor-img]][appveyor-url]
+[![CircleCI Tests][circleci-img]][circleci-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
 A basic cross platform system abstraction library for managing windows and performing OS tasks. 
@@ -18,6 +20,8 @@ A basic cross platform system abstraction library for managing windows and perfo
 - ⌨️ 🖱️ 👆 🎮 Basic Input (Keyboard, Mouse, Touch, and Gamepad)
 
 - 👻 Platform specific features (Mac Transparency, Touch Bar, Mobile Accelerometer, etc.)
+
+- 💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**)
 
 ### Supported Platforms
 
@@ -32,6 +36,8 @@ A basic cross platform system abstraction library for managing windows and perfo
 - 🤖 Android
 
 - 🌐 WebAssembly
+
+- ❌ Noop (Headless)
 
 
 ## Installation
@@ -242,6 +248,8 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 - [ ] **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
 
+- [ ] 🚜 Wayland / XCB support for Linux
+
 > **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms.
 
 ## License
@@ -252,7 +260,11 @@ CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would
 [cmake-url]: https://cmake.org/
 [license-img]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
-[travis-img]: https://img.shields.io/travis/alaingalvan/CrossWindow.svg?style=flat-square
+[travis-img]: https://img.shields.io/travis/alaingalvan/CrossWindow.svg?style=flat-square&logo=travis
 [travis-url]: https://travis-ci.org/alaingalvan/CrossWindow
-[codecov-img]:https://img.shields.io/codecov/c/github/alaingalvan/CrossWindow.svg?style=flat-square
+[appveyor-img]: https://img.shields.io/appveyor/ci/alaingalvan/CrossWindow.svg?style=flat-square&logo=windows
+[appveyor-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
+[circleci-img]: https://img.shields.io/circleci/project/github/alaingalvan/CrossWindow.svg?style=flat-square&logo=appveyor
+[circleci-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
+[codecov-img]: https://img.shields.io/codecov/c/github/alaingalvan/CrossWindow.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/alaingalvan/CrossWindow

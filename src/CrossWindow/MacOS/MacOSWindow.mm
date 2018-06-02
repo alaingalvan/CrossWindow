@@ -72,7 +72,7 @@ namespace xwin
 		destroy();
 	}
 	
-	bool MacWindow::create(const WindowDesc &desc)
+	bool MacWindow::create(const WindowDesc& desc, EventQueue& eventQueue)
 	{
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 

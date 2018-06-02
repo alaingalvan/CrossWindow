@@ -2,6 +2,8 @@
 
 #include "../Common/WindowDesc.h"
 #include "../Common/Init.h"
+#include "../Common/EventQueue.h"
+
 #include <vector>
 
 namespace xwin
@@ -13,7 +15,7 @@ namespace xwin
 		
 		~MacWindow();
 		
-		bool create(const WindowDesc& desc);
+		bool create(const WindowDesc& desc, EventQueue& eventQueue);
 		
 		void destroy();
 		
