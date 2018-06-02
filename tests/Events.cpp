@@ -18,6 +18,8 @@ TEST(Events, DigitalInput)
 {
   {
     xwin::Event e( xwin::EventType::DigitalInput, new xwin::DigitalInputData(xwin::DigitalInput::Z));
+
+    xwin::ResizeData(1280, 720);
   }
   // Event data should dealloc
 }
