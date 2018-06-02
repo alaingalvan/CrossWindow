@@ -1,11 +1,5 @@
 ## Prior Art
 
-### [Vulkan-WSIWindow](https://github.com/renelindsay/Vulkan-WSIWindow)
-
-Vulkan WSIWindow is a cross platform windowing API that targets all Vulkan 1.0 operating system targets. While the library is easy to use and robust, it was coupled to Vulkan and lacked important features like resizing. There was a need for either improving on the library to add those features or to fork it. 
-
-At the same time, the library had great ideas like wrappers to Vulkan data structures to automatically attach critical extensions needed for Vulkan to work with Operating System windows. Some of those ideas were integrated into [CrossWindow-Graphics](https://github.com/alaingalvan/crosswindow-graphics).
-
 ### [Winit](https://github.com/tomaka/winit)
 
 Winit is by far the most well designed and robust of the libraries featured here. It features:
@@ -14,11 +8,17 @@ Winit is by far the most well designed and robust of the libraries featured here
 - a simple and easy to use interface.
 - connecting libraries for graphics APIs to interface with.
 
-This decoupled design was a big inspiration for CrossWindow.
+Winit's API surface area and decoupled design was a big inspiration for CrossWindow.
+
+### [Vulkan-WSIWindow](https://github.com/renelindsay/Vulkan-WSIWindow)
+
+Vulkan WSIWindow is a cross platform windowing API that targets all Vulkan 1.0 operating system targets. While the library is easy to use and robust, it was coupled to Vulkan and lacked important features like resizing. There was a need for either improving on the library to add those features or to fork it. 
+
+At the same time, the library had great ideas like wrappers to Vulkan data structures to automatically attach critical extensions needed for Vulkan to work with Operating System windows. Some of those ideas were integrated into [CrossWindow-Graphics](https://github.com/alaingalvan/crosswindow-graphics).
 
 ### [GLFW](https://github.com/glfw/glfw)
 
-GLFW was popular among indie developers working on greenfield projects with OpenGL/Vulkan, but was coupled to those graphics libraries and was written in C, which while performant made programming with it slightly harder.
+GLFW was popular among indie developers working on greenfield projects with OpenGL/Vulkan, but was coupled to those graphics libraries and was written in C, which makes programming with it slightly harder.
 
 ### [SFML](https://github.com/SFML/SFML)
 

@@ -246,9 +246,9 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 - [ ] 💞 Nintendo Switch support
 
-- [ ] **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
+- [ ] 📦 **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
 
-- [ ] 🚜 Wayland / XCB support for Linux
+- [ ] 🚜 Wayland / XLib support for Linux
 
 > **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms.
 
@@ -265,6 +265,6 @@ CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would
 [appveyor-img]: https://img.shields.io/appveyor/ci/alaingalvan/CrossWindow.svg?style=flat-square&logo=windows
 [appveyor-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
 [circleci-img]: https://img.shields.io/circleci/project/github/alaingalvan/CrossWindow.svg?style=flat-square&logo=appveyor
-[circleci-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
+[circleci-url]: https://circleci.com/gh/alaingalvan/CrossWindow
 [codecov-img]: https://img.shields.io/codecov/c/github/alaingalvan/CrossWindow.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/alaingalvan/CrossWindow
