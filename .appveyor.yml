@@ -22,6 +22,7 @@ build:
   verbosity: minimal
 
 build_script:
+  - git submodule update --init --recursive
   - mkdir visualstudio && cd visualstudio
   - cmake .. -DXWIN_TESTS=ON
   - cmake --build .
