@@ -17,7 +17,7 @@ namespace xwin
 		
 		bool create(const WindowDesc& desc, EventQueue& eventQueue);
 		
-		void destroy();
+		void close();
 		
 		bool eventLoop();
 		

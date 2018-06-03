@@ -2,19 +2,17 @@
 
 namespace xwin
 {
-    namespace
-    {
-        LPWSTR pBuffer = NULL;
-        LPWSTR pMessage = L"%1!*.*s! %3 %4!*s!";
-    }
-
     Win32Window::Win32Window()
     {
+		_hwnd = nullptr;
     };
 
     Win32Window::~Win32Window()
     {
-        close();
+        if( _hwnd != nullptr)
+		{
+			close();
+		}
     }
 
     bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue)
@@ -137,7 +135,11 @@ namespace xwin
 
     void Win32Window::close()
     {
-        DestroyWindow(_hwnd);
+		if (_hwnd != nullptr)
+		{
+			DestroyWindow(_hwnd);
+			_hwnd = nullptr;
+		}
     }
 
     LRESULT CALLBACK Win32Window::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)

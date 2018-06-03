@@ -9,6 +9,8 @@ namespace xwin
 	class NoopWindow
 	{
 		public:
+		~NoopWindow();
+		
 		bool create(WindowDesc& desc, EventQueue& eventQueue);
 
 		void close();

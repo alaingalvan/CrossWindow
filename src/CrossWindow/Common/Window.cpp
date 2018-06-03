@@ -8,6 +8,7 @@ namespace xwin
 
     Window::~Window()
     {
+        close();
     }
 
     bool Window::create(const WindowDesc& desc, EventQueue& queue)

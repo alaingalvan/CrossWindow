@@ -3,7 +3,6 @@
 
 @interface XWinWindow : NSWindow
 {
-
 }
 @end
 
@@ -14,39 +13,11 @@
 @interface XWinView : NSView
 {
 @public
-	std::vector<xwin::Event> mEventQueue;
-
-
-}
 - (BOOL)	acceptsFirstResponder;
 - (BOOL)	isOpaque;
-
-- (void)	keyUp:(NSEvent*)event;
-- (void)	keyDown:(NSEvent*)event;
 @end
 
 @implementation XWinView
-
--(void)keyUp:(NSEvent*)event
-{
-    NSLog(@"Key %@", event);
-}
-
--(void)keyDown:(NSEvent*)event
-{   
-    switch( [event keyCode] )
-		{
-        case 126:
-        case 125:
-        case 124: 
-        case 123:       
-  // Arrow Keys
-   break;
-        default:
-   // Key not supported
-   break;
-    }
-}
 
 - (BOOL)acceptsFirstResponder
 {
@@ -69,7 +40,10 @@ namespace xwin
 	
 	MacWindow::~MacWindow()
 	{
-		destroy();
+		if( mWindow != nullptr)
+		{
+			close();
+		}
 	}
 	
 	bool MacWindow::create(const WindowDesc& desc, EventQueue& eventQueue)
@@ -104,36 +78,11 @@ namespace xwin
 	return true;
 	}
 	
-	void MacWindow::destroy()
+	void MacWindow::close()
 	{
 		[(XWinWindow*)mWindow release];
 		[(XWinView*)mView release];
+		mWindow = nullptr;
+		mView = nullptr;
 	}
-	
-	bool MacWindow::eventLoop()
-	{
-		// Update Application
-		NSApplication* nsApp = (NSApplication*)getXWinState().application;
-		@autoreleasepool
-		{
-			NSEvent* e = nil;
-			
-			do
-			{
-				e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES];
-				[NSApp sendEvent:e];
-			}
-			while (e);
-			
-		}
-		[nsApp updateWindows];
-
-		//return mView.eventQueue;
-
-		return false;
-	}
-	
-
-	
-
 }

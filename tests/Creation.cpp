@@ -15,7 +15,6 @@ TEST(Creation, Create)
     xwin::EventQueue eventQueue;
 
     bool created = window.create(windowDesc, eventQueue);
-
     //EXPECT_TRUE(created);
 }
 
