@@ -10,6 +10,8 @@ namespace xwin
 	{
 		public:
 		bool create(WindowDesc& desc, EventQueue& eventQueue);
+
+		void close();
 	};
 
 	 typedef NoopWindow	WindowDelegate;

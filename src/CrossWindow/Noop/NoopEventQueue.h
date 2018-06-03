@@ -15,6 +15,8 @@ namespace xwin
 
     void pop();
 
+	bool empty();
+
     protected:
     Event e = Event(EventType::EventTypeMax);
   };

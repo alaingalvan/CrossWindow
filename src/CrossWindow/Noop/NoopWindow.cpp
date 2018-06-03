@@ -6,4 +6,7 @@ namespace xwin
   {
     return true;
   }
+  void NoopWindow::close()
+  {
+  }
 }

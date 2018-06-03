@@ -19,4 +19,8 @@ namespace xwin
   void NoopEventQueue::pop()
   {
   }
+  bool NoopEventQueue::empty()
+  {
+	  return false;
+  }
 }
