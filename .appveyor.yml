@@ -26,7 +26,7 @@ build_script:
   - mkdir visualstudio && cd visualstudio
   - cmake .. -DXWIN_TESTS=ON
   - cmake --build .
-  - ctest .
+  - ctest . -C Debug
 
 test_script:
 
