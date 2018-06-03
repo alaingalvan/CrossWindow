@@ -30,6 +30,14 @@ namespace xwin
 		
 		//XWinView*
 		void* mView;
+
+		/**
+		 * MacOS Keycodes: 
+		 * https://stackoverflow.com/questions/3202629/where-can-i-find-a-list-of-mac-virtual-key-codes
+		 */
+  typedef DigitalInput MacKeycodeToDigitalInputMap[1 << (8 * sizeof(unsigned char))];
+
+
 	};
 	
 	typedef MacWindow WindowDelegate;
