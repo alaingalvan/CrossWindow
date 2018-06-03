@@ -20,4 +20,8 @@ namespace xwin
     {
         mDelegate.pop();
     }
+    bool EventQueue::empty()
+    {
+        return mDelegate.empty();
+    }
 }

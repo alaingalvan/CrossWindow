@@ -33,6 +33,9 @@ void Win32EventQueue::pushEvent(MSG msg)
     case WM_CREATE:
         mQueue.emplace(xwin::EventType::Create);
     break;
+    case WM_PAINT:
+        mQueue.emplace(xwin::EventType::Paint);
+    break;
     case WM_DESTROY:
         mQueue.emplace(xwin::EventType::Close);
         break;

@@ -35,6 +35,8 @@ namespace xwin
 
         void pop();
 
+        bool empty();
+
         protected:
             std::vector<Window*> windows;
 

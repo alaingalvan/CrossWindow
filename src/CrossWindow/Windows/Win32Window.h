@@ -28,6 +28,8 @@ namespace xwin
 
         bool create(WindowDesc& desc, EventQueue& eventQueue);
 
+        void close();
+
         static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
         LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
@@ -53,7 +55,6 @@ namespace xwin
         // Window Behavior
         DWORD dwExStyle;
         DWORD dwStyle;
-
     };
 
     static thread_local Win32Window* _windowBeingCreated = nullptr;

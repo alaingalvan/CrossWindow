@@ -39,6 +39,11 @@ namespace xwin
          */ 
         bool create(const WindowDesc& desc, EventQueue& queue);
 
+        /**
+         * Destroy this window.
+         */
+        void close();
+
         WindowDesc getDesc() const;
 
         WindowDelegate& getDelegate();

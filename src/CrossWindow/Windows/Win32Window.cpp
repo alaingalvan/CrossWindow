@@ -2,14 +2,19 @@
 
 namespace xwin
 {
+    namespace
+    {
+        LPWSTR pBuffer = NULL;
+        LPWSTR pMessage = L"%1!*.*s! %3 %4!*s!";
+    }
+
     Win32Window::Win32Window()
     {
     };
 
     Win32Window::~Win32Window()
     {
-        DestroyWindow(_hwnd);
-        _hwndMap.erase(_hwndMap.find(_hwnd), _hwndMap.end());
+        close();
     }
 
     bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue)
@@ -38,8 +43,10 @@ namespace xwin
 
         if (!RegisterClassEx(&wndClass))
         {
-            fflush(stdout);
-            exit(GetLastError());
+            /**
+             * Either an OS Error or a window with the same "name" id will cause this to fail:
+             */
+            return false;
         }
 
         int screenWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -128,6 +135,11 @@ namespace xwin
         return true;
     }
 
+    void Win32Window::close()
+    {
+        DestroyWindow(_hwnd);
+    }
+
     LRESULT CALLBACK Win32Window::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     {
         Win32Window* _this;
@@ -150,5 +162,5 @@ namespace xwin
     LRESULT Win32Window::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     {
             return DefWindowProc(_hwnd, msg, wparam, lparam);
-    };
+    }
 }

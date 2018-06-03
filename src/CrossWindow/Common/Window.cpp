@@ -16,6 +16,11 @@ namespace xwin
         return mDelegate.create(mDesc, queue);
     }
 
+    void Window::close()
+    {
+        mDelegate.close();
+    }
+
     WindowDelegate& Window::getDelegate()
     {
         return mDelegate;

@@ -10,6 +10,7 @@ namespace xwin
   {
       Close = 0,
       Create,
+      Paint,
       Resize,
       DigitalInput,
       AnalogInput,

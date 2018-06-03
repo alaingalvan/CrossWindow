@@ -9,15 +9,17 @@ TEST(EventQueue, Update)
 
   eventQueue.update();
 
-  eventQueue.front();
-
-  eventQueue.pop();
+  if (!eventQueue.empty() )
+  { 
+      const xwin::Event& e = eventQueue.front();
+      eventQueue.pop();
+  }
 }
 
-TEST(Events, DigitalInput)
+TEST(Events, Data)
 {
   {
-    xwin::Event e( xwin::EventType::DigitalInput, new xwin::DigitalInputData(xwin::DigitalInput::Z));
+    xwin::Event digitalEvent(xwin::EventType::DigitalInput, new xwin::DigitalInputData(xwin::DigitalInput::Z));
 
     xwin::ResizeData(1280, 720);
   }
