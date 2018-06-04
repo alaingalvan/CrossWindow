@@ -157,7 +157,7 @@ void xmain(int argc, const char** argv)
     windowDesc.height = 720;
 
     bool closed = false;
-    
+
     // 🌟 Initialize
     xwin::Window window;
     xwin::EventQueue eventQueue;
@@ -177,18 +177,18 @@ void xmain(int argc, const char** argv)
         while (!eventQueue.empty())
         {
             const xwin::Event& event = eventQueue.front();
-            
-            switch(event.type)
+
+            switch (event.type)
             {
-            case xwin::EventType::MouseMove:
-            xwin::MouseData* mouse = static_cast<xwin::MouseData*>(e.data);
-            //mouse.x, mouse.y
-            break;
+            case xwin::EventType::Mouse:
+                const xwin::MouseData mouse = event.getData<xwin::MouseData>();
+                //mouse.x, mouse.y
+                break;
             case xwin::EventType::Close:
-            window.close();
-            break;
+                window.close();
+                break;
             default:
-            // Do nothing
+                // Do nothing
             }
 
             eventQueue.pop();

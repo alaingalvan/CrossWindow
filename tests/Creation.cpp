@@ -14,8 +14,9 @@ TEST(Creation, Create)
     xwin::Window window;
     xwin::EventQueue eventQueue;
 
-    bool created = window.create(windowDesc, eventQueue);
-    //EXPECT_TRUE(created);
+    // A window can fail to be created, say if the test is run on a headless system.
+    window.create(windowDesc, eventQueue);
+
 }
 
 TEST(Creation, Description)
