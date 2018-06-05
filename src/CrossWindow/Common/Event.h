@@ -28,6 +28,14 @@ namespace xwin
         // Mouse events such as clicking, moving, etc.
         Mouse,
 
+        MouseMoved,
+
+        // Mouse scrolling events
+        MouseWheel,
+
+        // Mouse button press events
+        MouseInput,
+
         // Digital input such as keyboard press/release, gamepad, etc.
         DigitalInput, //Gamepad
 
@@ -43,8 +51,16 @@ namespace xwin
         // Unfocus on a window
         Unfocus,
 
-
         EventTypeMax
+    };
+
+    /**
+     * The state of a button press, be it keyboard, mouse, etc.
+     */ 
+    enum ButtonState : size_t
+    {
+        Pressed,
+        Released
     };
 
     enum class DigitalInput : size_t
@@ -204,13 +220,70 @@ namespace xwin
         AnalogInputsMax
     };
 
-    class GamepadData
+    struct TouchPoint
     {
-        public:
+        // An id for each touch point
+        unsigned long id;
 
-        // Analog input data
-        float analog;
-    }
+        // touch coordinate relative to whole screen origin in pixels
+        unsigned screenX;
+        unsigned screenY;
+
+        // touch coordinate relative to window in pixels.
+        unsigned clientX;
+        unsigned clientY;
+
+        // Did the touch point change 
+        bool isChanged;
+    };
+
+    struct TouchData
+    {
+        unsigned numTouches;
+
+        TouchPoint touches[32];
+    };
+
+    struct GamepadData
+    {
+        // Event timestamp
+        double timestamp;
+        
+        // If the gamepad is connected or not
+        bool connected;
+
+        // Gamepad Index
+        size_t index;
+
+        // String id of the brand of the gamepad
+        const char* id;
+
+        // String id that lays out controller mapping (Southpaw, etc.)
+        const char* mapping;
+
+        // Analog Axis input data, such as joysticks, normalized range [-1, 1]
+        double axis[64];
+
+        // The number of analog axes
+        unsigned numAxes; 
+
+        // Analog gamepad buttons like triggers, bound to [0, 1].
+        double analogButton[64];
+
+        bool digitalButton[64];
+
+        // Number of digital buttons and analog buttons
+        unsigned numButtons;
+
+
+    };
+
+    struct KeyboardData
+    {
+        DigitalInput key;
+        ButtonState state;
+        //ModifierState modifiers;
+    };
 
     /**
      * Resize data passed with Resize events
@@ -254,17 +327,13 @@ namespace xwin
     /**
      * The event data passed with mouse events click, mousedown, mouseup, mousemove, mousenter, mouseleave, mousewheel
      */
-    class MouseData
+    struct MouseData
     {
-    public:
         static const EventType type = EventType::Mouse;
         unsigned x;
         unsigned y;
-        int wheel;
-        MouseInput button;
-        bool pressed;
-        bool released;
     };
+
 
     union EventData
     {

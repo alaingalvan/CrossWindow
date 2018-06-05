@@ -19,7 +19,7 @@ TEST(EventQueue, Update)
 TEST(Events, Data)
 {
   {
-    xwin::Event digitalEvent(xwin::EventType::DigitalInput, new xwin::DigitalInputData(xwin::DigitalInput::Z));
+    xwin::Event digitalEvent(xwin::DigitalInputData());
 
     xwin::ResizeData(1280, 720);
   }

@@ -14,7 +14,9 @@ namespace xwin
    */ 
   class WASMEventQueue
   {
- 
+    public:
+    WASMEventQueue();
+
     /**
      * Update the event queue with new events received from the Emscripten instance
      * Returns if the queue has been updated.

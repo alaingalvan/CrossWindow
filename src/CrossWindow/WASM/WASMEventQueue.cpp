@@ -4,11 +4,15 @@
 
 namespace xwin
 {
-  bool WASMEventQueue::update()
+  WASMEventQueue::WASMEventQueue()
   {
     emscripten_set_keydown_callback(0, 0, 1, key_callback);
     emscripten_set_keyup_callback(0, 0, 1, key_callback);
     emscripten_set_keypress_callback(0, 0, 1, key_callback);
+  }
+
+  bool WASMEventQueue::update()
+  {
   }
 
   EM_BOOL WASMEventQueue::keyCallback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
