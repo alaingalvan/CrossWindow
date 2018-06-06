@@ -35,7 +35,7 @@ namespace xwin
 		 * MacOS Keycodes: 
 		 * https://stackoverflow.com/questions/3202629/where-can-i-find-a-list-of-mac-virtual-key-codes
 		 */
-  typedef DigitalInput MacKeycodeToDigitalInputMap[1 << (8 * sizeof(unsigned char))];
+  typedef Key MacKeycodeToDigitalInputMap[1 << (8 * sizeof(unsigned char))];
 
 
 	};

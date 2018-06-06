@@ -40,198 +40,195 @@ namespace xwin
             mQueue.emplace(xwin::EventType::Close);
             break;
         case WM_SETFOCUS:
-            mQueue.emplace(xwin::EventType::Focus);
+            mQueue.emplace(xwin::FocusData(true));
             break;
         case WM_KILLFOCUS:
-            mQueue.emplace(xwin::EventType::Unfocus);
+            mQueue.emplace(xwin::FocusData(false));
             break;
         case WM_MOUSEWHEEL:
         {
             (short)HIWORD(msg.wParam);
-            mQueue.emplace(xwin::EventType::Mouse);
             break;
         }
         case WM_LBUTTONDOWN:
-            mQueue.emplace(xwin::EventType::Mouse);
+
             break;
         case WM_LBUTTONUP:
-            mQueue.emplace(xwin::EventType::Mouse);
+
             break;
         case WM_MOUSEMOVE:
-            mQueue.emplace(xwin::EventType::Mouse);
+
             break;
         case WM_KEYDOWN:
 
-            DigitalInput d;
+            Key d;
 
             switch (msg.wParam)
             {
             case VK_ESCAPE:
-                d = DigitalInput::Escape;
+                d = Key::Escape;
                 break;
             case 0x30:
-                d = DigitalInput::Num0;
+                d = Key::Num0;
                 break;
             case 0x31:
-                d = DigitalInput::Num1;
+                d = Key::Num1;
                 break;
             case 0x32:
-                d = DigitalInput::Num2;
+                d = Key::Num2;
                 break;
             case 0x33:
-                d = DigitalInput::Num3;
+                d = Key::Num3;
                 break;
             case 0x34:
-                d = DigitalInput::Num4;
+                d = Key::Num4;
                 break;
             case 0x35:
-                d = DigitalInput::Num5;
+                d = Key::Num5;
                 break;
             case 0x36:
-                d = DigitalInput::Num6;
+                d = Key::Num6;
                 break;
             case 0x37:
-                d = DigitalInput::Num7;
+                d = Key::Num7;
                 break;
             case 0x38:
-                d = DigitalInput::Num8;
+                d = Key::Num8;
                 break;
             case 0x39:
-                d = DigitalInput::Num9;
+                d = Key::Num9;
                 break;
             case 0x41:
-                d = DigitalInput::A;
+                d = Key::A;
                 break;
             case 0x42:
-                d = DigitalInput::B;
+                d = Key::B;
                 break;
             case 0x43:
-                d = DigitalInput::C;
+                d = Key::C;
                 break;
             case 0x44:
-                d = DigitalInput::D;
+                d = Key::D;
                 break;
             case 0x45:
-                d = DigitalInput::E;
+                d = Key::E;
                 break;
             case 0x46:
-                d = DigitalInput::F;
+                d = Key::F;
                 break;
             case 0x47:
-                d = DigitalInput::G;
+                d = Key::G;
                 break;
             case 0x48:
-                d = DigitalInput::H;
+                d = Key::H;
                 break;
             case 0x49:
-                d = DigitalInput::I;
+                d = Key::I;
                 break;
             case 0x4A:
-                d = DigitalInput::J;
+                d = Key::J;
                 break;
             case 0x4B:
-                d = DigitalInput::K;
+                d = Key::K;
                 break;
             case 0x4C:
-                d = DigitalInput::L;
+                d = Key::L;
                 break;
             case 0x4D:
-                d = DigitalInput::M;
+                d = Key::M;
                 break;
             case 0x4E:
-                d = DigitalInput::N;
+                d = Key::N;
                 break;
             case 0x4F:
-                d = DigitalInput::O;
+                d = Key::O;
                 break;
             case 0x50:
-                d = DigitalInput::P;
+                d = Key::P;
                 break;
             case 0x51:
-                d = DigitalInput::Q;
+                d = Key::Q;
                 break;
             case 0x52:
-                d = DigitalInput::R;
+                d = Key::R;
                 break;
             case 0x53:
-                d = DigitalInput::S;
+                d = Key::S;
                 break;
             case 0x54:
-                d = DigitalInput::T;
+                d = Key::T;
                 break;
             case 0x55:
-                d = DigitalInput::U;
+                d = Key::U;
                 break;
             case 0x56:
-                d = DigitalInput::V;
+                d = Key::V;
                 break;
             case 0x57:
-                d = DigitalInput::W;
+                d = Key::W;
                 break;
             case 0x58:
-                d = DigitalInput::X;
+                d = Key::X;
                 break;
             case 0x59:
-                d = DigitalInput::Y;
+                d = Key::Y;
                 break;
             case 0x5A:
-                d = DigitalInput::Z;
+                d = Key::Z;
                 break;
             case VK_NUMPAD0:
-                d = DigitalInput::Numpad0;
+                d = Key::Numpad0;
                 break;
             case VK_NUMPAD1:
-                d = DigitalInput::Numpad1;
+                d = Key::Numpad1;
                 break;
             case VK_NUMPAD2:
-                d = DigitalInput::Numpad2;
+                d = Key::Numpad2;
                 break;
             case VK_NUMPAD3:
-                d = DigitalInput::Numpad3;
+                d = Key::Numpad3;
                 break;
             case VK_NUMPAD4:
-                d = DigitalInput::Numpad4;
+                d = Key::Numpad4;
                 break;
             case VK_NUMPAD5:
-                d = DigitalInput::Numpad5;
+                d = Key::Numpad5;
                 break;
             case VK_NUMPAD6:
-                d = DigitalInput::Numpad6;
+                d = Key::Numpad6;
                 break;
             case VK_NUMPAD7:
-                d = DigitalInput::Numpad7;
+                d = Key::Numpad7;
                 break;
             case VK_NUMPAD8:
-                d = DigitalInput::Numpad8;
+                d = Key::Numpad8;
                 break;
             case VK_NUMPAD9:
-                d = DigitalInput::Numpad9;
+                d = Key::Numpad9;
                 break;
             case VK_UP:
-                d = DigitalInput::Up;
+                d = Key::Up;
                 break;
             case VK_LEFT:
-                d = DigitalInput::Left;
+                d = Key::Left;
                 break;
             case VK_DOWN:
-                d = DigitalInput::Down;
+                d = Key::Down;
                 break;
             case VK_RIGHT:
-                d = DigitalInput::Right;
+                d = Key::Right;
                 break;
             case VK_SPACE:
-                d = DigitalInput::Space;
+                d = Key::Space;
                 break;
             case VK_HOME:
-                d = DigitalInput::Home;
+                d = Key::Home;
                 break;
 
             default:
-                d = DigitalInput::DigitalInputKeysMax;
+                d = Key::KeysMax;
                 break;
             }
-
-            mQueue.emplace(DigitalInputData(d));
             break;
         case WM_SIZE:
             unsigned width, height;

@@ -15,9 +15,6 @@ First we'll set up our project's dependencies in CMake.
 We'll start things off as usual with CrossWindow.
 
 ```cpp
-//Since this includes C++ and Objective C++ according to preprocessor definitions
-//We're using the `.mm` file type:
-
 #include "CrossWindow/CrossWindow.h"
 #include "CrossWindow/Graphics.h"
 

@@ -5,31 +5,35 @@ namespace xwin
   Event::Event(EventType type) : type(type)
   {}
 
+  Event::Event(FocusData data) : type(EventType::Focus)
+  {
+      _data.focus = data;
+  }
+
   Event::Event(ResizeData data) : type(EventType::Resize)
   {
       _data.resize = data;
-  }
-
-  Event::Event(MouseData data) : type(EventType::Mouse)
-  {
-      _data.mouse = data;
-  }
-
-
-  Event::Event(DigitalInputData data) : type(EventType::DigitalInput)
-  {
-      _data.digitalInput = data;
   }
 
   Event::~Event()
   {
   }
 
-  DigitalInputData::DigitalInputData(DigitalInput key) : key(key)
+  ResizeData::ResizeData(unsigned width, unsigned height) : width(width), height(height)
   {
   }
 
-  ResizeData::ResizeData(unsigned width, unsigned height) : width(width), height(height)
+  const char * convertKeyToString(Key key)
+  {
+      return nullptr;
+  }
+
+  Key convertStringToKey(const char * str)
+  {
+      return Key();
+  }
+
+  FocusData::FocusData(bool focused) : focused(focused)
   {
   }
 
