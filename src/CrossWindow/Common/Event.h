@@ -51,6 +51,12 @@ namespace xwin
         // Gamepad Input Events such as analog sticks, button presses
         Gamepad,
 
+        //Dropping a file on the window
+        DropFile,
+
+        //Hovering a file over a window
+        HoverFile,
+
         EventTypeMax
     };
 
@@ -120,6 +126,8 @@ namespace xwin
 
         // Meta buttons such as the Windows button or Mac's Command button
         bool meta;
+
+        ModifierState(bool ctrl = false, bool alt = false, bool shift = false, bool meta = false);
     };
 
 
@@ -273,6 +281,8 @@ namespace xwin
         ModifierState modifiers;
 
         static const EventType type = EventType::Keyboard;
+
+        KeyboardData(Key key, ButtonState state, ModifierState modifiers);
     };
 
     /**
@@ -284,6 +294,8 @@ namespace xwin
         unsigned y;
         ModifierState modifiers;
         static const EventType type = EventType::MouseMoved;
+
+        MouseMoveData(unsigned x, unsigned y, ModifierState modifiers);
     };
 
     enum MouseInput
@@ -305,6 +317,8 @@ namespace xwin
         ButtonState state;
         ModifierState modifiers;
         static const EventType type = EventType::MouseInput;
+
+        MouseInputData(MouseInput button, ButtonState state, ModifierState modifiers);
     };
 
     /**
@@ -315,6 +329,8 @@ namespace xwin
         double delta;
         ModifierState modifiers;
         static const EventType type = EventType::MouseWheel;
+
+        MouseWheelData(double delta, ModifierState modifiers);
     };
 
     /**
@@ -439,7 +455,10 @@ namespace xwin
 
 
 
-
+    /**
+     * SDL does something similar:
+     * <https://www.libsdl.org/release/SDL-1.2.15/docs/html/sdlevent.html>
+     */
     union EventData
     {
         FocusData focus;
@@ -469,17 +488,22 @@ namespace xwin
 
         Event(ResizeData data);
 
+        Event(KeyboardData data);
+
+        Event(MouseMoveData data);
+
+        Event(MouseInputData data);
+
+        Event(MouseWheelData data);
+
+        Event(TouchData data);
+
+        Event(GamepadData data);
+
         ~Event();
 
         // The event's type
         const EventType type;
-
-        /**
-         * The data attribute coresponds with the current event's type.
-         * Ideally the type is infered from the return value context.
-         */
-        template<typename T>
-        constexpr auto getData()->T const;
 
         // Pointer to a CrossWindow window
         Window* window;
@@ -487,29 +511,4 @@ namespace xwin
     protected:
         EventData _data;
     };
-
-    template<typename T>
-    inline constexpr auto Event::getData() -> T const
-    {
-        if (type != T::type)
-        {
-            //stop compilation
-        }
-        switch (type)
-        {
-        case EvenType::Resize:
-            return _data.resize;
-            break;
-        case EventType::DPI:
-                return _data.dpi;
-                break;
-                case EventType::Focus;
-                return _data.focus;
-                break;
-            default:
-                break;
-        }
-
-        return _data.focus;
-    }
 }

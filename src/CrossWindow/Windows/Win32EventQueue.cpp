@@ -27,6 +27,10 @@ namespace xwin
     void Win32EventQueue::pushEvent(MSG msg)
     {
         UINT message = msg.message;
+        
+        //TODO: hwnd to xwin::Window unordered_map, when xwin::Window closes, it sends a message to the event queue to remove that hwnd
+        // and any remaining events that match that xwin::Window
+        msg.hwnd;
 
         switch (message)
         {
@@ -48,19 +52,44 @@ namespace xwin
         case WM_MOUSEWHEEL:
         {
             (short)HIWORD(msg.wParam);
+            //mQueue.emplace(xwin::MouseWheelData());
             break;
         }
         case WM_LBUTTONDOWN:
-
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Pressed, ModifierState()));
+            break;
+        case WM_MBUTTONDOWN:
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Pressed, ModifierState()));
+            break;
+        case WM_RBUTTONDOWN:
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Pressed, ModifierState()));
+            break;
+        case WM_LBUTTONDBLCLK:
+            // Perhaps there should be an event for this in the future
             break;
         case WM_LBUTTONUP:
-
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Released, ModifierState()));
+            break;
+        case WM_MBUTTONUP:
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Released, ModifierState()));
+            break;
+        case WM_RBUTTONUP:
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Released, ModifierState()));
             break;
         case WM_MOUSEMOVE:
-
+            mQueue.emplace(
+                xwin::MouseMoveData(
+                    static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF),
+                    static_cast<unsigned>((UINT64)msg.lParam >> 16),
+                    xwin::ModifierState())
+            );
             break;
         case WM_KEYDOWN:
-
+        case WM_KEYUP:
+        case WM_CHAR:
+        case WM_SYSKEYDOWN:
+        case WM_SYSKEYUP:
+        {
             Key d;
 
             switch (msg.wParam)
@@ -230,10 +259,20 @@ namespace xwin
                 break;
             }
             break;
+
+            if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
+            {
+                mQueue.emplace(KeyboardData(d, ButtonState::Pressed, ModifierState()));
+            }
+            else if (message == WM_KEYUP || message == WM_SYSKEYUP)
+            {
+                mQueue.emplace(KeyboardData(d, ButtonState::Released, ModifierState()));
+            }
+        }
         case WM_SIZE:
             unsigned width, height;
-            width = (unsigned)(UINT)(UINT64)msg.lParam & 0xFFFF;
-            height = (unsigned)(UINT)(UINT64)msg.lParam >> 16;
+            width = static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF);
+            height = static_cast<unsigned>((UINT64)msg.lParam >> 16);
 
             mQueue.emplace(ResizeData(width, height));
             break;
@@ -243,7 +282,7 @@ namespace xwin
         }
     }
 
-    const Event &Win32EventQueue::front()
+    const Event& Win32EventQueue::front()
     {
         return mQueue.front();
     }
