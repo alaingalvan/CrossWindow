@@ -27,56 +27,98 @@ namespace xwin
     void Win32EventQueue::pushEvent(MSG msg)
     {
         UINT message = msg.message;
-        
+
         //TODO: hwnd to xwin::Window unordered_map, when xwin::Window closes, it sends a message to the event queue to remove that hwnd
         // and any remaining events that match that xwin::Window
-        msg.hwnd;
 
         switch (message)
         {
         case WM_CREATE:
+        {
             mQueue.emplace(xwin::EventType::Create);
             break;
+        }
         case WM_PAINT:
+        {
             mQueue.emplace(xwin::EventType::Paint);
             break;
+        }
         case WM_DESTROY:
+        {
             mQueue.emplace(xwin::EventType::Close);
             break;
+        }
         case WM_SETFOCUS:
+        {
             mQueue.emplace(xwin::FocusData(true));
             break;
+        }
         case WM_KILLFOCUS:
+        {
             mQueue.emplace(xwin::FocusData(false));
             break;
+        }
         case WM_MOUSEWHEEL:
         {
-            (short)HIWORD(msg.wParam);
-            //mQueue.emplace(xwin::MouseWheelData());
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseWheelData(GET_WHEEL_DELTA_WPARAM(msg.wParam) / WHEEL_DELTA, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
         }
         case WM_LBUTTONDOWN:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Pressed, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Pressed, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
         case WM_MBUTTONDOWN:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Pressed, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Pressed, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
         case WM_RBUTTONDOWN:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Pressed, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Pressed, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
+        case WM_XBUTTONDOWN:
+        {
+            short modifiers = LOWORD(msg.wParam);
+            short x = HIWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(x & XBUTTON1 ? MouseInput::Button4 : MouseInput::Button5, ButtonState::Pressed, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
+            break;
+        }
+        case WM_XBUTTONUP:
+        {
+            short modifiers = LOWORD(msg.wParam);
+            short x = HIWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(x & XBUTTON1 ? MouseInput::Button4 : MouseInput::Button5, ButtonState::Released, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
+            break;
+        }
         case WM_LBUTTONDBLCLK:
             // Perhaps there should be an event for this in the future
             break;
         case WM_LBUTTONUP:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Released, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Left, ButtonState::Released, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
         case WM_MBUTTONUP:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Released, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Middle, ButtonState::Released, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
         case WM_RBUTTONUP:
-            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Released, ModifierState()));
+        {
+            short modifiers = LOWORD(msg.wParam);
+            mQueue.emplace(xwin::MouseInputData(MouseInput::Right, ButtonState::Released, xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT, modifiers & MK_SHIFT, modifiers & 0)));
             break;
+        }
         case WM_MOUSEMOVE:
+        {
             mQueue.emplace(
                 xwin::MouseMoveData(
                     static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF),
@@ -84,6 +126,7 @@ namespace xwin
                     xwin::ModifierState())
             );
             break;
+        }
         case WM_KEYDOWN:
         case WM_KEYUP:
         case WM_CHAR:
@@ -268,14 +311,17 @@ namespace xwin
             {
                 mQueue.emplace(KeyboardData(d, ButtonState::Released, ModifierState()));
             }
+            break;
         }
         case WM_SIZE:
+        {
             unsigned width, height;
             width = static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF);
             height = static_cast<unsigned>((UINT64)msg.lParam >> 16);
 
             mQueue.emplace(ResizeData(width, height));
             break;
+        }
         default:
             // Do nothing
             break;
