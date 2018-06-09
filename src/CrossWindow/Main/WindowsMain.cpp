@@ -1,6 +1,7 @@
 #include "../Common/Init.h"
 #include "Main.h"
 #include <stdio.h>
+
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 #ifdef _DEBUG
