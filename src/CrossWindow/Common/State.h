@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(XWIN_WINDOWS)
+#if defined(XWIN_WIN32)
 #include <Windows.h>
 #endif
 
@@ -9,7 +9,7 @@ namespace xwin
 struct XWinState
 {
 
-#ifdef XWIN_WINDOWS
+#ifdef XWIN_WIN32
 
     HINSTANCE hInstance;
     HINSTANCE hPrevInstance;
@@ -27,7 +27,7 @@ struct XWinState
     XWinState(android_app *app) : app(app)
     {
     }
-#elif defined(XWIN_MACOS) || defined(XWIN_IOS)
+#elif defined(XWIN_COCOA) || defined(XWIN_UIKIT)
 
     int argc;
     const char** argv;

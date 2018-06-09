@@ -1,8 +1,8 @@
-#include "LinuxWindow.h"
+#include "XCBWindow.h"
 
 namespace xwin
 {
-  bool LinuxWindow::create(WindowDesc& desc, EventQueue& eventQueue)
+  bool XCBWindow::create(WindowDesc& desc, EventQueue& eventQueue)
   {
     uint32_t value_mask, value_list[32];
 

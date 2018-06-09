@@ -23,15 +23,17 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**)
 
+- 😎 Modern and well maintained C++ 11, with a promise to evolve as the standard evolves. (C++ Modules, Package Managers, etc.)
+
 ### Supported Platforms
 
-- 🖼️ Windows (Win32)
+- 🖼️ Windows (Win32<!--or UWP-->)
 
 - 🍎 Mac (Cocoa)
 
 - 📱 iOS (AppKit)
 
-- 🐧 Linux (XCB)
+- 🐧 Linux (XCB<!--, XLib, Mir, or Wayland-->)
 
 - 🤖 Android
 
@@ -88,6 +90,8 @@ cmake .. -G Xcode
 mkdir make
 cd make
 cmake ..
+
+# 🔨 Build on any platform:
 cmake --build .
 ```
 
@@ -208,7 +212,8 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | CMake Options | Description |
 |:-------------:|:-----------:|
 | `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
-| `XWIN_OS` | What Operating System to build for, defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. |
+| `XWIN_PROTOCOL` | The protocol to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `APPKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
+| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. Depending on if your platform supports multiple protocols, these will default to their automatic targets depending on the Operating System. If `XWIN_PROTOCOL` is set this option is ignored. |
 
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for:
 
@@ -235,9 +240,13 @@ cmake .. -DXWIN_TESTS=ON
 
 Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete the generated files and run Cmake again.
 
-## Future Goals
+## Project Goals
 
-- [ ] ❎ Xbox One support with Universal Windows Platform (WMP).
+- [ ] ❎ Windows 10 Apps / Window 10 Arm / Xbox One support with Universal Windows Platform (WMP).
+
+- [ ] 🚜 XLib / Wayland / XLib support for Linux
+
+- [ ] 🍭 Linux flavor OS targets (`XWIN_OS` can be `UBUNTU`, `DEBIAN`, `FEDORA`, etc.)
 
 - [ ] 🅿️ Playstation 4 support
 
@@ -245,9 +254,7 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 - [ ] 📦 **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
 
-- [ ] 🚜 Wayland / XLib support for Linux
-
-> **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms.
+<!-- > **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms. -->
 
 ## License
 

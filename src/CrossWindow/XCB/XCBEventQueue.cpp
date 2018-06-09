@@ -1,13 +1,13 @@
-#include "LinuxEventQueue.h"
+#include "XCBEventQueue.h"
 
 namespace xwin
 {
-  LinuxEventQueue::LinuxEventQueue()
+  XCBEventQueue::XCBEventQueue()
   {
 
   }
 
-  bool LinuxEventQueue::update()
+  bool XCBEventQueue::update()
   {
         xcb_generic_event_t *event;
 
@@ -26,7 +26,7 @@ namespace xwin
         if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) demo->quit = true;
   }
 
-    void LinuxEventQueue::pushEvent(const xcb_generic_event_t *event) {
+    void XCBEventQueue::pushEvent(const xcb_generic_event_t *event) {
     uint8_t event_code = event->response_type & 0x7f;
     switch (event_code) {
         case XCB_EXPOSE:

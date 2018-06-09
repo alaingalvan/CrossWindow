@@ -4,16 +4,24 @@
 
 #include "EventQueue.h"
 
-#ifdef XWIN_WINDOWS
-#include "../Windows/WinWindow.h"
-#elif XWIN_MACOS
-#include "../MacOS/MacOSWindow.h"
-#elif XWIN_LINUX
-#include "../Linux/LinuxWindow.h"
+#ifdef XWIN_WIN32
+#include "../Win32/Win32Window.h"
+#elif XWIN_UWP
+#include "../UWP/UWPWindow.h"
+#elif XWIN_COCOA
+#include "../Cocoa/CocoaWindow.h"
+#elif XWIN_XCB
+#include "../XCB/XCBWindow.h"
+#elif XWIN_XLIB
+#include "../XLib/XLibWindow.h"
+#elif XWIN_MIR
+#include "../Mir/MirWindow.h"
+#elif XWIN_WAYLAND
+#include "../Wayland/WaylandWindow.h"
 #elif XWIN_ANDROID
 #include "../Android/AndroidWindow.h"
-#elif XWIN_IOS
-#include "../iOS/iOSWindow.h"
+#elif XWIN_UIKIT
+#include "../UIKit/UIKitWindow.h"
 #elif XWIN_WASM
 #include "../WASM/WASMWindow.h"
 #elif XWIN_NOOP

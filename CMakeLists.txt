@@ -17,38 +17,71 @@ set(CMAKE_AUTOMOC ON)
 # =============================================================
 
 # Options
-set(XWIN_OS AUTO CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM") 
-set_property(CACHE XWIN_OS PROPERTY STRINGS AUTO WINDOWS MACOS LINUX ANDROID IOS WASM NOOP)
+set(XWIN_PROTOCOL AUTO CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, APPKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP.")
+set_property(
+    CACHE
+    XWIN_PROTOCOL PROPERTY
+    STRINGS AUTO WIN32 UWP COCOA APPKIT XCB XLIB MIR WAYLAND ANDROID WASM NOOP
+)
 
-if(XWIN_OS STREQUAL "AUTO")
-    if (WIN32)
-    set(XWIN_OS "WINDOWS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
-    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(XWIN_OS "MACOS" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
-    elseif (UNIX)
-    set(XWIN_OS "LINUX" CACHE STRING "Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM" FORCE)
+set(XWIN_OS AUTO CACHE STRING "Optional: Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM.") 
+set_property(
+    CACHE
+    XWIN_OS PROPERTY
+    STRINGS AUTO WINDOWS MACOS LINUX ANDROID IOS WASM NOOP
+)
+
+if( NOT (XWIN_OS STREQUAL "AUTO") AND XWIN_PROTOCOL STREQUAL "AUTO")
+    if(XWIN_OS STREQUAL "WINDOWS")
+        set(XWIN_PROTOCOL "WIN32")
+    elseif(XWIN_OS STREQUAL "MACOS")
+        set(XWIN_PROTOCOL "COCOA")
+    elseif(XWIN_OS STREQUAL "LINUX")
+        set(XWIN_PROTOCOL "XLIB")
+    elseif(XWIN_OS STREQUAL "ANDROID")
+        set(XWIN_PROTOCOL "ANDROID")
+    elseif(XWIN_OS STREQUAL "IOS")
+        set(XWIN_PROTOCOL "UIKIT")
+    elseif(XWIN_OS STREQUAL "WASM")
+        set(XWIN_PROTOCOL "WASM")
+    elseif(XWIN_OS STREQUAL "NOOP")
+        set(XWIN_PROTOCOL "NOOP")
+    else()
+        message( SEND_ERROR "XWIN_OS can only be either AUTO, NOOP, WINDOWS, MACOS, LINUX, ANDROID, IOS, or WASM.")
     endif()
 endif()
 
-set(XWIN_OS_PATH "Noop")
-
-if(XWIN_OS STREQUAL "WINDOWS")
-    set(XWIN_OS_PATH "Windows")
-elseif(XWIN_OS STREQUAL "MACOS")
-    set(XWIN_OS_PATH "MacOS")
-elseif(XWIN_OS STREQUAL "LINUX")
-    set(XWIN_OS_PATH "Linux")
-elseif(XWIN_OS STREQUAL "ANDROID")
-    set(XWIN_OS_PATH "Android")
-elseif(XWIN_OS STREQUAL "IOS")
-    set(XWIN_OS_PATH "iOS")
-elseif(XWIN_OS STREQUAL "WASM")
-    set(XWIN_OS_PATH "WASM")
-elseif(XWIN_OS STREQUAL "NOOP")
-    set(XWIN_OS_PATH "Noop")
+if(XWIN_PROTOCOL STREQUAL "AUTO")
+    if (WIN32)
+    set(XWIN_PROTOCOL "WIN32" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, APPKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(XWIN_PROTOCOL "COCOA" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, APPKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+    elseif (UNIX)
+    set(XWIN_PROTOCOL "XCB" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, APPKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+    endif()
 endif()
 
-MESSAGE( STATUS "Building CrossWindow for " ${XWIN_OS_PATH} )
+set(XWIN_PROTOCOL_PATH "Noop")
+
+if(XWIN_PROTOCOL STREQUAL "WIN32")
+    set(XWIN_PROTOCOL_PATH "Win32")
+elseif(XWIN_PROTOCOL STREQUAL "COCOA")
+    set(XWIN_PROTOCOL_PATH "Cocoa")
+elseif(XWIN_PROTOCOL STREQUAL "XCB")
+    set(XWIN_PROTOCOL_PATH "XCB")
+elseif(XWIN_PROTOCOL STREQUAL "ANDROID")
+    set(XWIN_PROTOCOL_PATH "Android")
+elseif(XWIN_PROTOCOL STREQUAL "UIKIT")
+    set(XWIN_PROTOCOL_PATH "UIKit")
+elseif(XWIN_PROTOCOL STREQUAL "WASM")
+    set(XWIN_PROTOCOL_PATH "WASM")
+elseif(XWIN_PROTOCOL STREQUAL "NOOP")
+    set(XWIN_PROTOCOL_PATH "Noop")
+else()
+    message( SEND_ERROR "XWIN_PROTOCOL can only be either AUTO, NOOP, WIN32, UWP, COCOA, APPKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, or WASM.")
+endif()
+
+message( STATUS "Building CrossWindow for " ${XWIN_PROTOCOL_PATH} )
 
 # =============================================================
 
@@ -61,9 +94,9 @@ file(GLOB_RECURSE FILE_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.mm
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_OS_PATH}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.h
 )
 
 # Solution Filters
@@ -77,8 +110,8 @@ endforeach()
 # Main files
 file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_HOME_DIRECTORY}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_OS_PATH}Main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_OS_PATH}Main.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_PROTOCOL_PATH}Main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_PROTOCOL_PATH}Main.mm
 )
 
 
@@ -101,41 +134,35 @@ function(xwin_add_executable targetProject targetSources)
 
     set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
 
-    if(XWIN_OS STREQUAL "WINDOWS")
+    if(XWIN_PROTOCOL STREQUAL "WIN32" OR XWIN_PROTOCOL STREQUAL "UWP")
         add_executable(
             ${targetProject}
             WIN32
             ${XWIN_FILES}
         )
-    elseif(XWIN_OS STREQUAL "MACOS")
+    elseif(XWIN_PROTOCOL STREQUAL "COCOA" OR XWIN_PROTOCOL STREQUAL "UIKIT")
         add_executable(
             ${targetProject}
             MACOSX_BUNDLE
             ${XWIN_FILES}
 
         )
-    elseif(XWIN_OS STREQUAL "IOS")
-        add_executable(
-            ${targetProject}
-            MACOSX_BUNDLE
-            ${XWIN_FILES}
-        )
-    elseif(XWIN_OS STREQUAL "LINUX")
+    elseif(XWIN_PROTOCOL STREQUAL "XCB")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(XWIN_OS STREQUAL "ANDROID")
+    elseif(XWIN_PROTOCOL STREQUAL "ANDROID")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(XWIN_OS STREQUAL "WASM")
+    elseif(XWIN_PROTOCOL STREQUAL "WASM")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
         )
-    elseif(XWIN_OS STREQUAL "NOOP")
+    elseif(XWIN_PROTOCOL STREQUAL "NOOP")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
@@ -156,11 +183,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sr
 # =============================================================
 
 # CrossWindow Dependencies
-
-if(XWIN_OS STREQUAL "MACOS" OR XWIN_OS STREQUAL "IOS")
+if(XWIN_PROTOCOL STREQUAL "COCOA")
   add_definitions("-x objective-c++")
   find_library(COCOA_LIBRARY Cocoa)
   target_link_libraries (${PROJECT_NAME} ${COCOA_LIBRARY})
+endif()
+if(XWIN_PROTOCOL STREQUAL "UIKIT")
+  add_definitions("-x objective-c++")
+  find_library(UIKIT_LIBRARY UIKit)
+  target_link_libraries (${PROJECT_NAME} ${UIKIT_LIBRARY})
 endif()
 # =============================================================
 
@@ -239,7 +270,7 @@ if (XWIN_TESTS)
         COMMAND Tests
     )
 
-    target_compile_definitions(Tests PRIVATE XWIN_${XWIN_OS}=1)
+    target_compile_definitions(Tests PRIVATE XWIN_${XWIN_PROTOCOL}=1)
     set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
 
 endif()
@@ -247,10 +278,4 @@ endif()
 # =============================================================
 
 # Preprocessor Definitions
-target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${XWIN_OS}=1)
-
-if(XWIN_OS STREQUAL "WINDOWS")
-target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_PROTOCOL=0)
-target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_WIN32=0)
-target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_WINDOWS_UMP=1)
-endif()
+target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${XWIN_PROTOCOL}=1)

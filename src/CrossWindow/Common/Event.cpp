@@ -5,44 +5,44 @@ namespace xwin
   Event::Event(EventType type) : type(type)
   {}
 
-  Event::Event(FocusData data) : type(EventType::Focus)
+  Event::Event(FocusData d) : type(EventType::Focus)
   {
-      _data.focus = data;
+      data.focus = d;
   }
 
-  Event::Event(ResizeData data) : type(EventType::Resize)
+  Event::Event(ResizeData d) : type(EventType::Resize)
   {
-      _data.resize = data;
+      data.resize = d;
   }
 
-  Event::Event(KeyboardData data) : type(EventType::Keyboard)
+  Event::Event(KeyboardData d) : type(EventType::Keyboard)
   {
-      _data.keyboard = data;
+      data.keyboard = d;
   }
 
-  Event::Event(MouseMoveData data) : type(EventType::MouseMoved)
+  Event::Event(MouseMoveData d) : type(EventType::MouseMoved)
   {
-      _data.mouseMoved = data;
+      data.mouseMoved = d;
   }
 
-  Event::Event(MouseInputData data) : type(EventType::MouseInput)
+  Event::Event(MouseInputData d) : type(EventType::MouseInput)
   {
-      _data.mouseInput = data;
+      data.mouseInput = d;
   }
 
-  Event::Event(MouseWheelData data) : type(EventType::MouseWheel)
+  Event::Event(MouseWheelData d) : type(EventType::MouseWheel)
   {
-      _data.mouseWheel = data;
+      data.mouseWheel = d;
   }
 
-  Event::Event(TouchData data) : type(EventType::Touch)
+  Event::Event(TouchData d) : type(EventType::Touch)
   {
-      _data.touch = data;
+      data.touch = d;
   }
 
-  Event::Event(GamepadData data) : type(EventType::Gamepad)
+  Event::Event(GamepadData d) : type(EventType::Gamepad)
   {
-      _data.gamepad = data;
+      data.gamepad = d;
   }
 
   Event::~Event()

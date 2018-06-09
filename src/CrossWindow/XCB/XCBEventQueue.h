@@ -9,7 +9,7 @@ namespace xwin
   /**
    * Events - https://xcb.freedesktop.org/tutorial/events/
    */ 
-  class LinuxEventQueue
+  class XCBEventQueue
   {
   public:
     bool update();
@@ -26,5 +26,5 @@ namespace xwin
     std::queue<Event> mQueue;
   };
 
-  typedef LinuxEventQueue EventQueueDelegate;
+  typedef XCBEventQueue EventQueueDelegate;
 }

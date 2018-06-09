@@ -509,6 +509,7 @@ namespace xwin
         Window* window;
 
     protected:
-        EventData _data;
+        EventData data;
+        double timestamp;
     };
 }
