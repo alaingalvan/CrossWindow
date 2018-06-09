@@ -8,7 +8,7 @@
 [![License][license-img]][license-url]
 [![Travis Tests][travis-img]][travis-url]
 [![Appveyor Tests][appveyor-img]][appveyor-url]
-[![CircleCI Tests][circleci-img]][circleci-url]
+<!--[![CircleCI Tests][circleci-img]][circleci-url]-->
 [![Coverage Tests][codecov-img]][codecov-url]
 
 A basic cross platform system abstraction library for managing windows and performing OS tasks. 

@@ -11,7 +11,6 @@ CTestTestfile.cmake
 *.tcl
 *_autogen
 *.dir
-Win32
 build/
 visualstudio/
 xcode/
