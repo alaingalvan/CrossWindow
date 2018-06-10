@@ -421,9 +421,6 @@ namespace xwin
      */
     struct GamepadData
     {
-        // Event timestamp
-        double timestamp;
-
         // If the gamepad is connected or not
         bool connected;
 
@@ -508,8 +505,10 @@ namespace xwin
         // Pointer to a CrossWindow window
         Window* window;
 
-    protected:
+        // Inner data of the event
         EventData data;
+
+        // Timestamp of event since application start
         double timestamp;
     };
 }

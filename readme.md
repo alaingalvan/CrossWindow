@@ -8,6 +8,7 @@
 [![License][license-img]][license-url]
 [![Travis Tests][travis-img]][travis-url]
 [![Appveyor Tests][appveyor-img]][appveyor-url]
+<!--[![CircleCI Tests][circleci-img]][circleci-url]-->
 [![Coverage Tests][codecov-img]][codecov-url]
 
 A basic cross platform system abstraction library for managing windows and performing OS tasks. 
@@ -184,7 +185,7 @@ void xmain(int argc, const char** argv)
             switch (event.type)
             {
             case xwin::EventType::Mouse:
-                const xwin::MouseData mouse = event.getData<xwin::MouseData>();
+                const xwin::MouseData mouse = event.data.mouse;
                 //mouse.x, mouse.y
                 break;
             case xwin::EventType::Close:
@@ -212,7 +213,7 @@ Be sure to have [CMake](https://cmake.org) Installed.
 |:-------------:|:-----------:|
 | `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
 | `XWIN_PROTOCOL` | The protocol to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `APPKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
-| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. Depending on if your platform supports multiple protocols, these will default to their automatic targets depending on the Operating System. If `XWIN_PROTOCOL` is set this option is ignored. |
+| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple protocols, the final protocol will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_PROTOCOL` is set this option is ignored. |
 
 We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for:
 

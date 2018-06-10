@@ -94,6 +94,7 @@ file(GLOB_RECURSE FILE_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Common/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/Main.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.mm
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/${XWIN_PROTOCOL_PATH}/*.h
@@ -114,8 +115,7 @@ file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_PROTOCOL_PATH}Main.mm
 )
 
-
-set(XMAIN_SOURCES ${MAIN_SOURCES} PARENT_SCOPE)
+set(XMAIN_SOURCES ${MAIN_SOURCES} CACHE STRING "Global Variable - The source files for the currently active protocol.")
 
 # =============================================================
 
@@ -128,17 +128,16 @@ endfunction()
 function(xwin_add_executable targetProject targetSources)
     message("Creating CrossWindow executable:")
 
-    foreach(source IN LISTS MAIN_SOURCES)
+    foreach(source IN LISTS XMAIN_SOURCES)
         source_group("" FILES "${source}")
     endforeach()
-
-    set(XWIN_FILES ${MAIN_SOURCES} ${targetSources})
+    set(XWIN_FILES "${XMAIN_SOURCES}" "${targetSources}")
 
     if(XWIN_PROTOCOL STREQUAL "WIN32" OR XWIN_PROTOCOL STREQUAL "UWP")
         add_executable(
             ${targetProject}
             WIN32
-            ${XWIN_FILES}
+            "${XWIN_FILES}"
         )
     elseif(XWIN_PROTOCOL STREQUAL "COCOA" OR XWIN_PROTOCOL STREQUAL "UIKIT")
         add_executable(
@@ -168,6 +167,9 @@ function(xwin_add_executable targetProject targetSources)
             ${XWIN_FILES}
         )
     endif()
+
+    target_compile_definitions(${targetProject} PRIVATE XWIN_${XWIN_PROTOCOL}=1)
+
 endfunction()
 
 # =============================================================
@@ -270,7 +272,6 @@ if (XWIN_TESTS)
         COMMAND Tests
     )
 
-    target_compile_definitions(Tests PRIVATE XWIN_${XWIN_PROTOCOL}=1)
     set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
 
 endif()
