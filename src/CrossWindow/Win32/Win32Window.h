@@ -34,14 +34,14 @@ namespace xwin
 
         LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
 
-    protected:
-        WindowDesc* mDesc;
-
         // Application Handle
-        HINSTANCE hInstance;
+        HINSTANCE hinstance;
 
         // Window Handle
-        HWND _hwnd;
+        HWND hwnd;
+
+    protected:
+        WindowDesc* mDesc;
 
         // Window State
         WNDCLASSEX wndClass;

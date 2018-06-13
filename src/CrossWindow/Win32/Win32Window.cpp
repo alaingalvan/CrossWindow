@@ -4,12 +4,12 @@ namespace xwin
 {
     Win32Window::Win32Window()
     {
-		_hwnd = nullptr;
+		hwnd = nullptr;
     };
 
     Win32Window::~Win32Window()
     {
-        if( _hwnd != nullptr)
+        if( hwnd != nullptr)
 		{
 			close();
 		}
@@ -19,7 +19,7 @@ namespace xwin
     {
         const XWinState& xwinState = getXWinState();
         
-        hInstance = xwinState.hInstance;
+        hinstance = xwinState.hInstance;
         HINSTANCE hPrevInstance = xwinState.hPrevInstance;
         LPSTR lpCmdLine = xwinState.lpCmdLine;
         int nCmdShow = xwinState.nCmdShow;
@@ -31,7 +31,7 @@ namespace xwin
         wndClass.lpfnWndProc = Win32Window::WindowProcStatic;
         wndClass.cbClsExtra = 0;
         wndClass.cbWndExtra = 0;
-        wndClass.hInstance = hInstance;
+        wndClass.hInstance = hinstance;
         wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
         wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
         wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
@@ -95,7 +95,7 @@ namespace xwin
         AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
 
         _windowBeingCreated = this;
-        _hwnd = CreateWindowEx(0,
+        hwnd = CreateWindowEx(0,
             mDesc->name.c_str(),
             mDesc->title.c_str(),
             dwStyle | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
@@ -105,10 +105,10 @@ namespace xwin
             windowRect.bottom - windowRect.top,
             NULL,
             NULL,
-            hInstance,
+            hinstance,
             NULL);
 
-        if (!_hwnd)
+        if (!hwnd)
         {
             printf("Could not create window!\n");
             fflush(stdout);
@@ -120,14 +120,14 @@ namespace xwin
             // Center on screen
             unsigned x = (GetSystemMetrics(SM_CXSCREEN) - windowRect.right) / 2;
             unsigned y = (GetSystemMetrics(SM_CYSCREEN) - windowRect.bottom) / 2;
-            SetWindowPos(_hwnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+            SetWindowPos(hwnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
         }
 
         if (mDesc->visible)
         {
-            ShowWindow(_hwnd, SW_SHOW);
-            SetForegroundWindow(_hwnd);
-            SetFocus(_hwnd);
+            ShowWindow(hwnd, SW_SHOW);
+            SetForegroundWindow(hwnd);
+            SetFocus(hwnd);
         }
 
         return true;
@@ -135,10 +135,10 @@ namespace xwin
 
     void Win32Window::close()
     {
-		if (_hwnd != nullptr)
+		if (hwnd != nullptr)
 		{
-			DestroyWindow(_hwnd);
-			_hwnd = nullptr;
+			DestroyWindow(hwnd);
+			hwnd = nullptr;
 		}
     }
 
@@ -148,7 +148,7 @@ namespace xwin
         if (_windowBeingCreated != nullptr)
         {
             _hwndMap.emplace(hwnd, _windowBeingCreated);
-            _windowBeingCreated->_hwnd = hwnd;
+            _windowBeingCreated->hwnd = hwnd;
             _this = _windowBeingCreated;
             _windowBeingCreated = nullptr;
         }
@@ -163,6 +163,6 @@ namespace xwin
 
     LRESULT Win32Window::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     {
-            return DefWindowProc(_hwnd, msg, wparam, lparam);
+            return DefWindowProc(hwnd, msg, wparam, lparam);
     }
 }
