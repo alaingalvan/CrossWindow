@@ -24,4 +24,8 @@ namespace xwin
     {
         return mDelegate.empty();
     }
+    EventQueueDelegate& EventQueue::getDelegate()
+    {
+        return mDelegate;
+    }
 }

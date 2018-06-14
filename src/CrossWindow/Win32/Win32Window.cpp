@@ -17,6 +17,7 @@ namespace xwin
 
     bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue)
     {
+        mEventQueue = &eventQueue;
         const XWinState& xwinState = getXWinState();
         
         hinstance = xwinState.hInstance;
@@ -163,6 +164,15 @@ namespace xwin
 
     LRESULT Win32Window::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     {
-            return DefWindowProc(hwnd, msg, wparam, lparam);
+        MSG message;
+        message.hwnd = hwnd;
+        message.lParam = lparam;
+        message.wParam = wparam;
+        message.message = msg;
+        message.time = 0;
+
+        mEventQueue->getDelegate().pushEvent(message);
+
+        return DefWindowProc(hwnd, msg, wparam, lparam);
     }
 }

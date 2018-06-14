@@ -24,10 +24,9 @@ namespace xwin
 
         bool empty();
 
+        void pushEvent(MSG msg);
 
     protected:
-
-        void pushEvent(MSG msg);
 
         std::queue<Event> mQueue;
 

@@ -41,6 +41,8 @@ namespace xwin
         HWND hwnd;
 
     protected:
+        EventQueue* mEventQueue;
+
         WindowDesc* mDesc;
 
         // Window State

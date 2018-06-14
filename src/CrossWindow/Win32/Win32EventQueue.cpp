@@ -13,13 +13,10 @@ namespace xwin
         {
             //Translate virtual key messages
             TranslateMessage(&msg);
-
-            //push to abstract event queue
-            pushEvent(msg);
-
-            //dispatch events to their coresponding windows
             DispatchMessage(&msg);
         }
+
+        // Update all windows
 
         return true;
     }

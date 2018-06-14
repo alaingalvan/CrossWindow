@@ -45,6 +45,8 @@ namespace xwin
 
         bool empty();
 
+        EventQueueDelegate& getDelegate();
+
         protected:
             std::vector<Window*> windows;
 
