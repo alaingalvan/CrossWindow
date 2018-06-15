@@ -7,7 +7,7 @@ namespace xwin
     close();
   }
 
-  bool NoopWindow::create(WindowDesc& desc, EventQueue& eventQueue)
+  bool NoopWindow::create(WindowDesc& desc, EventQueue& eventQueue, Window* parent)
   {
     return true;
   }

@@ -10,6 +10,8 @@
 
 namespace xwin
 {
+    class Window;
+
     /**
      * Currently Win32Window uses the Win32 windowing protocol for the best backwards
      * compatibility possible. 
@@ -26,7 +28,7 @@ namespace xwin
 
         ~Win32Window();
 
-        bool create(WindowDesc& desc, EventQueue& eventQueue);
+        bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 
         void close();
 
@@ -41,6 +43,8 @@ namespace xwin
         HWND hwnd;
 
     protected:
+        Window* mParent;
+
         EventQueue* mEventQueue;
 
         WindowDesc* mDesc;

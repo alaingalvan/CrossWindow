@@ -6,6 +6,8 @@
 
 namespace xwin
 {
+	class Window;
+
 	class NoopWindow
 	{
 		public:

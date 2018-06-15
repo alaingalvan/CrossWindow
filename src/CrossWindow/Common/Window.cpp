@@ -14,7 +14,7 @@ namespace xwin
     bool Window::create(const WindowDesc& desc, EventQueue& queue)
     {
         mDesc = desc;
-        return mDelegate.create(mDesc, queue);
+        return mDelegate.create(mDesc, queue, this);
     }
 
     void Window::close()

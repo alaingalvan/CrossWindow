@@ -479,23 +479,23 @@ namespace xwin
     {
     public:
 
-        Event(EventType type);
+        Event(EventType type, Window* window);
 
-        Event(FocusData data);
+        Event(FocusData data, Window* window);
 
-        Event(ResizeData data);
+        Event(ResizeData data, Window* window);
 
-        Event(KeyboardData data);
+        Event(KeyboardData data, Window* window);
 
-        Event(MouseMoveData data);
+        Event(MouseMoveData data, Window* window);
 
-        Event(MouseInputData data);
+        Event(MouseInputData data, Window* window);
 
-        Event(MouseWheelData data);
+        Event(MouseWheelData data, Window* window);
 
-        Event(TouchData data);
+        Event(TouchData data, Window* window);
 
-        Event(GamepadData data);
+        Event(GamepadData data, Window* window);
 
         ~Event();
 
@@ -507,8 +507,5 @@ namespace xwin
 
         // Inner data of the event
         EventData data;
-
-        // Timestamp of event since application start
-        double timestamp;
     };
 }

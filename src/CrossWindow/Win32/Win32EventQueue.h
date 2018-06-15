@@ -24,7 +24,7 @@ namespace xwin
 
         bool empty();
 
-        void pushEvent(MSG msg);
+        void pushEvent(MSG msg, Window* window);
 
     protected:
 
