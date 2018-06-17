@@ -46,7 +46,7 @@ namespace xwin
 		}
 	}
 	
-	bool MacWindow::create(const WindowDesc& desc, EventQueue& eventQueue)
+	bool MacWindow::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
 	{
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 

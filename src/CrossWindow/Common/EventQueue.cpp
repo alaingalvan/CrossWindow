@@ -6,7 +6,7 @@ namespace xwin
     {
     }
     
-    bool EventQueue::update()
+    void EventQueue::update()
     {
         return mDelegate.update();
     }

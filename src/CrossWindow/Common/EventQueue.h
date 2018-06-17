@@ -37,7 +37,7 @@ namespace xwin
         public:
         EventQueue();
 
-        bool update();
+        void update();
 
         const Event& front();
 

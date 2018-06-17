@@ -80,7 +80,7 @@ namespace xwin
         if (mDesc->fullscreen)
         {
             dwExStyle = WS_EX_APPWINDOW;
-            dwStyle = WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+            dwStyle = WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
         }
         else
         {
@@ -100,7 +100,7 @@ namespace xwin
         hwnd = CreateWindowEx(0,
             mDesc->name.c_str(),
             mDesc->title.c_str(),
-            dwStyle | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+            dwStyle,
             0,
             0,
             windowRect.right - windowRect.left,
@@ -133,6 +133,18 @@ namespace xwin
         }
 
         return true;
+    }
+
+    void Win32Window::updateDesc(WindowDesc & desc)
+    {
+        windowRect.left = mDesc->x;
+        windowRect.top = mDesc->y;
+        windowRect.right = (long)desc.width;
+        windowRect.bottom =(long)desc.height;
+
+        AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
+
+        SetWindowPos(hwnd, 0, desc.x, desc.y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     }
 
     void Win32Window::close()

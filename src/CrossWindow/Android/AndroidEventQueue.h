@@ -12,7 +12,7 @@ namespace xwin
   class AndroidEventQueue
   {
   public:
-    bool update();
+    void update();
 
     const Event &front();
 

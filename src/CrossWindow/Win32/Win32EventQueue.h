@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../Common/Event.h"
-
 #include <Windows.h>
 
+#include "../Common/Event.h"
+
 #include <queue>
-#include <unordered_map>
+
 
 namespace xwin
 {
@@ -16,7 +16,7 @@ namespace xwin
     public:
         Win32EventQueue();
 
-        bool update();
+        void update();
 
         const Event& front();
 
@@ -29,8 +29,6 @@ namespace xwin
     protected:
 
         std::queue<Event> mQueue;
-
-        std::unordered_map<HWND, Window*> mHWNDToWindowMap;
 
         /**
          * Virtual Key Codes in Win32 are an unsigned char:

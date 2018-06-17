@@ -15,7 +15,7 @@ namespace mwin
 	{
 		XCBWindow();
 
-		bool create(WindowDesc& desc, EventQueue& eventQueue);
+		bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 	};
 	
 	 typedef XCBWindow WindowDelegate;

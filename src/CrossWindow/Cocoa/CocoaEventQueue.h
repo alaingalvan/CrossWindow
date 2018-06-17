@@ -18,7 +18,7 @@ namespace xwin
   class MacOSEventQueue
   {
   public:
-    bool update();
+    void update();
 
     const Event &front();
 

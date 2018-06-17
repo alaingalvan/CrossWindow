@@ -8,6 +8,8 @@
 
 namespace xwin
 {
+	class Window;
+
 	class MacWindow
 	{
 	public:
@@ -15,7 +17,7 @@ namespace xwin
 		
 		~MacWindow();
 		
-		bool create(const WindowDesc& desc, EventQueue& eventQueue);
+		bool create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 		
 		void close();
 		

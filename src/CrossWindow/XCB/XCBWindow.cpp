@@ -2,7 +2,7 @@
 
 namespace xwin
 {
-  bool XCBWindow::create(WindowDesc& desc, EventQueue& eventQueue)
+  bool XCBWindow::create(WindowDesc& desc, EventQueue& eventQueue, Window* parent)
   {
     uint32_t value_mask, value_list[32];
 

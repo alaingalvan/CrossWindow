@@ -6,25 +6,29 @@
 
 namespace xwin
 {
-  /**
-   * Events - https://xcb.freedesktop.org/tutorial/events/
-   */ 
-  class XCBEventQueue
-  {
-  public:
-    bool update();
+    class Window;
 
-    const Event &front();
+    /**
+     * Events - https://xcb.freedesktop.org/tutorial/events/
+     */
+    class XCBEventQueue
+    {
+    public:
+        XCBEventQueue();
 
-    void pop();
+        void update();
 
-    bool empty();
+        const Event &front();
 
-  protected:
-    void pushEvent(xcb_generic_event_t me);
+        void pop();
 
-    std::queue<Event> mQueue;
-  };
+        bool empty();
 
-  typedef XCBEventQueue EventQueueDelegate;
+    protected:
+        void pushEvent(xcb_generic_event_t me);
+
+        std::queue<Event> mQueue;
+    };
+
+    typedef XCBEventQueue EventQueueDelegate;
 }

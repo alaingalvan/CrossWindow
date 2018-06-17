@@ -30,6 +30,8 @@ namespace xwin
 
         bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 
+        void updateDesc(WindowDesc& desc);
+
         void close();
 
         static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);

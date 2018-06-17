@@ -13,7 +13,7 @@ namespace xwin
 		public:
 		~NoopWindow();
 		
-		bool create(WindowDesc& desc, EventQueue& eventQueue);
+		bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 
 		void close();
 	};

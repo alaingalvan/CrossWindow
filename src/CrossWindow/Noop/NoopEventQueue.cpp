@@ -6,9 +6,8 @@ namespace xwin
   {
   }
 
-  bool NoopEventQueue::update()
+  void NoopEventQueue::update()
   {
-    return false;
   }
 
   const Event& NoopEventQueue::front()

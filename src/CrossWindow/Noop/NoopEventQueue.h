@@ -9,7 +9,7 @@ namespace xwin
     public:
     NoopEventQueue();
 
-    bool update();
+    void update();
 
     const Event& front();
 
@@ -18,7 +18,7 @@ namespace xwin
 	bool empty();
 
     protected:
-    Event e = Event(EventType::EventTypeMax);
+    Event e = Event(EventType::EventTypeMax, nullptr);
   };
 
   typedef NoopEventQueue EventQueueDelegate;
