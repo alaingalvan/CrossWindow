@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "CrossWindow/CrossWindow.h"
 
+#include <vector>
 
 TEST(EventQueue, Update)
 {
@@ -18,14 +19,12 @@ TEST(EventQueue, Update)
 
 TEST(Events, Data)
 {
-    {
-        xwin::Event e[1] =
-        {
-            xwin::Event(xwin::ResizeData(1280, 720))
-        };
 
-        //xwin::ResizeData d = e[0].getData();
-    }
-    // Event data should dealloc
+    std::vector<xwin::Event> e =
+    {
+        xwin::Event(xwin::EventType::Create, nullptr),
+        xwin::Event(xwin::ResizeData(1280, 720), nullptr)
+    };
+
 }
 
