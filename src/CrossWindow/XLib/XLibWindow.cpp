@@ -37,5 +37,8 @@ namespace xwin
 XInternAtom(demo->display, "WM_DELETE_WINDOW", False);
   }
 
-
+  bool XLibWindow::destroy()
+  {
+    XDestroyWindow(gfx::GetXDisplay(), window);
+  }
 }

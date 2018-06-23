@@ -198,7 +198,10 @@ endif()
 if(XWIN_PROTOCOL STREQUAL "UIKIT")
   add_definitions("-x objective-c++")
   find_library(UIKIT_LIBRARY UIKit)
-  target_link_libraries (${PROJECT_NAME} ${UIKIT_LIBRARY})
+  target_link_libraries (
+      ${PROJECT_NAME}
+      ${UIKIT_LIBRARY}
+      )
 endif()
 # =============================================================
 

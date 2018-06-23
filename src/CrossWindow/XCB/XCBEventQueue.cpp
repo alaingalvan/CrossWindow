@@ -10,6 +10,8 @@ namespace xwin
 
     bool XCBEventQueue::update()
     {
+         xcb_flush(connection);
+         xcb_wait_for_event(connection);
         xcb_generic_event_t* e;
         while (e = xcb_poll_for_event(mConnection)) {
             pushEvent(e);
