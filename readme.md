@@ -14,11 +14,11 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ## Features
 
-- 🌟 Simple Window Creation
+- 🌟 Simple Window, File Dialog, and Message Dialog Creation
 
 - ⌨️ 🖱️ 👆 🎮 Basic Input (Keyboard, Mouse, Touch, and Gamepad)
 
-- 👻 Platform specific features (Mac Transparency, Touch Bar, Mobile Accelerometer, etc.)
+- 👻 Platform specific features (Mac Transparency, Mobile Accelerometer, etc.)
 
 - 💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**)
 
@@ -47,7 +47,7 @@ First add the repo as a submodule in your dependencies folder such as `external/
 
 ```bash
 cd external
-git submodule add https://github.com/alaingalvan/CrossWindow.git
+git submodule add https://github.com/alaingalvan/crosswindow.git
 ```
 
 Then in your `CMakeLists.txt` file, include the following:
@@ -181,17 +181,14 @@ void xmain(int argc, const char** argv)
         {
             const xwin::Event& event = eventQueue.front();
 
-            switch (event.type)
+            if (event.type == xwin::EventType::Mouse)
             {
-            case xwin::EventType::Mouse:
                 const xwin::MouseData mouse = event.data.mouse;
-                //mouse.x, mouse.y
-                break;
-            case xwin::EventType::Close:
+            }
+            if (event.type == xwin::EventType::Close)
+            {
                 window.close();
-                break;
-            default:
-                // Do nothing
+                isRunning = false;
             }
 
             eventQueue.pop();
@@ -241,9 +238,9 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 ## Project Goals
 
-- [ ] ❎ Windows 10 Apps / Window 10 Arm / Xbox One support with Universal Windows Platform (WMP).
-
 - [ ] 🚜 XLib / Wayland / XLib support for Linux
+
+- [ ] ❎ Windows 10 Apps / Window 10 Arm / Xbox One support with Universal Windows Platform (WMP).
 
 - [ ] 🍭 Linux flavor OS targets (`XWIN_OS` can be `UBUNTU`, `DEBIAN`, `FEDORA`, etc.)
 
