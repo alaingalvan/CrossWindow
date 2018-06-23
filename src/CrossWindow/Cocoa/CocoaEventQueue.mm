@@ -1,9 +1,9 @@
-#include "MacOSEventQueue.h"
+#include "CocoaEventQueue.h"
 #import <Cocoa/Cocoa.h>
 
 namespace xwin
 {
-	void MacOSEventQueue:: update()
+	void MacOSEventQueue::update()
 	{
 		// Update Application
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
@@ -23,7 +23,7 @@ namespace xwin
 					case NSEventTypeKeyDown:
 					{
             // Check single characters
-						DigitalInput d = DigitalInput::DigitalInputMax;
+						Key d = Key::KeysMax;
 						NSString* characters = [e characters];
 						if ([characters length] > 0)
 						{
@@ -31,11 +31,11 @@ namespace xwin
 							{
 								case 'a':
 								case 'A':
-									d = DigitalInput::A;
+									d = Key::A;
 									break;
 								case 'b':
 								case 'B':
-									d = DigitalInput::B;
+									d = Key::B;
 									break;
 								default:
 									break;
@@ -51,18 +51,18 @@ namespace xwin
 						switch([e keyCode])
 						{
 							case 0x7B:
-								d = DigitalInput::Left;
+								d = Key::Left;
 								break;
 							case 0x7C:
-								d = DigitalInput::Right;
+								d = Key::Right;
 								break;
 							default:
 								break;
 						}
 
-						if (d != DigitalInput::DigitalInputMax)
+						if (d != Key::KeysMax)
 						{
-							 mQueue.emplace(xwin::EventType::DigitalInput, new DigitalInputData(d));
+							mQueue.emplace(KeyboardData(d, ButtonState::Pressed, ModifierState()), nullptr);
 						}
 					}
 						break;
@@ -89,7 +89,7 @@ namespace xwin
 						break;
 					case NSEventTypeScrollWheel:
 						[e deltaY];
-						mQueue.emplace(xwin::EventType::Mouse);
+						
 						break;
 					default:
 						break;
@@ -102,6 +102,21 @@ namespace xwin
 			
 		}
 		[nsApp updateWindows];
+	}
+	
+	const Event& MacOSEventQueue::front()
+	{
+		return mQueue.front();
+	}
+	
+	void MacOSEventQueue::pop()
+	{
+		mQueue.pop();
+	}
+	
+	bool MacOSEventQueue::empty()
+	{
+		return mQueue.empty();
 	}
 	
 	

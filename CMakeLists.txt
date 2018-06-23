@@ -188,7 +188,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sr
 if(XWIN_PROTOCOL STREQUAL "COCOA")
   add_definitions("-x objective-c++")
   find_library(COCOA_LIBRARY Cocoa)
-  target_link_libraries (${PROJECT_NAME} ${COCOA_LIBRARY})
+  find_library(QUARTZ_LIBRARY QuartzCore)
+  target_link_libraries(
+    ${PROJECT_NAME}
+    ${COCOA_LIBRARY}
+    ${QUARTZ_LIBRARY}
+)
 endif()
 if(XWIN_PROTOCOL STREQUAL "UIKIT")
   add_definitions("-x objective-c++")

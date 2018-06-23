@@ -10,12 +10,12 @@ namespace xwin
 {
 	class Window;
 
-	class MacWindow
+	class CocoaWindow
 	{
 	public:
-		MacWindow();
+		CocoaWindow();
 		
-		~MacWindow();
+		~CocoaWindow();
 		
 		bool create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 		
@@ -23,15 +23,27 @@ namespace xwin
 		
 		bool eventLoop();
 		
+		enum class LayerType
+		{
+			Metal,
+			LayerTypeMax
+		};
+		
+		// Set the type of this window's view layer
+		void setLayer(LayerType type = LayerType::Metal);
+		
+		//XWinWindow*
+		void* window;
+		
+		//XWinView*
+		void* view;
+		
+		//Any Layer Type
+		void* layer;
+		
 	protected:
 		//NSString*
 		void* mTitle;
-
-		//XWinWindow*
-		void* mWindow;
-		
-		//XWinView*
-		void* mView;
 
 		/**
 		 * MacOS Keycodes: 
@@ -42,7 +54,7 @@ namespace xwin
 
 	};
 	
-	typedef MacWindow WindowDelegate;
+	typedef CocoaWindow WindowDelegate;
 }
 
 

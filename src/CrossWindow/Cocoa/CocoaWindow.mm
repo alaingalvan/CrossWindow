@@ -1,5 +1,6 @@
-#include "MacOSWindow.h"
+#include "CocoaWindow.h"
 #import <Cocoa/Cocoa.h>
+#import <QuartzCore/CAMetalLayer.h>
 
 @interface XWinWindow : NSWindow
 {
@@ -11,10 +12,9 @@
 @end
 
 @interface XWinView : NSView
-{
-@public
 - (BOOL)	acceptsFirstResponder;
 - (BOOL)	isOpaque;
+
 @end
 
 @implementation XWinView
@@ -34,19 +34,19 @@
 
 namespace xwin
 {	
-	MacWindow::MacWindow()
+	CocoaWindow::CocoaWindow()
 	{
 	}
 	
-	MacWindow::~MacWindow()
+	CocoaWindow::~CocoaWindow()
 	{
-		if( mWindow != nullptr)
+		if( window != nullptr)
 		{
 			close();
 		}
 	}
 	
-	bool MacWindow::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
+	bool CocoaWindow::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
 	{
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 
@@ -54,7 +54,7 @@ namespace xwin
 		NSWindowStyleMask styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
 		
 		// Setup NSWindow
-		mWindow = [[XWinWindow alloc]
+		window = [[XWinWindow alloc]
 							initWithContentRect: rect
 							styleMask: styleMask
 							backing: NSBackingStoreBuffered
@@ -62,27 +62,41 @@ namespace xwin
 
 		mTitle = [NSString stringWithCString:desc.title.c_str() 
                                    encoding:[NSString defaultCStringEncoding]];
-		[(XWinWindow*)mWindow setTitle: (NSString*)mTitle];
-		[(XWinWindow*)mWindow center];
+		[(XWinWindow*)window setTitle: (NSString*)mTitle];
+		[(XWinWindow*)window center];
 		
 		NSPoint point = NSMakePoint(desc.x, desc.y);
-		[(XWinWindow*)mWindow setFrameOrigin: point];
+		[(XWinWindow*)window setFrameOrigin: point];
 		
 		// Setup NSView
-		mView = [[XWinView alloc] initWithFrame:rect];
-		[(XWinView*)mView setHidden:NO];
-		[(XWinView*)mView setNeedsDisplay:YES];
-		[(XWinWindow*)mWindow setContentView:(XWinView*)mView];
-		[(XWinWindow*)mWindow makeKeyAndOrderFront:nsApp];
-
+		view = [[XWinView alloc] initWithFrame:rect];
+		[(XWinView*)view setHidden:NO];
+		[(XWinView*)view setNeedsDisplay:YES];
+		[(XWinWindow*)window setContentView:(XWinView*)view];
+		[(XWinWindow*)window makeKeyAndOrderFront:nsApp];
+		[(XWinView*)view setWantsLayer:YES];
+		
+		eventQueue.update();
+		
 	return true;
 	}
 	
-	void MacWindow::close()
+	void CocoaWindow::close()
 	{
-		[(XWinWindow*)mWindow release];
-		[(XWinView*)mView release];
-		mWindow = nullptr;
-		mView = nullptr;
+		[(XWinWindow*)window release];
+		[(XWinView*)view release];
+		[(CALayer*)layer release];
+		
+		window = nullptr;
+		view = nullptr;
+		layer = nullptr;
+	}
+	
+	void CocoaWindow::setLayer(LayerType type)
+	{
+		[(XWinView*)view setWantsLayer:YES];
+		
+		layer = [[CAMetalLayer alloc] init];
+							   [(XWinView*)view setLayer:(CAMetalLayer*)layer];
 	}
 }
