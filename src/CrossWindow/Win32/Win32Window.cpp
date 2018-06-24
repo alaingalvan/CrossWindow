@@ -156,6 +156,18 @@ namespace xwin
 		}
     }
 
+    /*
+    void Win32Window::setTitle(std::string title)
+    {
+        std::wstring windowText = m_title + L": " + text;
+	    SetWindowText(Win32Application::GetHwnd(), windowText.c_str());
+    }
+
+    void Win32Window::setPosition(unsigned x, unsigned y)
+    {
+        SetWindowPos(hwnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+    */
     LRESULT CALLBACK Win32Window::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     {
         Win32Window* _this;
