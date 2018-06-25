@@ -6,7 +6,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 #ifdef _DEBUG
     AllocConsole();
-    freopen("CONOUT$", "w+", stdout);
+	FILE* pCout;
+    freopen_s(&pCout, "CONOUT$", "w+", stdout);
 #endif
     //setup cmdline
     MSG msg;    // message
@@ -58,6 +59,10 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         free(argv);
     }
+
+#ifdef _DEBUG
+	FreeConsole();
+#endif
 
     return 0;
 }
