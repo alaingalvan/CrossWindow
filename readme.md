@@ -54,7 +54,7 @@ Then in your `CMakeLists.txt` file, include the following:
 
 ```cmake
 # ⬇ Add your dependency:
-add_subdirectories(external/CrossWindow)
+add_subdirectories(external/crosswindow)
 
 # ❎ When creating your executable use CrossWindow's abstraction function:
 xwin_add_executable(
