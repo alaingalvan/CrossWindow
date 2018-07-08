@@ -199,7 +199,7 @@ void xmain(int argc, const char** argv)
 
 This `xmain` function will be called from a *platform specific main function* that will be included in your main project by CMake. If you ever need to access something from the platform specific main function for whatever reason, you'll find it in `xwin::getXWinState()`.
 
-For more examples visit the [Documentation](/docs) or try out the [demos](https://github.com/alaingalvan/CrossWindow-Demos).
+For more examples visit the [Documentation](/docs) or try out the [examples](https://github.com/alaingalvan/crosswindow-demos).
 
 ## Development
 
@@ -216,10 +216,10 @@ First install [Git](https://git-scm.com/downloads), then open any terminal such 
 
 ```bash
 # 🐑 Clone the repo
-git clone https://github.com/alaingalvan/gpu-zen-2-baker --recurse-submodules
+git clone https://github.com/alaingalvan/crosswindow.git --recurse-submodules
 
 # 💿 go inside the folder
-cd gpu-zen-2-baker
+cd crosswindow
 
 # 👯 If you forget to `recurse-submodules` you can always run:
 git submodule update --init
@@ -250,28 +250,6 @@ cmake .. -DXWIN_TESTS=ON
 
 # 🔨 Build on any platform:
 cmake --build .
-```
-
-
-```bash
-# 👯 Clone the repo
-git clone https://github.com/alaingalvan/crosswindow.git --recurse-submodules
-cd crosswindow
-
-# 🖼️ To build your Visual Studio solution on Windows x64
-mkdir visualstudio
-cd visualstudio
-cmake .. -DXWIN_TESTS=ON -A x64
-
-# 🍎 To build your XCode project On Mac OS for Mac OS / iOS
-mkdir xcode
-cd xcode
-cmake .. -DXWIN_TESTS=ON -G Xcode
-
-# 🐧 To build your makefile on Linux
-mkdir make
-cd make
-cmake .. -DXWIN_TESTS=ON
 ```
 
 Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete the generated files and run Cmake again.
