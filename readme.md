@@ -211,7 +211,47 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | `XWIN_PROTOCOL` | The protocol to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `APPKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
 | `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple protocols, the final protocol will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_PROTOCOL` is set this option is ignored. |
 
-We would recommend making a folder where solution files will be built to to avoid making your file system look too messy, such as `visualstudio/` or `xcode/` depending on the platform you're building for:
+
+First install [Git](https://git-scm.com/downloads), then open any terminal such as [Hyper](https://hyper.is/) in any folder and type:
+
+```bash
+# 🐑 Clone the repo
+git clone https://github.com/alaingalvan/gpu-zen-2-baker --recurse-submodules
+
+# 💿 go inside the folder
+cd gpu-zen-2-baker
+
+# 👯 If you forget to `recurse-submodules` you can always run:
+git submodule update --init
+
+```
+
+From there we'll need to set up our build files. Be sure to have the following installed:
+
+- [CMake](https://cmake.org/)
+
+- An IDE such as [Visual Studio](https://visualstudio.microsoft.com/downloads/), [XCode](https://developer.apple.com/xcode/), or a compiler such as [GCC](https://gcc.gnu.org/).
+
+Then type the following in your terminal from the repo folder:
+
+```bash
+# 👷 Make a build folder
+mkdir build
+cd build
+
+# 🖼️ To build your Visual Studio solution on Windows x64
+cmake .. -A x64 -DXWIN_TESTS=ON
+
+# 🍎 To build your XCode project on Mac OS
+cmake .. -G Xcode -DXWIN_TESTS=ON
+
+# 🐧 To build your .make file on Linux
+cmake .. -DXWIN_TESTS=ON
+
+# 🔨 Build on any platform:
+cmake --build .
+```
+
 
 ```bash
 # 👯 Clone the repo
