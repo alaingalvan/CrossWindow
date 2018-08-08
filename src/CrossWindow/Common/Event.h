@@ -290,12 +290,27 @@ namespace xwin
     */
     struct MouseMoveData
     {
+        // Current x position relative to active window
         unsigned x;
+
+        // Current y position relative to active window
         unsigned y;
-        ModifierState modifiers;
+
+        // Current global x position
+        unsigned screenx;
+
+        // Current in global y position
+        unsigned screeny;
+
+        // Change in x relative to previous event, used for FPS motion
+        int deltax;
+
+        // Change in y relative to previous event, used for FPS motion
+        int deltay;
+
         static const EventType type = EventType::MouseMoved;
 
-        MouseMoveData(unsigned x, unsigned y, ModifierState modifiers);
+        MouseMoveData(unsigned x, unsigned y, unsigned screenx, unsigned screeny, int deltax, int deltay);
     };
 
     enum MouseInput

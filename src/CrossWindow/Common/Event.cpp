@@ -71,7 +71,7 @@ namespace xwin
   {
   }
 
-  MouseMoveData::MouseMoveData(unsigned x, unsigned y, ModifierState modifiers) : x(x), y(y), modifiers(modifiers)
+  MouseMoveData::MouseMoveData(unsigned x, unsigned y, unsigned screenx, unsigned screeny, int deltax, int deltay) : x(x), y(y), screenx(screenx), screeny(screeny), deltax(deltax), deltay(deltay)
   {
   }
 

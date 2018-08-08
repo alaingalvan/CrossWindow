@@ -1,5 +1,5 @@
 #include "Win32EventQueue.h"
-
+#include "../Common/Window.h"
 namespace xwin
 {
     Win32EventQueue::Win32EventQueue()
@@ -191,11 +191,71 @@ namespace xwin
         }
         case WM_MOUSEMOVE:
         {
+            HWND hwnd = window->getDelegate().hwnd;
+                        // Extract the mouse local coordinates
+            int x = static_cast<short>(LOWORD(msg.lParam));
+            int y = static_cast<short>(HIWORD(msg.lParam));
+
+            // Get the client area of the window
+            RECT area;
+            GetClientRect(hwnd, &area);
+            /*
+            // Capture the mouse in case the user wants to drag it outside
+            if ((msg.wParam & (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2)) == 0)
+            {
+                // Only release the capture if we really have it
+                if (GetCapture() == hwnd)
+                    ReleaseCapture();
+            }
+            else if (GetCapture() != hwnd)
+            {
+                // Set the capture to continue receiving mouse events
+                SetCapture(hwnd);
+            }
+
+            // If the cursor is outside the client area...
+            if ((x < area.left) || (x > area.right) || (y < area.top) || (y > area.bottom))
+            {
+                // and it used to be inside, the mouse left it.
+                if (m_mouseInside)
+                {
+                    m_mouseInside = false;
+
+                    // No longer care for the mouse leaving the window
+                    setTracking(false);
+
+                    // Generate a MouseLeft event
+                    Event event;
+                    event.type = Event::MouseLeft;
+                    pushEvent(event);
+                }
+            }
+            else
+            {
+                // and vice-versa
+                if (!m_mouseInside)
+                {
+                    m_mouseInside = true;
+
+                    // Look for the mouse leaving the window
+                    setTracking(true);
+
+                    // Generate a MouseEntered event
+                    Event event;
+                    event.type = Event::MouseEntered;
+                    pushEvent(event);
+                }
+            }*/
+            
             mQueue.emplace(
                 xwin::MouseMoveData(
-                    static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF),
-                    static_cast<unsigned>((UINT64)msg.lParam >> 16),
-                    xwin::ModifierState()),
+                    static_cast<unsigned>(area.left <= x && x <= area.right ? x - area.left : 0xFFFFFFFF),
+                    static_cast<unsigned>(area.top <= y && y <= area.bottom ? y - area.top : 0xFFFFFFFF),
+                    static_cast<unsigned>(x),
+                    static_cast<unsigned>(y),
+                    0,
+                    0
+                    ),
                 window
             );
             break;
