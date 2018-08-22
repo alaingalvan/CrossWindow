@@ -30,13 +30,13 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 🍎 Mac (Cocoa)
 
-- 📱 iOS (AppKit)
+- 📱 iOS (AppKit) (In Progress)
 
-- 🐧 Linux (XCB<!--, XLib, Mir, or Wayland-->)
+- 🐧 Linux (XCB<!--, XLib, Mir, or Wayland-->) (In Progress)
 
-- 🤖 Android
+- 🤖 Android (In Progress)
 
-- 🌐 WebAssembly
+- 🌐 WebAssembly (In Progress)
 
 - ❌ Noop (Headless)
 
@@ -256,7 +256,7 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 ## Project Goals
 
-- [ ] 🚜 XLib / Wayland / XLib support for Linux
+- [ ] 🚜 XLib / Wayland support for Linux
 
 - [ ] ❎ Windows 10 Apps / Window 10 Arm / Xbox One support with Universal Windows Platform (WMP).
 
