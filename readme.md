@@ -74,20 +74,17 @@ target_link_libraries(
 Fill out the rest of your `CMakeLists.txt` file with any other source files and dependencies you may have, then in your project root:
 
 ```bash
+# 👷 Make a build folder
+mkdir build
+cd build
 
 # 🖼️ To build your Visual Studio solution on Windows x64
-mkdir visualstudio
-cd visualstudio
 cmake .. -A x64
 
 # 🍎 To build your XCode project On Mac OS for Mac OS / iOS
-mkdir xcode
-cd xcode
 cmake .. -G Xcode
 
 # 🐧 To build your .make file on Linux
-mkdir make
-cd make
 cmake ..
 
 # 🔨 Build on any platform:
