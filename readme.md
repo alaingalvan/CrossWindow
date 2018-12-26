@@ -22,7 +22,7 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**)
 
-- 😎 Modern and well maintained C++ 11, with a promise to evolve as the standard evolves. (C++ Modules, Package Managers, etc.)
+- 😎 Well maintained C++ 11, with a promise to evolve as the standard evolves. (C++ Modules, Package Managers, etc.)
 
 ### Supported Platforms
 
