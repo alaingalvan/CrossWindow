@@ -17,6 +17,16 @@ namespace xwin
         return mDelegate.create(mDesc, queue, this);
     }
 
+    void Window::setMousePosition(unsigned x, unsigned y)
+    {
+        mDelegate.setMousePosition(x, y);
+    }
+
+    Vec2 Window::getCurrentDisplaySize()
+    {
+        return mDelegate.getCurrentDisplaySize();
+    }
+
     void Window::close()
     {
         mDelegate.close();

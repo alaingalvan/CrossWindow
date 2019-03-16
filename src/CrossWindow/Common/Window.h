@@ -47,6 +47,12 @@ namespace xwin
          */ 
         bool create(const WindowDesc& desc, EventQueue& queue);
 
+        void showMouse(bool show);
+
+        void setMousePosition(unsigned x, unsigned y);
+
+        Vec2 getCurrentDisplaySize();
+
         /**
          * Destroy this window.
          */

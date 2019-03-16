@@ -32,6 +32,22 @@ namespace xwin
 
         void updateDesc(WindowDesc& desc);
 
+        void Win32Window::setTitle(std::string title);
+
+        void Win32Window::setPosition(unsigned x, unsigned y);
+
+        void Win32Window::setMousePosition(unsigned x, unsigned y);
+
+        void Win32Window::showMouse(bool show);
+
+        void Win32Window::setWindowSize(unsigned width, unsigned height);
+
+        Vec2 Win32Window::getCurrentDisplaySize();
+
+        Vec2 Win32Window::getWindowSize();
+
+        std::string Win32Window::getTitle();
+
         void close();
 
         static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -63,6 +79,7 @@ namespace xwin
         // Window Behavior
         DWORD dwExStyle;
         DWORD dwStyle;
+
     };
 
     static thread_local Win32Window* _windowBeingCreated = nullptr;
