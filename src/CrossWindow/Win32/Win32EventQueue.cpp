@@ -253,8 +253,8 @@ namespace xwin
                     static_cast<unsigned>(area.top <= y && y <= area.bottom ? y - area.top : 0xFFFFFFFF),
                     static_cast<unsigned>(x),
                     static_cast<unsigned>(y),
-                    static_cast<unsigned>(x - prevMouseX),
-                    static_cast<unsigned>(y - prevMouseY)
+                    static_cast<int>(x - prevMouseX),
+                    static_cast<int>(y - prevMouseY)
                     ),
                 window
             );
