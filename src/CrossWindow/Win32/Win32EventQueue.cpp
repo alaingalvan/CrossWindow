@@ -253,11 +253,13 @@ namespace xwin
                     static_cast<unsigned>(area.top <= y && y <= area.bottom ? y - area.top : 0xFFFFFFFF),
                     static_cast<unsigned>(x),
                     static_cast<unsigned>(y),
-                    0,
-                    0
+                    static_cast<unsigned>(x - prevMouseX),
+                    static_cast<unsigned>(y - prevMouseY)
                     ),
                 window
             );
+            prevMouseX = static_cast<unsigned>(x);
+            prevMouseY = static_cast<unsigned>(y);
             break;
         }
         case WM_KEYDOWN:

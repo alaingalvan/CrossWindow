@@ -28,9 +28,9 @@ namespace xwin
     WindowDesc();
   };
 
-    struct Vec2
+    struct UVec2
     {
-        float x;
-        float y;
+        unsigned x;
+        unsigned y;
     };
 }

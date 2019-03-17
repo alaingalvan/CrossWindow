@@ -177,13 +177,13 @@ void Win32Window::setWindowSize(unsigned width, unsigned height)
     AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
 }
 
-Vec2 Win32Window::getCurrentDisplaySize()
+UVec2 Win32Window::getCurrentDisplaySize()
 {
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    Vec2 r;
-    r.x = screenWidth;
-    r.y = screenHeight;
+    UVec2 r;
+    r.x = static_cast<unsigned>(screenWidth);
+    r.y = static_cast<unsigned>(screenHeight);
 	return r;
 }
 

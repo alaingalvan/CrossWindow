@@ -42,11 +42,11 @@ namespace xwin
 
         void Win32Window::setWindowSize(unsigned width, unsigned height);
 
-        Vec2 Win32Window::getCurrentDisplaySize();
+        UVec2 Win32Window::getCurrentDisplaySize();
 
-        Vec2 Win32Window::getWindowSize();
+        //Vec2 Win32Window::getWindowSize();
 
-        std::string Win32Window::getTitle();
+        //std::string Win32Window::getTitle();
 
         void close();
 

@@ -22,7 +22,7 @@ namespace xwin
         mDelegate.setMousePosition(x, y);
     }
 
-    Vec2 Window::getCurrentDisplaySize()
+    UVec2 Window::getCurrentDisplaySize()
     {
         return mDelegate.getCurrentDisplaySize();
     }

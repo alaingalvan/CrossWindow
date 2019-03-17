@@ -51,7 +51,7 @@ namespace xwin
 
         void setMousePosition(unsigned x, unsigned y);
 
-        Vec2 getCurrentDisplaySize();
+        UVec2 getCurrentDisplaySize();
 
         /**
          * Destroy this window.

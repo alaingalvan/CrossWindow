@@ -28,6 +28,9 @@ namespace xwin
 
     protected:
 
+		unsigned prevMouseX;
+		unsigned prevMouseY;
+
         std::queue<Event> mQueue;
 
         /**
