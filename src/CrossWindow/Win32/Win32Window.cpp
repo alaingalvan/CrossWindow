@@ -184,7 +184,17 @@ UVec2 Win32Window::getCurrentDisplaySize()
     UVec2 r;
     r.x = static_cast<unsigned>(screenWidth);
     r.y = static_cast<unsigned>(screenHeight);
-	return r;
+    return r;
+}
+
+UVec2 Win32Window::getCurrentDisplayPosition()
+{
+    WINDOWPLACEMENT lpwndpl;
+    UVec2 r;
+    GetWindowPlacement(hwnd, &lpwndpl);
+    r.x = lpwndpl.ptMinPosition.x;
+    r.y = lpwndpl.ptMinPosition.y;
+    return r;
 }
 
 void Win32Window::setMousePosition(unsigned x, unsigned y)

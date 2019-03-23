@@ -44,6 +44,9 @@ namespace xwin
 
         UVec2 Win32Window::getCurrentDisplaySize();
 
+		// returns the current top left corner this window is located in
+		UVec2 Win32Window::getCurrentDisplayPosition();
+
         //Vec2 Win32Window::getWindowSize();
 
         //std::string Win32Window::getTitle();
