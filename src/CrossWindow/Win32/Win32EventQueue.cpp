@@ -473,7 +473,6 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
             d = Key::KeysMax;
             break;
         }
-        break;
 
         if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
         {
