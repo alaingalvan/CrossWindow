@@ -1,0 +1,15 @@
+# Run manually to reformat a file:
+# clang-format -i --style=file <file>
+BasedOnStyle: llvm
+DerivePointerAlignment: false
+UseTab: Never
+AllowShortIfStatementsOnASingleLine: true
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: Allman
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: true
+Cpp11BracedListStyle: true
+IndentWrappedFunctionNames: true
+PointerAlignment: Left
+FixNamespaceComments: false

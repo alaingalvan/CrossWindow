@@ -2,7 +2,7 @@
 
 /**
  * CrossWindow
- * 
+ *
  * A basic cross platform window/input abstraction layer.
  */
 
