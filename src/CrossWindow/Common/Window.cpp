@@ -2,48 +2,33 @@
 
 namespace xwin
 {
-    Window::Window()
-    {
-    }
+Window::Window() {}
 
-    Window::~Window()
-    {
-        close();
-    }
+Window::~Window() { close(); }
 
-    bool Window::create(const WindowDesc& desc, EventQueue& queue)
-    {
-        mDesc = desc;
-        return mDelegate.create(mDesc, queue, this);
-    }
+bool Window::create(const WindowDesc& desc, EventQueue& queue)
+{
+    mDesc = desc;
+    return mDelegate.create(mDesc, queue, this);
+}
 
-    void Window::setSize(const UVec2& size)
-    {
+void Window::showMouse(bool show) {}
 
-    }
+void Window::setSize(const UVec2& size) {}
 
-    void Window::setMousePosition(unsigned x, unsigned y)
-    {
-        mDelegate.setMousePosition(x, y);
-    }
+void Window::setMousePosition(const UVec2 position)
+{
+    mDelegate.setMousePosition(position.x, position.y);
+}
 
-    UVec2 Window::getCurrentDisplaySize()
-    {
-        return mDelegate.getCurrentDisplaySize();
-    }
+UVec2 Window::getCurrentDisplaySize()
+{
+    return mDelegate.getCurrentDisplaySize();
+}
 
-    void Window::close()
-    {
-        mDelegate.close();
-    }
+void Window::close() { mDelegate.close(); }
 
-    WindowDelegate& Window::getDelegate()
-    {
-        return mDelegate;
-    }
+WindowDelegate& Window::getDelegate() { return mDelegate; }
 
-    WindowDesc Window::getDesc() const
-    {
-        return mDesc;
-    }
+WindowDesc Window::getDesc() const { return mDesc; }
 }
