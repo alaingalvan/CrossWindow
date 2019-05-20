@@ -7,7 +7,6 @@ namespace xwin
 
 void showMessageBox(const MessageDesc& mdesc);
 
-void showOpenDialog(const OpenSaveDialogDesc& odesc);
-
-void showSaveDialog(const OpenSaveDialogDesc& sdesc);
+bool showOpenDialog(const OpenSaveDialogDesc& odesc, std::string& outPath);
+bool showSaveDialog(const OpenSaveDialogDesc& sdesc, std::string& outPath);
 }
