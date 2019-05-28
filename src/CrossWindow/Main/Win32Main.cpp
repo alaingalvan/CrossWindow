@@ -63,7 +63,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
 #ifdef _DEBUG
-	FreeConsole();
+        FreeConsole();
+        fclose(pCout);
+        fclose(pCerr);
 #endif
 
     return 0;
