@@ -468,6 +468,42 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         case VK_HOME:
             d = Key::Home;
             break;
+        case VK_F1:
+            d = Key::F1;
+            break;
+        case VK_F2:
+            d = Key::F2;
+            break;
+        case VK_F3:
+            d = Key::F3;
+            break;
+        case VK_F4:
+            d = Key::F4;
+            break;
+        case VK_F5:
+            d = Key::F5;
+            break;
+        case VK_F6:
+            d = Key::F6;
+            break;
+        case VK_F7:
+            d = Key::F7;
+            break;
+        case VK_F8:
+            d = Key::F8;
+            break;
+        case VK_F9:
+            d = Key::F9;
+            break;
+        case VK_F10:
+            d = Key::F10;
+            break;
+        case VK_F11:
+            d = Key::F11;
+            break;
+        case VK_F12:
+            d = Key::F12;
+            break;
 
         default:
             d = Key::KeysMax;
