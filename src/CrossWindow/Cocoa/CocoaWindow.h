@@ -23,6 +23,10 @@ namespace xwin
 		
 		bool eventLoop();
 		
+		void setMousePosition(unsigned x, unsigned y);
+		
+		UVec2 getCurrentDisplaySize();
+		
 		enum class LayerType
 		{
 			Metal,

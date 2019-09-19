@@ -99,4 +99,20 @@ namespace xwin
 		layer = [[CAMetalLayer alloc] init];
 							   [(XWinView*)view setLayer:(CAMetalLayer*)layer];
 	}
+	
+	
+	void CocoaWindow::setMousePosition(unsigned x, unsigned y)
+	{
+		CGPoint pos = CGPointMake(x, y);
+		CGWarpMouseCursorPosition(pos);
+	}
+	
+	UVec2 CocoaWindow::getCurrentDisplaySize()
+	{
+		UVec2 size;
+		NSRect screenRect = [[NSScreen mainScreen] frame];
+		size.x = screenRect.size.width;
+		size.y = screenRect.size.height;
+		return size;
+	}
 }
