@@ -61,8 +61,8 @@ Event::Event(GamepadData d, Window* window)
 
 Event::~Event() {}
 
-ResizeData::ResizeData(unsigned width, unsigned height)
-    : width(width), height(height)
+ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
+    : width(width), height(height), resizing(resizing)
 {
 }
 

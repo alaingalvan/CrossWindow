@@ -23,6 +23,8 @@ class Win32EventQueue
 
     bool empty();
 
+	size_t size();
+
     void pushEvent(MSG msg, Window* window);
 
   protected:

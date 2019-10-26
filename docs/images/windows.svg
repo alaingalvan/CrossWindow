@@ -1,1 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><defs><style>.cls-1{fill:#f2f2f2;}.cls-2{fill:#26a6f2;}.cls-3{fill:none;stroke:#141414;stroke-miterlimit:10;}.cls-4{fill:#d1d1d1;}.cls-5{fill:#b5b5b5;}.cls-6{fill:#e2e2e2;}.cls-7{fill:#c1c1c1;}</style></defs><title>windows</title><g id="Windows"><rect id="White_Background" data-name="White Background" class="cls-1" y="12" width="640" height="348"/><g id="titlebar"><rect class="cls-2" width="640" height="30.7"/></g><g id="outline"><path class="cls-2" d="M679,21V379H41V21H679m1-1H40V380H680V20Z" transform="translate(-40 -20)"/></g><g id="titlebar-buttons"><line id="minimize" class="cls-3" x1="519.79999" y1="15.3" x2="529.79999" y2="15.3"/><rect id="maximize" class="cls-3" x="565.5" y="10.3" width="9" height="9"/><g id="exit"><line class="cls-3" x1="611.5" y1="10.5" x2="620.5" y2="19.3"/><line class="cls-3" x1="620.5" y1="10.5" x2="611.5" y2="19.5"/></g></g></g><g id="Logo"><polygon class="cls-4" points="272 148 272 132 288 132 320 164 320 180 304 180 272 148"/><polygon class="cls-5" points="336 180 320 180 320 164 352 132 368 132 368 148 336 180"/><polygon class="cls-6" points="320 196 320 180 336 180 368 212 368 228 352 228 320 196"/><polygon class="cls-7" points="288 228 272 228 272 212 304 180 320 180 320 196 288 228"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 640 360" style="enable-background:new 0 0 640 360;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#303030;}
+	.st1{fill:#06486D;}
+	.st2{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
+	.st3{enable-background:new    ;}
+	.st4{fill:#272727;}
+	.st5{fill:#222222;}
+	.st6{fill:#2B2B2B;}
+	.st7{fill:#242424;}
+</style>
+<title>windows</title>
+<g id="Logo">
+	<rect x="1" y="1" class="st0" width="638" height="358"/>
+</g>
+<g>
+	<g id="titlebar_1_">
+		<g>
+			<rect class="st1" width="640" height="30.7"/>
+		</g>
+	</g>
+	<g id="outline_1_">
+		<path class="st1" d="M639,1v358H1V1H639 M640,0H0v360h640V0L640,0z"/>
+	</g>
+	<g id="titlebar-buttons_1_">
+		<line id="minimize_1_" class="st2" x1="519.8" y1="15.3" x2="529.8" y2="15.3"/>
+		<rect id="maximize_1_" x="565.5" y="10.3" class="st2" width="9" height="9"/>
+		<g id="exit_1_">
+			<line class="st2" x1="611.5" y1="10.5" x2="620.5" y2="19.3"/>
+			<line class="st2" x1="620.5" y1="10.5" x2="611.5" y2="19.5"/>
+		</g>
+	</g>
+</g>
+<g id="Logo_1_" class="st3">
+	<polygon class="st4" points="272,148 272,132 288,132 320,164 320,180 304,180 	"/>
+	<polygon class="st5" points="336,180 320,180 320,164 352,132 368,132 368,148 	"/>
+	<polygon class="st6" points="320,196 320,180 336,180 368,212 368,228 352,228 	"/>
+	<polygon class="st7" points="288,228 272,228 272,212 304,180 320,180 320,196 	"/>
+</g>
+</svg>

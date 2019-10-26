@@ -89,7 +89,10 @@ struct ResizeData
     // New height of window viewport
     unsigned height;
 
-    ResizeData(unsigned width, unsigned height);
+	// In the process of resizing
+	bool resizing;
+
+    ResizeData(unsigned width, unsigned height, bool resizing);
 
     static const EventType type = EventType::Resize;
 };
@@ -527,7 +530,7 @@ class Event
     ~Event();
 
     // The event's type
-    const EventType type;
+    EventType type;
 
     // Pointer to a CrossWindow window
     Window* window;

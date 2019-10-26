@@ -7,6 +7,10 @@
 #include <Windows.h>
 #include <unordered_map>
 
+#include <functional>
+
+class ITaskbarList3;
+
 namespace xwin
 {
 class Window;
@@ -53,6 +57,10 @@ class Win32Window
 
     void close();
 
+    // Executes an event callback asynchronously, use this for non-blocking
+    // events (resizing while rendering, etc.)
+    void executeEventCallback(const xwin::Event e);
+
     static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wparam,
                                              LPARAM lparam);
 
@@ -63,6 +71,8 @@ class Win32Window
 
     // Window Handle
     HWND hwnd;
+
+    std::function<void(const xwin::Event e)> mCallback;
 
   protected:
     Window* mParent;
@@ -83,6 +93,9 @@ class Win32Window
     // Window Behavior
     DWORD dwExStyle;
     DWORD dwStyle;
+
+	//Taskbar Interface
+	ITaskbarList3* mTaskbarList;
 };
 
 static thread_local Win32Window* _windowBeingCreated = nullptr;

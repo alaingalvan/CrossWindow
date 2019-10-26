@@ -10,7 +10,7 @@
 [![Appveyor Tests][appveyor-img]][appveyor-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
-A basic cross platform system abstraction library for managing windows and performing OS tasks. 
+A basic cross platform system abstraction library for managing windows and performing OS tasks.
 
 ## Features
 

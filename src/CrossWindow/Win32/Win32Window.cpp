@@ -1,4 +1,6 @@
 #include "Win32Window.h"
+#include "Shobjidl.h"
+#include "dwmapi.h"
 
 namespace xwin
 {
@@ -27,15 +29,15 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     mDesc = &desc;
 
     wndClass.cbSize = sizeof(WNDCLASSEX);
-    wndClass.style = CS_HREDRAW | CS_VREDRAW;
+    wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     wndClass.lpfnWndProc = Win32Window::WindowProcStatic;
     wndClass.cbClsExtra = 0;
-    wndClass.cbWndExtra = 0;
+    wndClass.cbWndExtra = WS_EX_NOPARENTNOTIFY;
     wndClass.hInstance = hinstance;
     wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    wndClass.lpszMenuName = NULL;
+    wndClass.hCursor = LoadCursor(NULL, IDC_CROSS);
+    wndClass.hbrBackground = NULL;
+    wndClass.lpszMenuName = "Menu Name";
     wndClass.lpszClassName = mDesc->name.c_str();
     wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
 
@@ -106,11 +108,14 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
                           windowRect.bottom - windowRect.top, NULL, NULL,
                           hinstance, NULL);
 
+    BOOL isNCRenderingEnabled{TRUE};
+    DwmSetWindowAttribute(hwnd, DWMWA_NCRENDERING_ENABLED,
+                          &isNCRenderingEnabled, sizeof(isNCRenderingEnabled));
+
     if (!hwnd)
     {
-        printf("Could not create window!\n");
-        fflush(stdout);
-        exit(GetLastError());
+        // Failed to create window...
+        return false;
     }
 
     if (!mDesc->fullscreen)
@@ -127,6 +132,14 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
         SetForegroundWindow(hwnd);
         SetFocus(hwnd);
     }
+
+    RegisterWindowMessage("TaskbarButtonCreated");
+    HRESULT hrf =
+        CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER,
+                         IID_ITaskbarList3, (LPVOID*)&mTaskbarList);
+    mTaskbarList->SetProgressValue(hwnd, 50, 100);
+
+    FlashWindow(hwnd, true);
 
     return true;
 }
@@ -200,6 +213,11 @@ UVec2 Win32Window::getCurrentDisplayPosition()
 void Win32Window::setMousePosition(unsigned x, unsigned y)
 {
     SetCursorPos(x, y);
+}
+
+void Win32Window::executeEventCallback(const xwin::Event e)
+{
+    if (mCallback) mCallback(e);
 }
 
 LRESULT CALLBACK Win32Window::WindowProcStatic(HWND hwnd, UINT msg,

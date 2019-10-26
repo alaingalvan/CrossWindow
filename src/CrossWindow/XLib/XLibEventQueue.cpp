@@ -28,7 +28,7 @@ namespace xwin
                 width = static_cast<unsigned>(event->xconfigure.width);
                 height = static_cast<unsigned>(event->xconfigure.height);
 
-                mQueue.emplace(ResizeData(width, height), window);
+                mQueue.emplace(ResizeData(width, height, true), window);
             }
             break;
         }

@@ -1,1 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="313.83957" viewBox="0 0 640 313.83957"><defs><style>.cls-1{fill:#bfc2c7;}.cls-2{fill:#1c1c1c;}.cls-3{fill:url(#linear-gradient);}.cls-4{fill:#f2f2f2;}.cls-5{fill:#171717;}.cls-6{fill:#2d2d2d;}.cls-7{fill:none;stroke:#171717;stroke-miterlimit:10;stroke-width:1.36898px;}.cls-8{fill:#d1d1d1;}.cls-9{fill:#b5b5b5;}.cls-10{fill:#e2e2e2;}.cls-11{fill:#c1c1c1;}</style><linearGradient id="linear-gradient" x1="254.33021" y1="-76.83021" x2="566.11631" y2="-76.83021" gradientTransform="matrix(0, -1, -1, 0, 283.16979, 612.16979)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c9c9c9"/><stop offset="1" stop-color="#7d7d7d"/></linearGradient></defs><title>android</title><g id="Android"><g id="Layer_4" data-name="Layer 4"><polygon class="cls-1" points="214.222 6.845 211.166 0 254.973 0 250.898 6.845 214.222 6.845"/><polygon class="cls-1" points="280.403 6.845 274.481 0 359.358 0 351.463 6.845 280.403 6.845"/></g><g id="Layer_2" data-name="Layer 2"><path class="cls-2" d="M677.94652,85.06952v233.754A37.07123,37.07123,0,0,1,640.984,355.7861H79.016a37.07123,37.07123,0,0,1-36.96256-36.96257V85.06952A37.07123,37.07123,0,0,1,79.016,48.107H640.984A37.07122,37.07122,0,0,1,677.94652,85.06952Z" transform="translate(-40 -44)"/><path class="cls-3" d="M42.05348,85.06952A37.07123,37.07123,0,0,1,79.016,48.107H640.984a37.07122,37.07122,0,0,1,36.96256,36.96257v233.754A37.07123,37.07123,0,0,1,640.984,355.7861H79.016a37.07123,37.07123,0,0,1-36.96256-36.96257V85.06952m-2.05348,0v233.754a39.06015,39.06015,0,0,0,39.016,39.016H640.984A39.06015,39.06015,0,0,0,680,318.82353V85.06952a39.06015,39.06015,0,0,0-39.016-39.016H79.016A39.06015,39.06015,0,0,0,40,85.06952Z" transform="translate(-40 -44)"/><rect class="cls-4" x="67.08021" y="14.37433" width="511.17451" height="286.11765"/></g><g id="Layer_3" data-name="Layer 3"><path class="cls-5" d="M75.59358,152.83422V254.139a4.119,4.119,0,0,1-4.10695,4.107h0a4.119,4.119,0,0,1-4.107-4.107V152.83422a4.119,4.119,0,0,1,4.107-4.10695h0A4.119,4.119,0,0,1,75.59358,152.83422Z" transform="translate(-40 -44)"/><circle class="cls-6" cx="31.48663" cy="251.20856" r="4.10695"/><path class="cls-7" d="M655.35829,152.83422V254.139a4.119,4.119,0,0,1-4.10695,4.107h0a4.119,4.119,0,0,1-4.10695-4.107V152.83422a4.119,4.119,0,0,1,4.10695-4.10695h0A4.119,4.119,0,0,1,655.35829,152.83422Z" transform="translate(-40 -44)"/></g></g><g id="Logo"><polygon class="cls-8" points="272 124 272 108 288 108 320 140 320 156 304 156 272 124"/><polygon class="cls-9" points="336 156 320 156 320 140 352 108 368 108 368 124 336 156"/><polygon class="cls-10" points="320 172 320 156 336 156 368 188 368 204 352 204 320 172"/><polygon class="cls-11" points="288 204 272 204 272 188 304 156 320 156 320 172 288 204"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 640 313.8" style="enable-background:new 0 0 640 313.8;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#BFC2C7;}
+	.st1{fill:#1C1C1C;}
+	.st2{fill:url(#SVGID_1_);}
+	.st3{fill:#171717;}
+	.st4{fill:#262728;}
+	.st5{fill:#1F2021;}
+	.st6{fill:#1B1C1C;}
+	.st7{fill:#222323;}
+	.st8{fill:#1D1E1E;}
+</style>
+<title>android</title>
+<g id="Android">
+	<g id="Layer_4">
+		<polygon class="st0" points="214.2,6.8 211.2,0 255,0 250.9,6.8 		"/>
+		<polygon class="st0" points="280.4,6.8 274.5,0 359.4,0 351.5,6.8 		"/>
+	</g>
+	<g>
+		<path class="st1" d="M637.9,41.1v233.8c-0.1,20.4-16.6,36.9-37,37H39c-20.4-0.1-36.9-16.6-37-37V41.1c0.1-20.4,16.6-36.9,37-37
+			h562C621.4,4.2,637.9,20.7,637.9,41.1z"/>
+		
+			<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-766.6697" y1="1413.8302" x2="-454.8837" y2="1413.8302" gradientTransform="matrix(0 -1 1 0 -1093.8302 -452.8302)">
+			<stop  offset="0" style="stop-color:#C9C9C9"/>
+			<stop  offset="1" style="stop-color:#7D7D7D"/>
+		</linearGradient>
+		<path class="st2" d="M2.1,41.1c0.1-20.4,16.6-36.9,37-37h562c20.4,0.1,36.9,16.6,37,37v233.8c-0.1,20.4-16.6,36.9-37,37H39
+			c-20.4-0.1-36.9-16.6-37-37L2.1,41.1 M0,41.1v233.8c0,21.5,17.5,39,39,39h562c21.5,0,39-17.5,39-39V41.1c0-21.5-17.5-39-39-39H39
+			C17.5,2.1,0,19.5,0,41.1L0,41.1z"/>
+	</g>
+	<g id="Layer_3">
+		<path class="st3" d="M14.6,108.8v101.3c0,2.3-1.8,4.1-4.1,4.1l0,0c-2.3,0-4.1-1.8-4.1-4.1V108.8c0-2.3,1.8-4.1,4.1-4.1l0,0
+			C12.8,104.7,14.6,106.6,14.6,108.8z"/>
+	</g>
+</g>
+<image style="display:none;overflow:visible;" width="514" height="258" xlink:href="582796F0.jpg"  transform="matrix(1.2421 0 0 1.2421 3.814697e-05 -0.4168)">
+</image>
+<path class="st4" d="M632,42.5v230.9c-0.1,20.1-16.4,36.4-36.5,36.5h-555C20.4,309.8,4.1,293.5,4,273.4V42.5
+	C4.1,22.4,20.4,6.1,40.5,6h555C615.6,6.1,631.9,22.4,632,42.5z"/>
+<g id="Logo">
+	<polygon class="st5" points="272,124 272,108 288,108 320,140 320,156 304,156 	"/>
+	<polygon class="st6" points="336,156 320,156 320,140 352,108 368,108 368,124 	"/>
+	<polygon class="st7" points="320,172 320,156 336,156 368,188 368,204 352,204 	"/>
+	<polygon class="st8" points="288,204 272,204 272,188 304,156 320,156 320,172 	"/>
+</g>
+</svg>

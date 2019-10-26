@@ -44,37 +44,45 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]));
     }
 
+	xwin::Event e = xwin::Event(xwin::EventType::None, window);
+
     switch (message)
     {
     case WM_CREATE:
     {
-        mQueue.emplace(xwin::EventType::Create, window);
+        e = xwin::Event(xwin::EventType::Create, window);
+        SetClassLongPtr(window->getDelegate().hwnd, GCLP_HBRBACKGROUND,
+                        (LONG_PTR)nullptr);
         break;
     }
     case WM_PAINT:
     {
-        mQueue.emplace(xwin::EventType::Paint, window);
+        e = xwin::Event(xwin::EventType::Paint, window);
+        break;
+    }
+    case WM_ERASEBKGND:
+    {
         break;
     }
     case WM_DESTROY:
     {
-        mQueue.emplace(xwin::EventType::Close, window);
+        e = xwin::Event(xwin::EventType::Close, window);
         break;
     }
     case WM_SETFOCUS:
     {
-        mQueue.emplace(xwin::FocusData(true), window);
+        e = xwin::Event(xwin::FocusData(true), window);
         break;
     }
     case WM_KILLFOCUS:
     {
-        mQueue.emplace(xwin::FocusData(false), window);
+        e = xwin::Event(xwin::FocusData(false), window);
         break;
     }
     case WM_MOUSEWHEEL:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseWheelData(
                 GET_WHEEL_DELTA_WPARAM(msg.wParam) / WHEEL_DELTA,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -85,7 +93,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_LBUTTONDOWN:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Left, ButtonState::Pressed,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -96,7 +104,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_MBUTTONDOWN:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Middle, ButtonState::Pressed,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -107,7 +115,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_RBUTTONDOWN:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Right, ButtonState::Pressed,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -119,7 +127,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     {
         short modifiers = LOWORD(msg.wParam);
         short x = HIWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 x & XBUTTON1 ? MouseInput::Button4 : MouseInput::Button5,
                 ButtonState::Pressed,
@@ -132,7 +140,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     {
         short modifiers = LOWORD(msg.wParam);
         short x = HIWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 x & XBUTTON1 ? MouseInput::Button4 : MouseInput::Button5,
                 ButtonState::Released,
@@ -147,7 +155,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_LBUTTONUP:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Left, ButtonState::Released,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -158,7 +166,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_MBUTTONUP:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Middle, ButtonState::Released,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -169,7 +177,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_RBUTTONUP:
     {
         short modifiers = LOWORD(msg.wParam);
-        mQueue.emplace(
+        e = xwin::Event(
             xwin::MouseInputData(
                 MouseInput::Right, ButtonState::Released,
                 xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
@@ -212,7 +220,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
                 raw->data.mouse.ulRawButtons, raw->data.mouse.lLastX,
                 raw->data.mouse.lLastY, raw->data.mouse.ulExtraInformation;
 
-            mQueue.emplace(
+            e = xwin::Event(
                 xwin::MouseRawData(static_cast<int>(raw->data.mouse.lLastX),
                                    static_cast<int>(raw->data.mouse.lLastY)),
                 window);
@@ -284,7 +292,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
             }
         }*/
 
-        mQueue.emplace(xwin::MouseMoveData(
+        e = xwin::Event(xwin::MouseMoveData(
                            static_cast<unsigned>(
                                area.left <= x && x <= area.right ? x - area.left
                                                                  : 0xFFFFFFFF),
@@ -512,12 +520,12 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
 
         if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
         {
-            mQueue.emplace(
+            e = xwin::Event(
                 KeyboardData(d, ButtonState::Pressed, ModifierState()), window);
         }
         else if (message == WM_KEYUP || message == WM_SYSKEYUP)
         {
-            mQueue.emplace(
+            e = xwin::Event(
                 KeyboardData(d, ButtonState::Released, ModifierState()),
                 window);
         }
@@ -529,13 +537,83 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         width = static_cast<unsigned>((UINT64)msg.lParam & 0xFFFF);
         height = static_cast<unsigned>((UINT64)msg.lParam >> 16);
 
-        mQueue.emplace(ResizeData(width, height), window);
+        e = xwin::Event(ResizeData(width, height, false), window);
+        break;
+    }
+    case WM_SIZING:
+    {
+        unsigned WIDTH = 320;
+        unsigned HEIGHT = 320;
+        unsigned width, height;
+			unsigned STEP = 1;
+        PRECT rectp = (PRECT)msg.lParam;
+        HWND hwnd = window->getDelegate().hwnd;
+        // Get the window and client dimensions
+        tagRECT wind, rect;
+        GetWindowRect(hwnd, &wind);
+        GetClientRect(hwnd, &rect);
+
+        // Edges
+        //int border = (wind.right - wind.left) - rect.right;
+        //int header =
+        //    (wind.bottom - wind.top) - rect.bottom;
+
+        // Window minimum width and height
+        //int width = WIDTH + border;
+        //int height = HEIGHT + rect.bottom + header;
+
+        // Minimum size
+        //if (rectp->right - rectp->left < width)
+        //    rectp->right = rectp->left + width;
+
+        //if (rectp->bottom - rectp->top < height)
+        //    rectp->bottom = rectp->top + height;
+
+        // Maximum width
+        //if (rectp->right - rectp->left > STEP + border)
+        //    rectp->right = rectp->left + STEP + border;
+
+        // Offered width and height
+        width = rectp->right - rectp->left - 15;
+        height = rectp->bottom - rectp->top - 39;
+        /*
+        switch (msg.wParam)
+        {
+        case WMSZ_LEFT:
+        case WMSZ_RIGHT:
+            height = (((width - border) * HEIGHT) / WIDTH) +
+                     rect.bottom + header;
+            rectp->bottom = rectp->top + height;
+            break;
+
+        case WMSZ_TOP:
+        case WMSZ_BOTTOM:
+            width =
+                ((((height - rect.bottom) - header) * WIDTH) / HEIGHT) +
+                border;
+            rectp->right = rectp->left + width;
+            break;
+
+        default:
+            width =
+                ((((height - rect.bottom) - header) * WIDTH) / HEIGHT) +
+                border;
+            rectp->right = rectp->left + width;
+            break;
+        }*/
+        
+        e = xwin::Event(ResizeData(width, height, true), window);
         break;
     }
     default:
         // Do nothing
         break;
     }
+	if (e.type != EventType::None)
+	{
+        mQueue.emplace(e);
+	}
+    window->getDelegate().executeEventCallback(e);
 }
 
 const Event& Win32EventQueue::front() { return mQueue.front(); }
@@ -543,4 +621,5 @@ const Event& Win32EventQueue::front() { return mQueue.front(); }
 void Win32EventQueue::pop() { mQueue.pop(); }
 
 bool Win32EventQueue::empty() { return mQueue.empty(); }
+size_t Win32EventQueue::size() { return mQueue.size(); }
 }

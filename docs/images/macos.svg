@@ -1,1 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="360" viewBox="0 0 640 360"><defs><style>.cls-1{fill:#f2f2f2;}.cls-2{fill:#f1f1f1;}.cls-3{fill:url(#linear-gradient);}.cls-4{fill:#ff554e;stroke:#dc3e39;}.cls-4,.cls-5,.cls-6{stroke-miterlimit:10;stroke-width:0.91667px;}.cls-5{fill:#25c73a;stroke:#13a227;}.cls-6{fill:#ffb827;stroke:#db9617;}.cls-7{fill:#d1d1d1;}.cls-8{fill:#b5b5b5;}.cls-9{fill:#e2e2e2;}.cls-10{fill:#c1c1c1;}</style><linearGradient id="linear-gradient" x1="360" y1="42.92624" x2="360" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#cacaca"/><stop offset="1" stop-color="#e0e0e0"/></linearGradient></defs><title>macos</title><g id="MacOS"><rect id="White_Background" data-name="White Background" class="cls-1" y="12" width="640" height="348" rx="5" ry="5"/><path id="Topbar_Highlight" data-name="Topbar Highlight" class="cls-2" d="M680,41.92624H40V25a5.0147,5.0147,0,0,1,5-5H675a5.0147,5.0147,0,0,1,5,5Z" transform="translate(-40 -20)"/><path id="Topbar_Gradient" data-name="Topbar Gradient" class="cls-3" d="M680,42.92624H40V26a5.0147,5.0147,0,0,1,5-5H675a5.0147,5.0147,0,0,1,5,5Z" transform="translate(-40 -20)"/><g id="Close_Min_Max" data-name="Close Min Max"><circle class="cls-4" cx="14" cy="11" r="5.5"/><circle class="cls-5" cx="54" cy="11" r="5.5"/><circle class="cls-6" cx="34" cy="11" r="5.5"/></g></g><g id="Logo"><polygon class="cls-7" points="272 148 272 132 288 132 320 164 320 180 304 180 272 148"/><polygon class="cls-8" points="336 180 320 180 320 164 352 132 368 132 368 148 336 180"/><polygon class="cls-9" points="320 196 320 180 336 180 368 212 368 228 352 228 320 196"/><polygon class="cls-10" points="288 228 272 228 272 212 304 180 320 180 320 196 288 228"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 640 360" style="enable-background:new 0 0 640 360;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#28292B;}
+	.st1{fill:#212223;}
+	.st2{fill:#1C1D1F;}
+	.st3{fill:#232426;}
+	.st4{fill:#1E1F20;}
+	.st5{display:none;fill:#F2F2F2;}
+	.st6{fill:#707173;}
+	.st7{fill:url(#Topbar_Gradient_1_);}
+	.st8{fill:#FF5A52;stroke:#FF5A52;stroke-miterlimit:10;}
+	.st9{fill:#54C22B;stroke:#54C22B;stroke-miterlimit:10;}
+	.st10{fill:#E6C029;stroke:#E6C029;stroke-miterlimit:10;}
+</style>
+<g>
+	<rect y="22.9" class="st0" width="640" height="337.1"/>
+	<g id="Logo">
+		<polygon class="st1" points="272,148 272,132 288,132 320,164 320,180 304,180 		"/>
+		<polygon class="st2" points="336,180 320,180 320,164 352,132 368,132 368,148 		"/>
+		<polygon class="st3" points="320,196 320,180 336,180 368,212 368,228 352,228 		"/>
+		<polygon class="st4" points="288,228 272,228 272,212 304,180 320,180 320,196 		"/>
+	</g>
+</g>
+<g>
+	<g id="MacOS">
+		<path id="White_Background" class="st5" d="M5,12h630c2.8,0,5,2.2,5,5v338c0,2.8-2.2,5-5,5H5c-2.8,0-5-2.2-5-5V17
+			C0,14.2,2.2,12,5,12z"/>
+		<path id="Topbar_Highlight" class="st6" d="M640,21.9H0V5c0-2.8,2.2-5,5-5h630c2.8,0,5,2.2,5,5V21.9z"/>
+		
+			<linearGradient id="Topbar_Gradient_1_" gradientUnits="userSpaceOnUse" x1="360" y1="-110.9262" x2="360" y2="-89" gradientTransform="matrix(1 0 0 -1 -40 -88)">
+			<stop  offset="0" style="stop-color:#38393B"/>
+			<stop  offset="1" style="stop-color:#444548"/>
+		</linearGradient>
+		<path id="Topbar_Gradient" class="st7" d="M640,22.9H0V6c0-2.8,2.2-5,5-5h630c2.8,0,5,2.2,5,5V22.9z"/>
+		<g id="Close_Min_Max">
+			<circle class="st8" cx="14" cy="11" r="5.5"/>
+			<circle class="st9" cx="54" cy="11" r="5.5"/>
+			<circle class="st10" cx="34" cy="11" r="5.5"/>
+		</g>
+	</g>
+</g>
+</svg>

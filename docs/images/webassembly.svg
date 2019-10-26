@@ -1,1 +1,83 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><defs><style>.cls-1,.cls-4{fill:#f2f2f2;}.cls-2{fill:#b6b4b6;}.cls-3{fill:#d3d3d3;}.cls-4{stroke:#b6b4b6;}.cls-4,.cls-5{stroke-miterlimit:10;}.cls-5{fill:#fff;stroke:#b5b5b5;stroke-width:0.98374px;}.cls-6{fill:#d1d1d1;}.cls-7{fill:#b5b5b5;}.cls-8{fill:#e2e2e2;}.cls-9{fill:#c1c1c1;}</style></defs><title>webassembly</title><g id="WebAssembly"><rect class="cls-1" width="640" height="360" rx="3" ry="3"/><rect class="cls-2" y="41" width="640" height="40"/><path class="cls-3" d="M257.95434,53.31238,251.30257,38.835A2,2,0,0,1,253.11992,36h23.644a2,2,0,0,1,1.78886,1.10557l7.028,14.056a2,2,0,0,1-1.75377,2.89412l-24.02023.4214A2,2,0,0,1,257.95434,53.31238Z" transform="translate(-40 -20)"/><rect class="cls-1" y="40" width="640" height="40"/><polyline class="cls-4" points="0 39 6 39 20 7.5 198 7 213.5 39 640 39"/><rect class="cls-5" x="151.5" y="43.5" width="360" height="32" rx="2" ry="2"/></g><g id="Logo"><polygon class="cls-6" points="272 148 272 132 288 132 320 164 320 180 304 180 272 148"/><polygon class="cls-7" points="336 180 320 180 320 164 352 132 368 132 368 148 336 180"/><polygon class="cls-8" points="320 196 320 180 336 180 368 212 368 228 352 228 320 196"/><polygon class="cls-9" points="288 228 272 228 272 212 304 180 320 180 320 196 288 228"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 640 360" style="enable-background:new 0 0 640 360;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#202124;}
+	.st1{fill:#1A1B1D;}
+	.st2{fill:#17171A;}
+	.st3{fill:#1C1D20;}
+	.st4{fill:#18191B;}
+	.st5{fill:#FFFFFF;}
+	.st6{font-family:'SegoeUI';}
+	.st7{font-size:15px;}
+	.st8{fill:#9AA0A6;}
+	.st9{fill:#323639;}
+	.st10{fill:#282C2F;}
+	.st11{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st12{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;}
+	.st13{fill:none;stroke:#8A8C8E;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st14{fill:#FCFCFC;}
+	.st15{fill:none;stroke:#9AA0A6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st16{fill:#E8EAED;}
+	.st17{fill:none;stroke:#E8EAED;stroke-miterlimit:10;}
+	.st18{fill:none;stroke:#BDC1C6;stroke-width:1.5;stroke-miterlimit:10;}
+	.st19{fill:none;stroke:#BDC1C6;stroke-miterlimit:10;}
+</style>
+<g>
+	<g id="WebAssembly">
+		<path class="st0" d="M3,0h634c1.7,0,3,1.3,3,3v354c0,1.7-1.3,3-3,3H3c-1.7,0-3-1.3-3-3V3C0,1.3,1.3,0,3,0z"/>
+	</g>
+	<g id="Logo">
+		<polygon class="st1" points="272,148 272,132 288,132 320,164 320,180 304,180 		"/>
+		<polygon class="st2" points="336,180 320,180 320,164 352,132 368,132 368,148 		"/>
+		<polygon class="st3" points="320,196 320,180 336,180 368,212 368,228 352,228 		"/>
+		<polygon class="st4" points="288,228 272,228 272,212 304,180 320,180 320,196 		"/>
+	</g>
+	<text transform="matrix(1 0 0 1 148 65)"><tspan x="0" y="0" class="st5 st6 st7">alain.xyz</tspan><tspan x="55.2" y="0" class="st8 st6 st7">/libraries/crosswindow</tspan></text>
+</g>
+<g id="Layer_1">
+</g>
+<g>
+	<g>
+		<g id="WebAssembly_1_">
+			<path class="st9" d="M188.5,30.5V15.8c0-4.4-3.6-8-8-8h-152c-4.4,0-8,3.6-8,8v14.7c0,4.4-3.6,8-8,8h-5c-4.4,0-8,3.6-8,8v16.3
+				c0,4.4,3.6,8,8,8h1h180h443c4.4,0,8-3.6,8-8V46.5c0-4.4-3.6-8-8-8h-435C192.1,38.5,188.5,34.9,188.5,30.5z"/>
+			<polyline class="st9" points="-0.5,78.5 -0.5,38.5 639.5,38.5 639.5,78.5 			"/>
+			<path class="st10" d="M127,43h412c8.8,0,16,7.2,16,16l0,0c0,8.8-7.2,16-16,16H127c-8.8,0-16-7.2-16-16l0,0
+				C111,50.2,118.2,43,127,43z"/>
+		</g>
+		<text transform="matrix(1 0 0 1 147.5 64.5)"><tspan x="0" y="0" class="st5 st6 st7">alain.xyz</tspan><tspan x="55.2" y="0" class="st8 st6 st7">/blog/raw-opengl</tspan></text>
+		<polyline class="st11" points="18.5,52.5 12.5,58.5 18.5,65.5 		"/>
+		<line class="st12" x1="26" y1="58.5" x2="13" y2="58.5"/>
+		<polyline class="st13" points="53,52.5 59,58.5 53,65.5 		"/>
+		<line class="st13" x1="45.5" y1="58.5" x2="58.5" y2="58.5"/>
+		<text transform="matrix(1 0 0 1 55.5 28.5)" class="st5 st6 st7">Raw OpenGL</text>
+		<path class="st14" d="M93,60.5c-1,2.3-3.3,4-6,4c-3.6,0-6.5-2.9-6.5-6.5s2.9-6.5,6.5-6.5c2.3,0,4.3,1.2,5.5,3l-3,3h6v-6l-1.6,1.6
+			c-1.5-2.2-4.1-3.6-6.9-3.6c-4.7,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5c3.8,0,7-2.5,8.1-6H93z"/>
+		<polygon class="st15" points="537.5,51.4 539.3,57 545.2,57 540.4,60.5 542.3,66 537.5,62.6 532.7,66 534.6,60.5 529.8,57 
+			535.7,57 		"/>
+		<path class="st16" d="M132.5,64.5h-6c-0.6,0-1-0.4-1-1v-6c0-0.5,0.4-1,1-1h6c0.6,0,1,0.5,1,1v6C133.5,64.1,133.1,64.5,132.5,64.5z
+			"/>
+		<path class="st17" d="M127.5,57.1v-1.7c0-1.1,0.9-2,2-2s2,0.9,2,2v1.7"/>
+	</g>
+	<circle class="st0" cx="581" cy="57" r="12"/>
+	<g>
+		<line class="st18" x1="211" y1="16" x2="211" y2="28"/>
+		<line class="st18" x1="205" y1="22" x2="217" y2="22"/>
+	</g>
+	<g>
+		<line class="st19" x1="173" y1="19" x2="180" y2="26"/>
+		<line class="st19" x1="180" y1="19" x2="173" y2="26.1"/>
+	</g>
+</g>
+<g id="Logo_1_">
+	<polygon class="st1" points="32,19.3 32,17 34.3,17 39,21.7 39,24 36.7,24 	"/>
+	<polygon class="st2" points="41.3,24 39,24 39,21.7 43.7,17 46,17 46,19.3 	"/>
+	<polygon class="st3" points="39,26.3 39,24 41.3,24 46,28.7 46,31 43.7,31 	"/>
+	<polygon class="st4" points="34.3,31 32,31 32,28.7 36.7,24 39,24 39,26.3 	"/>
+</g>
+<circle class="st5" cx="617.2" cy="50.7" r="2"/>
+<circle class="st5" cx="617.2" cy="56.7" r="2"/>
+<circle class="st5" cx="617.2" cy="62.7" r="2"/>
+</svg>
