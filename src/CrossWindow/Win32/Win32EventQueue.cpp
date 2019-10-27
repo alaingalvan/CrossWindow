@@ -1,6 +1,10 @@
 #include "Win32EventQueue.h"
 #include "../Common/Window.h"
 
+#include "Shobjidl.h"
+#include "dwmapi.h"
+#include <windowsx.h>
+
 #ifndef HID_USAGE_PAGE_GENERIC
 #define HID_USAGE_PAGE_GENERIC ((USHORT)0x01)
 #endif
@@ -51,8 +55,9 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     case WM_CREATE:
     {
         e = xwin::Event(xwin::EventType::Create, window);
-        SetClassLongPtr(window->getDelegate().hwnd, GCLP_HBRBACKGROUND,
-                        (LONG_PTR)nullptr);
+		//repaint window when borderless to avoid 6px resizable border.
+        MoveWindow(window->getDelegate().hwnd, 0, 0, window->getDesc().width,
+                   window->getDesc().height+8, true);
         break;
     }
     case WM_PAINT:
@@ -574,8 +579,10 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         //    rectp->right = rectp->left + STEP + border;
 
         // Offered width and height
-        width = rectp->right - rectp->left - 15;
-        height = rectp->bottom - rectp->top - 39;
+        width = rectp->right - rectp->left;
+        //-15;
+        height = rectp->bottom - rectp->top;
+        //-39;
         /*
         switch (msg.wParam)
         {
@@ -605,6 +612,15 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         e = xwin::Event(ResizeData(width, height, true), window);
         break;
     }
+    case WM_NCCALCSIZE:
+	{
+        if (msg.lParam)
+        {
+            NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
+            sz->rgrc[0].top -= 6;
+        }
+        break;
+	}
     default:
         // Do nothing
         break;

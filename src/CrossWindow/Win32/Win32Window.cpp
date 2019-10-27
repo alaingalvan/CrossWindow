@@ -1,6 +1,19 @@
 #include "Win32Window.h"
+
 #include "Shobjidl.h"
 #include "dwmapi.h"
+#include <windowsx.h>
+#pragma comment(lib, "dwmapi.lib")
+
+enum Style : DWORD
+{
+    windowed = WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU |
+               WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
+    aero_borderless = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU |
+                      WS_MAXIMIZEBOX | WS_MINIMIZEBOX,
+    basic_borderless =
+        WS_POPUP | WS_THICKFRAME | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX
+};
 
 namespace xwin
 {
@@ -29,15 +42,15 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     mDesc = &desc;
 
     wndClass.cbSize = sizeof(WNDCLASSEX);
-    wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+    wndClass.style = CS_HREDRAW | CS_VREDRAW;
     wndClass.lpfnWndProc = Win32Window::WindowProcStatic;
     wndClass.cbClsExtra = 0;
     wndClass.cbWndExtra = WS_EX_NOPARENTNOTIFY;
     wndClass.hInstance = hinstance;
     wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    wndClass.hCursor = LoadCursor(NULL, IDC_CROSS);
+    wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
     wndClass.hbrBackground = NULL;
-    wndClass.lpszMenuName = "Menu Name";
+    wndClass.lpszMenuName = NULL;
     wndClass.lpszClassName = mDesc->name.c_str();
     wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
 
@@ -90,7 +103,7 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     else
     {
         dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-        dwStyle = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+        dwStyle = Style::basic_borderless;
     }
 
     RECT windowRect;
@@ -132,6 +145,12 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
         SetForegroundWindow(hwnd);
         SetFocus(hwnd);
     }
+
+
+	static const DWM_BLURBEHIND blurBehind{{0},{TRUE},{NULL},{TRUE}};
+    DwmEnableBlurBehindWindow(hwnd, &blurBehind);
+    static const MARGINS shadow_state[2]{{0, 0, 0, 0}, {1, 1, 1, 1}};
+    ::DwmExtendFrameIntoClientArea(hwnd, &shadow_state[0]);
 
     RegisterWindowMessage("TaskbarButtonCreated");
     HRESULT hrf =

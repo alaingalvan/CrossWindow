@@ -14,7 +14,10 @@ bool Window::create(const WindowDesc& desc, EventQueue& queue)
 
 void Window::showMouse(bool show) {}
 
-void Window::setSize(const UVec2& size) {}
+void Window::setSize(const UVec2& size)
+{
+    mDelegate.setWindowSize(size.x, size.y);
+}
 
 void Window::setMousePosition(const UVec2 position)
 {
