@@ -14,6 +14,14 @@
 
 RAWINPUTDEVICE Rid[1];
 
+
+// some sizing border definitions
+
+#define MINX 200
+#define MINY 200
+#define BORDERWIDTH 5
+#define TITLEBARWIDTH 5
+
 namespace xwin
 {
 Win32EventQueue::Win32EventQueue() { initialized = false; }
@@ -56,8 +64,10 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
     {
         e = xwin::Event(xwin::EventType::Create, window);
 		//repaint window when borderless to avoid 6px resizable border.
-        MoveWindow(window->getDelegate().hwnd, 0, 0, window->getDesc().width,
-                   window->getDesc().height+8, true);
+        CREATESTRUCT* WindowInfo = reinterpret_cast<CREATESTRUCT*>(msg.lParam);
+        MoveWindow(window->getDelegate().hwnd, WindowInfo->x, WindowInfo->y,
+                   WindowInfo->cx - BORDERWIDTH, WindowInfo->cy - BORDERWIDTH,
+                   TRUE);
         break;
     }
     case WM_PAINT:
@@ -81,6 +91,26 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
 
         EndPaint(window->getDelegate().hwnd, &ps);
 		*/
+
+		PAINTSTRUCT ps;
+        BeginPaint(window->getDelegate().hwnd, &ps);
+
+        RECT ClientRect;
+        GetClientRect(window->getDelegate().hwnd, &ClientRect);
+        RECT BorderRect = {BORDERWIDTH, BORDERWIDTH,
+                           ClientRect.right - BORDERWIDTH - BORDERWIDTH,
+                           ClientRect.bottom - BORDERWIDTH - BORDERWIDTH},
+             TitleRect = {BORDERWIDTH, BORDERWIDTH,
+                          ClientRect.right - BORDERWIDTH - BORDERWIDTH,
+                          TITLEBARWIDTH};
+
+        HBRUSH BorderBrush = CreateSolidBrush(RGB(23, 26, 30));
+        FillRect(ps.hdc, &ClientRect, BorderBrush);
+        FillRect(ps.hdc, &BorderRect, BorderBrush);
+        FillRect(ps.hdc, &TitleRect, BorderBrush);
+        DeleteObject(BorderBrush);
+
+        EndPaint(window->getDelegate().hwnd, &ps);
         e = xwin::Event(xwin::EventType::Paint, window);
         break;
     }
@@ -105,63 +135,38 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_NCHITTEST:
 	{
-        POINT cursor = POINT{GET_X_LPARAM(msg.lParam), GET_Y_LPARAM(msg.lParam)};
-        // identify borders and corners to allow resizing the window.
-        // Note: On Windows 10, windows behave differently and
-        // allow resizing outside the visible window frame.
-        // This implementation does not replicate that behavior.
-        bool borderless_resize = true;
-        bool borderless_drag = true;
-        const POINT border{::GetSystemMetrics(SM_CXFRAME) +
-                               ::GetSystemMetrics(SM_CXPADDEDBORDER),
-                           ::GetSystemMetrics(SM_CYFRAME) +
-                               ::GetSystemMetrics(SM_CXPADDEDBORDER)};
-        RECT windowRect;
-        if (!::GetWindowRect(window->getDelegate().hwnd, &windowRect))
-        {
-            result =  HTNOWHERE;
-        }
+        RECT WindowRect;
+        int x, y;
 
-        const auto drag = borderless_drag ? HTCAPTION : HTCLIENT;
+        GetWindowRect(window->getDelegate().hwnd, &WindowRect);
+        x = GET_X_LPARAM(msg.lParam) - WindowRect.left;
+        y = GET_Y_LPARAM(msg.lParam) - WindowRect.top;
 
-        enum region_mask
-        {
-            client = 0b0000,
-            left = 0b0001,
-            right = 0b0010,
-            top = 0b0100,
-            bottom = 0b1000,
-        };
-
-        result =
-            left * (cursor.x < (windowRect.left + border.x)) |
-            right * (cursor.x >= (windowRect.right - border.x)) |
-            top * (cursor.y < (windowRect.top + border.y)) |
-            bottom * (cursor.y >= (windowRect.bottom - border.y));
-
-        switch (result)
-        {
-        case left:
-            result =  borderless_resize ? HTLEFT : drag;
-        case right:
-            result =  borderless_resize ? HTRIGHT : drag;
-        case top:
-            result =  borderless_resize ? HTTOP : drag;
-        case bottom:
-            result =  borderless_resize ? HTBOTTOM : drag;
-        case top | left:
-            result =  borderless_resize ? HTTOPLEFT : drag;
-        case top | right:
-            result =  borderless_resize ? HTTOPRIGHT : drag;
-        case bottom | left:
-            result =  borderless_resize ? HTBOTTOMLEFT : drag;
-        case bottom | right:
-            result =  borderless_resize ? HTBOTTOMRIGHT : drag;
-        case client:
-            result =  drag;
-        default:
-            result =  HTNOWHERE;
-        }
+        if (x >= BORDERWIDTH &&
+            x <= WindowRect.right - WindowRect.left - BORDERWIDTH &&
+            y >= BORDERWIDTH && y <= TITLEBARWIDTH)
+            result = HTCAPTION;
+        else if (x < BORDERWIDTH && y < BORDERWIDTH)
+            result = HTTOPLEFT;
+        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH &&
+                 y < BORDERWIDTH)
+            result = HTTOPRIGHT;
+        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH &&
+                 y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
+            result = HTBOTTOMRIGHT;
+        else if (x < BORDERWIDTH &&
+                 y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
+            result = HTBOTTOMLEFT;
+        else if (x < BORDERWIDTH)
+            result = HTLEFT;
+        else if (y < BORDERWIDTH)
+            result = HTTOP;
+        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH)
+            result = HTRIGHT;
+        else if (y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
+            result = HTBOTTOM;
+        else
+            result = HTCLIENT;
         break;
 	}
     case WM_MOUSEWHEEL:
@@ -637,58 +642,12 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         tagRECT wind, rect;
         GetWindowRect(hwnd, &wind);
         GetClientRect(hwnd, &rect);
-
-        // Edges
-        //int border = (wind.right - wind.left) - rect.right;
-        //int header =
-        //    (wind.bottom - wind.top) - rect.bottom;
-
-        // Window minimum width and height
-        //int width = WIDTH + border;
-        //int height = HEIGHT + rect.bottom + header;
-
-        // Minimum size
-        //if (rectp->right - rectp->left < width)
-        //    rectp->right = rectp->left + width;
-
-        //if (rectp->bottom - rectp->top < height)
-        //    rectp->bottom = rectp->top + height;
-
-        // Maximum width
-        //if (rectp->right - rectp->left > STEP + border)
-        //    rectp->right = rectp->left + STEP + border;
-
-        // Offered width and height
         width = rectp->right - rectp->left;
-        //-15;
         height = rectp->bottom - rectp->top;
-        //-39;
-        /*
-        switch (msg.wParam)
-        {
-        case WMSZ_LEFT:
-        case WMSZ_RIGHT:
-            height = (((width - border) * HEIGHT) / WIDTH) +
-                     rect.bottom + header;
-            rectp->bottom = rectp->top + height;
-            break;
 
-        case WMSZ_TOP:
-        case WMSZ_BOTTOM:
-            width =
-                ((((height - rect.bottom) - header) * WIDTH) / HEIGHT) +
-                border;
-            rectp->right = rectp->left + width;
-            break;
+		RedrawWindow(hwnd, NULL, NULL,
+                     RDW_INVALIDATE | RDW_NOERASE | RDW_INTERNALPAINT);
 
-        default:
-            width =
-                ((((height - rect.bottom) - header) * WIDTH) / HEIGHT) +
-                border;
-            rectp->right = rectp->left + width;
-            break;
-        }*/
-        
         e = xwin::Event(ResizeData(width, height, true), window);
         break;
     }
@@ -697,10 +656,30 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         if (msg.lParam)
         {
             NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
-            sz->rgrc[0].top -= 6;
+            if (msg.wParam)
+            {
+                sz->rgrc[0].bottom +=
+                    BORDERWIDTH; // rgrc[0] is what makes this work, don't know
+                                 // what others (rgrc[1], rgrc[2]) do, but why
+                                 // not change them all?
+                sz->rgrc[0].right += BORDERWIDTH;
+                sz->rgrc[1].bottom += BORDERWIDTH;
+                sz->rgrc[1].right += BORDERWIDTH;
+                sz->rgrc[2].bottom += BORDERWIDTH;
+                sz->rgrc[2].right += BORDERWIDTH;
+                return 0;
+            }
         }
         break;
 	}
+    case WM_GETMINMAXINFO: // It is used to restrict WS_POPUP window size
+    {                      // I don't know if this works on others
+        MINMAXINFO* min_max = reinterpret_cast<MINMAXINFO*>(msg.lParam);
+
+        min_max->ptMinTrackSize.x = MINX;
+        min_max->ptMinTrackSize.y = MINY;
+        break;
+    }
     default:
         // Do nothing
         break;

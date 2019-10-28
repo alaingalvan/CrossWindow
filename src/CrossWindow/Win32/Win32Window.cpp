@@ -8,12 +8,9 @@
 
 enum Style : DWORD
 {
-    windowed = WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU |
-               WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
-    aero_borderless = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU |
-                      WS_MAXIMIZEBOX | WS_MINIMIZEBOX,
-    basic_borderless =
-        WS_POPUP | WS_THICKFRAME | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX
+    windowed = WS_OVERLAPPEDWINDOW,
+    aero_borderless = WS_POPUP | WS_THICKFRAME,
+    basic_borderless = WS_POPUP | WS_VISIBLE
 };
 
 HBRUSH hBrush = CreateSolidBrush(RGB(23, 26, 30));
@@ -105,10 +102,10 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     }
     else
     {
-        //dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+        dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
         //dwExStyle &=
         //    ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-        dwStyle = Style::basic_borderless;
+        dwStyle = Style::aero_borderless;
     }
 
     RECT windowRect;
