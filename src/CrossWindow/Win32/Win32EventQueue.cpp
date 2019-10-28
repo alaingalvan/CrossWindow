@@ -30,10 +30,10 @@ void Win32EventQueue::update()
     }
 }
 
-void Win32EventQueue::pushEvent(MSG msg, Window* window)
+LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
 {
     UINT message = msg.message;
-
+    LRESULT result = 0;
     // TODO: hwnd to xwin::Window unordered_map, when xwin::Window closes, it
     // sends a message to the event queue to remove that hwnd
     // and any remaining events that match that xwin::Window
@@ -62,6 +62,25 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_PAINT:
     {
+        /*
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(window->getDelegate().hwnd, &ps);
+
+        RECT rc = ps.rcPaint;
+        BP_PAINTPARAMS params = {sizeof(params), BPPF_NOCLIP | BPPF_ERASE};
+        HDC memdc;
+        HPAINTBUFFER hbuffer =
+            BeginBufferedPaint(hdc, &rc, BPBF_TOPDOWNDIB, &params, &memdc);
+
+   HBRUSH brush = CreateSolidBrush(RGB(23, 26, 30));
+        FillRect(hdc, &rc, brush);
+        DeleteObject(brush);
+
+        BufferedPaintSetAlpha(hbuffer, &rc, 255);
+        EndBufferedPaint(hbuffer, TRUE);
+
+        EndPaint(window->getDelegate().hwnd, &ps);
+		*/
         e = xwin::Event(xwin::EventType::Paint, window);
         break;
     }
@@ -84,6 +103,67 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         e = xwin::Event(xwin::FocusData(false), window);
         break;
     }
+    case WM_NCHITTEST:
+	{
+        POINT cursor = POINT{GET_X_LPARAM(msg.lParam), GET_Y_LPARAM(msg.lParam)};
+        // identify borders and corners to allow resizing the window.
+        // Note: On Windows 10, windows behave differently and
+        // allow resizing outside the visible window frame.
+        // This implementation does not replicate that behavior.
+        bool borderless_resize = true;
+        bool borderless_drag = true;
+        const POINT border{::GetSystemMetrics(SM_CXFRAME) +
+                               ::GetSystemMetrics(SM_CXPADDEDBORDER),
+                           ::GetSystemMetrics(SM_CYFRAME) +
+                               ::GetSystemMetrics(SM_CXPADDEDBORDER)};
+        RECT windowRect;
+        if (!::GetWindowRect(window->getDelegate().hwnd, &windowRect))
+        {
+            result =  HTNOWHERE;
+        }
+
+        const auto drag = borderless_drag ? HTCAPTION : HTCLIENT;
+
+        enum region_mask
+        {
+            client = 0b0000,
+            left = 0b0001,
+            right = 0b0010,
+            top = 0b0100,
+            bottom = 0b1000,
+        };
+
+        result =
+            left * (cursor.x < (windowRect.left + border.x)) |
+            right * (cursor.x >= (windowRect.right - border.x)) |
+            top * (cursor.y < (windowRect.top + border.y)) |
+            bottom * (cursor.y >= (windowRect.bottom - border.y));
+
+        switch (result)
+        {
+        case left:
+            result =  borderless_resize ? HTLEFT : drag;
+        case right:
+            result =  borderless_resize ? HTRIGHT : drag;
+        case top:
+            result =  borderless_resize ? HTTOP : drag;
+        case bottom:
+            result =  borderless_resize ? HTBOTTOM : drag;
+        case top | left:
+            result =  borderless_resize ? HTTOPLEFT : drag;
+        case top | right:
+            result =  borderless_resize ? HTTOPRIGHT : drag;
+        case bottom | left:
+            result =  borderless_resize ? HTBOTTOMLEFT : drag;
+        case bottom | right:
+            result =  borderless_resize ? HTBOTTOMRIGHT : drag;
+        case client:
+            result =  drag;
+        default:
+            result =  HTNOWHERE;
+        }
+        break;
+	}
     case WM_MOUSEWHEEL:
     {
         short modifiers = LOWORD(msg.wParam);
@@ -630,6 +710,7 @@ void Win32EventQueue::pushEvent(MSG msg, Window* window)
         mQueue.emplace(e);
 	}
     window->getDelegate().executeEventCallback(e);
+    return result;
 }
 
 const Event& Win32EventQueue::front() { return mQueue.front(); }

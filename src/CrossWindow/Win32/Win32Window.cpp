@@ -4,6 +4,7 @@
 #include "dwmapi.h"
 #include <windowsx.h>
 #pragma comment(lib, "dwmapi.lib")
+#pragma comment(lib, "uxtheme.lib")
 
 enum Style : DWORD
 {
@@ -14,6 +15,8 @@ enum Style : DWORD
     basic_borderless =
         WS_POPUP | WS_THICKFRAME | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX
 };
+
+HBRUSH hBrush = CreateSolidBrush(RGB(23, 26, 30));
 
 namespace xwin
 {
@@ -49,7 +52,7 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     wndClass.hInstance = hinstance;
     wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndClass.hbrBackground = NULL;
+    wndClass.hbrBackground = hBrush;
     wndClass.lpszMenuName = NULL;
     wndClass.lpszClassName = mDesc->name.c_str();
     wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
@@ -92,8 +95,8 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
         }
     }
 
-    DWORD dwExStyle;
-    DWORD dwStyle;
+    DWORD dwExStyle = 0;
+    DWORD dwStyle = 0;
 
     if (mDesc->fullscreen)
     {
@@ -102,7 +105,9 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     }
     else
     {
-        dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+        //dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+        //dwExStyle &=
+        //    ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
         dwStyle = Style::basic_borderless;
     }
 
@@ -159,6 +164,8 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     mTaskbarList->SetProgressValue(hwnd, 50, 100);
 
     FlashWindow(hwnd, true);
+    //MoveWindow(hwnd, 0, 0, desc.width,
+    //           desc.height + 8, true);
 
     return true;
 }
@@ -268,8 +275,8 @@ LRESULT Win32Window::WindowProc(UINT msg, WPARAM wparam, LPARAM lparam)
     message.message = msg;
     message.time = 0;
 
-    mEventQueue->getDelegate().pushEvent(message, mParent);
-
+    LRESULT result = mEventQueue->getDelegate().pushEvent(message, mParent);
+    if (result > 0) return result;
     return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 }

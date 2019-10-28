@@ -25,7 +25,7 @@ class Win32EventQueue
 
 	size_t size();
 
-    void pushEvent(MSG msg, Window* window);
+    LRESULT pushEvent(MSG msg, Window* window);
 
   protected:
     bool initialized;
