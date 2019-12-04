@@ -105,7 +105,7 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
         dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
         //dwExStyle &=
         //    ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-        dwStyle = Style::aero_borderless;
+        dwStyle = Style::basic_borderless;
     }
 
     RECT windowRect;
@@ -158,9 +158,10 @@ bool Win32Window::create(WindowDesc& desc, EventQueue& eventQueue,
     HRESULT hrf =
         CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER,
                          IID_ITaskbarList3, (LPVOID*)&mTaskbarList);
-    mTaskbarList->SetProgressValue(hwnd, 50, 100);
+    setProgress(0.0f);
 
-    FlashWindow(hwnd, true);
+
+    //FlashWindow(hwnd, true);
     //MoveWindow(hwnd, 0, 0, desc.width,
     //           desc.height + 8, true);
 
@@ -186,6 +187,13 @@ void Win32Window::close()
         DestroyWindow(hwnd);
         hwnd = nullptr;
     }
+}
+
+void Win32Window::setProgress(float progress)
+{
+    unsigned max = 10000;
+    unsigned cur = (unsigned)(progress * (float)max);
+    mTaskbarList->SetProgressValue(hwnd, cur, max);
 }
 
 void Win32Window::showMouse(bool show) { ShowCursor(show ? TRUE : FALSE); }

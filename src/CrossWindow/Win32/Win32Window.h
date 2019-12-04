@@ -46,6 +46,8 @@ class Win32Window
 
     void Win32Window::setWindowSize(unsigned width, unsigned height);
 
+	void Win32Window::setProgress(float progress);
+
     UVec2 Win32Window::getCurrentDisplaySize();
 
     // returns the current top left corner this window is located in

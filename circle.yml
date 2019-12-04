@@ -10,6 +10,8 @@ dependencies:
   cache_directories:
     - ~/android-ndk-r12b
   pre:
+    - git checkout tests
+    - git submodule update --init --recursive
     #-- Install NDK r12b --
     - if [[ ! -e ~/android-ndk-r12b ]]; then wget http://dl.google.com/android/repository/android-ndk-r12b-linux-x86_64.zip && unzip -d ~ android-ndk-r12b-linux-x86_64.zip; fi
     #-- Intall Android SDK Build-tools, revision 24.0.0 --
@@ -21,6 +23,7 @@ dependencies:
     #------------------
     - echo "ndk.dir=/home/ubuntu/android-ndk-r12b" > local.properties
     - chmod +x gradlew
+    -
 
 test:
   override:

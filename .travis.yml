@@ -18,6 +18,8 @@ addons:
 before_install:
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 script:
+  - git checkout tests
+  - git submodule update --init --recursive
   - mkdir make
   - cd make
   - cmake .. -DXWIN_OS=NOOP -DXWIN_TESTS=ON
