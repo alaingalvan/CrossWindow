@@ -246,3 +246,84 @@ endif()
 
 # Preprocessor Definitions
 target_compile_definitions(${PROJECT_NAME} PUBLIC XWIN_${XWIN_API}=1)
+
+# =============================================================
+
+option(XWIN_TESTS "If enabled, compile the tests." OFF)
+
+if (XWIN_TESTS)
+    MESSAGE( STATUS "Building CrossWindow Tests..." )
+
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+    # we use this to get code coverage
+    if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+    endif()
+
+    # Unit Tests
+    set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
+    include_directories(
+        ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
+        ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
+        ${PROJECT_SOURCE_DIR}/src
+        )
+
+    set(GOOGLETEST_SOURCES
+        ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest-all.cc
+        )
+
+    foreach(_source ${GOOGLETEST_SOURCES})
+        set_source_files_properties(${_source} PROPERTIES GENERATED 1)
+    endforeach()
+
+    add_library(GoogleTest ${GOOGLETEST_SOURCES})
+
+    # Test Sources (@TODO - replace with function or macro)
+    file(GLOB_RECURSE tests_list RELATIVE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.mm
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.hpp
+    )
+
+    # Solution Filters
+    foreach(test IN LISTS tests_list)
+        get_filename_component(test_path "${test}" PATH)
+        string(REPLACE "/" "\\" test_path_msvc "${test_path}")
+        string(REPLACE "tests" "" test_path_final "${test_path_msvc}")
+        source_group("${test_path_final}" FILES "${test}")
+    endforeach()
+
+    xwin_add_executable(
+        Tests
+        "${tests_list}"
+        )
+
+    if(NOT MSVC)
+        find_package(Threads REQUIRED)
+        set(PThreadLib -pthread)
+    endif()
+    
+    target_link_libraries(
+        Tests
+        ${PROJECT_NAME}
+        ${PThreadLib}
+        GoogleTest
+    )
+    add_dependencies(
+        Tests
+        ${PROJECT_NAME}
+        GoogleTest
+    )
+    include(CTest)
+    enable_testing()
+    add_test(
+        NAME UnitTests
+        COMMAND Tests
+    )
+
+    set_property(TARGET GoogleTest PROPERTY FOLDER "Dependencies")
+
+endif()
