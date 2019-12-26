@@ -30,45 +30,6 @@
 
 #include <memory>
 
-namespace xwin
-{
-
-class Window
-{
-  public:
-    Window();
-
-    ~Window();
-
-    /**
-     * Initialize the OS specific data structures needed to create a window.
-     * Pass a description of your window, as well as an event queue to listen to
-     * events from that window.
-     */
-    bool create(const WindowDesc& desc, EventQueue& queue);
-
-    void showMouse(bool show);
-
-    void setMousePosition(const UVec2 position);
-
-    UVec2 getCurrentDisplaySize();
-
-    void setSize(const UVec2& size);
-
-    /**
-     * Destroy this window.
-     */
-    void close();
-
-    WindowDesc getDesc() const;
-
-    WindowDelegate& getDelegate();
-
-  protected:
-    WindowDesc mDesc;
-    WindowDelegate mDelegate;
-};
-
 typedef std::shared_ptr<Window> WindowPtr;
 typedef std::weak_ptr<Window> WindowWeakPtr;
 }
