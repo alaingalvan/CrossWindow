@@ -3,12 +3,12 @@
 #include <string>
 
 /**
-  * Initial window description
-  */
+ * Initial window description
+ */
 namespace xwin
 {
-  struct WindowDesc
-  {
+struct WindowDesc
+{
     // States
     bool visible;
     bool fullscreen;
@@ -26,11 +26,12 @@ namespace xwin
     unsigned height;
 
     WindowDesc();
-  };
+};
 
-    struct UVec2
-    {
-        unsigned x;
-        unsigned y;
-    };
+struct UVec2
+{
+    unsigned x;
+    unsigned y;
+    UVec2(unsigned x = 0, unsigned y = 0) : x(x), y(y) {}
+};
 }

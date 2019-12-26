@@ -225,19 +225,15 @@ UVec2 Win32Window::getCurrentDisplaySize()
 {
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    UVec2 r;
-    r.x = static_cast<unsigned>(screenWidth);
-    r.y = static_cast<unsigned>(screenHeight);
+    UVec2 r = UVec2(static_cast<unsigned>(screenWidth), static_cast<unsigned>(screenHeight));
     return r;
 }
 
 UVec2 Win32Window::getCurrentDisplayPosition()
 {
     WINDOWPLACEMENT lpwndpl;
-    UVec2 r;
     GetWindowPlacement(hwnd, &lpwndpl);
-    r.x = lpwndpl.ptMinPosition.x;
-    r.y = lpwndpl.ptMinPosition.y;
+    UVec2 r = UVec2(lpwndpl.ptMinPosition.x, lpwndpl.ptMinPosition.y);
     return r;
 }
 
