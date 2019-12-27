@@ -2,23 +2,23 @@
 
 namespace xwin
 {
-  NoopEventQueue::NoopEventQueue()
+  EventQueue::EventQueue()
   {
   }
 
-  void NoopEventQueue::update()
+  void EventQueue::update()
   {
   }
 
-  const Event& NoopEventQueue::front()
+  const Event& EventQueue::front()
   {
     return e;
   }
 
-  void NoopEventQueue::pop()
+  void EventQueue::pop()
   {
   }
-  bool NoopEventQueue::empty()
+  bool EventQueue::empty()
   {
 	  return false;
   }

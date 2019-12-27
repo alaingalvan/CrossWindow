@@ -38,26 +38,26 @@ class Window
 
     void updateDesc(WindowDesc& desc);
 
-    void Window::setTitle(std::string title);
+    void setTitle(std::string title);
 
-    void Window::setPosition(unsigned x, unsigned y);
+    void setPosition(unsigned x, unsigned y);
 
-    void Window::setMousePosition(unsigned x, unsigned y);
+    void setMousePosition(unsigned x, unsigned y);
 
-    void Window::showMouse(bool show);
+    void showMouse(bool show);
 
-    void Window::setWindowSize(unsigned width, unsigned height);
+    void setSize(unsigned width, unsigned height);
 
-    void Window::setProgress(float progress);
+    void setProgress(float progress);
 
-    UVec2 Window::getCurrentDisplaySize();
+    UVec2 getCurrentDisplaySize();
 
     // returns the current top left corner this window is located in
-    UVec2 Window::getCurrentDisplayPosition();
+    UVec2 getCurrentDisplayPosition();
 
-    // UVec2 Window::getWindowSize();
+    // UVec2 getWindowSize();
 
-    // std::string Window::getTitle();
+    // std::string getTitle();
 
     void close();
 

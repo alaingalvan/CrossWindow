@@ -209,7 +209,7 @@ void Window::setPosition(unsigned x, unsigned y)
     mDesc.y = y;
 }
 
-void Window::setWindowSize(unsigned width, unsigned height)
+void Window::setSize(unsigned width, unsigned height)
 {
     windowRect.left = mDesc.x;
     windowRect.top = mDesc.y;
