@@ -8,14 +8,12 @@
 
 namespace xwin
 {
-	class Window;
-
-	class CocoaWindow
+	class Window
 	{
 	public:
-		CocoaWindow();
+		Window();
 		
-		~CocoaWindow();
+		~Window();
 		
 		bool create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent);
 		
@@ -58,7 +56,7 @@ namespace xwin
 
 	};
 	
-	typedef CocoaWindow WindowDelegate;
+	typedef Window WindowDelegate;
 }
 
 

@@ -24,9 +24,9 @@ RAWINPUTDEVICE Rid[1];
 
 namespace xwin
 {
-Win32EventQueue::Win32EventQueue() { initialized = false; }
+EventQueue::EventQueue() { initialized = false; }
 
-void Win32EventQueue::update()
+void EventQueue::update()
 {
     MSG msg = {};
 
@@ -38,7 +38,7 @@ void Win32EventQueue::update()
     }
 }
 
-LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
+LRESULT EventQueue::pushEvent(MSG msg, Window* window)
 {
     UINT message = msg.message;
     LRESULT result = 0;
@@ -52,7 +52,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
         Rid[0].usUsage = HID_USAGE_GENERIC_MOUSE;
         Rid[0].dwFlags = RIDEV_INPUTSINK;
-        Rid[0].hwndTarget = window->getDelegate().hwnd;
+        Rid[0].hwndTarget = window->hwnd;
         RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]));
     }
 
@@ -65,7 +65,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         e = xwin::Event(xwin::EventType::Create, window);
 		//repaint window when borderless to avoid 6px resizable border.
         CREATESTRUCT* WindowInfo = reinterpret_cast<CREATESTRUCT*>(msg.lParam);
-        MoveWindow(window->getDelegate().hwnd, WindowInfo->x, WindowInfo->y,
+        MoveWindow(window->hwnd, WindowInfo->x, WindowInfo->y,
                    WindowInfo->cx - BORDERWIDTH, WindowInfo->cy - BORDERWIDTH,
                    TRUE);
         break;
@@ -74,7 +74,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
     {
         /*
         PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(window->getDelegate().hwnd, &ps);
+        HDC hdc = BeginPaint(window->hwnd, &ps);
 
         RECT rc = ps.rcPaint;
         BP_PAINTPARAMS params = {sizeof(params), BPPF_NOCLIP | BPPF_ERASE};
@@ -89,14 +89,14 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         BufferedPaintSetAlpha(hbuffer, &rc, 255);
         EndBufferedPaint(hbuffer, TRUE);
 
-        EndPaint(window->getDelegate().hwnd, &ps);
+        EndPaint(window->hwnd, &ps);
 		*/
 
 		PAINTSTRUCT ps;
-        BeginPaint(window->getDelegate().hwnd, &ps);
+        BeginPaint(window->hwnd, &ps);
 
         RECT ClientRect;
-        GetClientRect(window->getDelegate().hwnd, &ClientRect);
+        GetClientRect(window->hwnd, &ClientRect);
         RECT BorderRect = {BORDERWIDTH, BORDERWIDTH,
                            ClientRect.right - BORDERWIDTH - BORDERWIDTH,
                            ClientRect.bottom - BORDERWIDTH - BORDERWIDTH},
@@ -110,7 +110,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         FillRect(ps.hdc, &TitleRect, BorderBrush);
         DeleteObject(BorderBrush);
 
-        EndPaint(window->getDelegate().hwnd, &ps);
+        EndPaint(window->hwnd, &ps);
         e = xwin::Event(xwin::EventType::Paint, window);
         break;
     }
@@ -138,7 +138,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         RECT WindowRect;
         int x, y;
 
-        GetWindowRect(window->getDelegate().hwnd, &WindowRect);
+        GetWindowRect(window->hwnd, &WindowRect);
         x = GET_X_LPARAM(msg.lParam) - WindowRect.left;
         y = GET_Y_LPARAM(msg.lParam) - WindowRect.top;
 
@@ -324,7 +324,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_MOUSEMOVE:
     {
-        HWND hwnd = window->getDelegate().hwnd;
+        HWND hwnd = window->hwnd;
         // Extract the mouse local coordinates
         int x = static_cast<short>(LOWORD(msg.lParam));
         int y = static_cast<short>(HIWORD(msg.lParam));
@@ -637,7 +637,7 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
         unsigned width, height;
 			unsigned STEP = 1;
         PRECT rectp = (PRECT)msg.lParam;
-        HWND hwnd = window->getDelegate().hwnd;
+        HWND hwnd = window->hwnd;
         // Get the window and client dimensions
         tagRECT wind, rect;
         GetWindowRect(hwnd, &wind);
@@ -688,14 +688,14 @@ LRESULT Win32EventQueue::pushEvent(MSG msg, Window* window)
 	{
         mQueue.emplace(e);
 	}
-    window->getDelegate().executeEventCallback(e);
+    window->executeEventCallback(e);
     return result;
 }
 
-const Event& Win32EventQueue::front() { return mQueue.front(); }
+const Event& EventQueue::front() { return mQueue.front(); }
 
-void Win32EventQueue::pop() { mQueue.pop(); }
+void EventQueue::pop() { mQueue.pop(); }
 
-bool Win32EventQueue::empty() { return mQueue.empty(); }
-size_t Win32EventQueue::size() { return mQueue.size(); }
+bool EventQueue::empty() { return mQueue.empty(); }
+size_t EventQueue::size() { return mQueue.size(); }
 }

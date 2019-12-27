@@ -1,4 +1,4 @@
-#include "CocoaWindow.h"
+#include "Window.h"
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAMetalLayer.h>
 
@@ -34,11 +34,11 @@
 
 namespace xwin
 {	
-	CocoaWindow::CocoaWindow()
+	Window::Window()
 	{
 	}
 	
-	CocoaWindow::~CocoaWindow()
+	Window::~Window()
 	{
 		if( window != nullptr)
 		{
@@ -46,7 +46,7 @@ namespace xwin
 		}
 	}
 	
-	bool CocoaWindow::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
+	bool Window::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
 	{
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 
@@ -81,7 +81,7 @@ namespace xwin
 	return true;
 	}
 	
-	void CocoaWindow::close()
+	void Window::close()
 	{
 		[(XWinWindow*)window release];
 		[(XWinView*)view release];
@@ -92,7 +92,7 @@ namespace xwin
 		layer = nullptr;
 	}
 	
-	void CocoaWindow::setLayer(LayerType type)
+	void Window::setLayer(LayerType type)
 	{
 		[(XWinView*)view setWantsLayer:YES];
 		
@@ -101,13 +101,13 @@ namespace xwin
 	}
 	
 	
-	void CocoaWindow::setMousePosition(unsigned x, unsigned y)
+	void Window::setMousePosition(unsigned x, unsigned y)
 	{
 		CGPoint pos = CGPointMake(x, y);
 		CGWarpMouseCursorPosition(pos);
 	}
 	
-	UVec2 CocoaWindow::getCurrentDisplaySize()
+	UVec2 Window::getCurrentDisplaySize()
 	{
 		UVec2 size;
 		NSRect screenRect = [[NSScreen mainScreen] frame];

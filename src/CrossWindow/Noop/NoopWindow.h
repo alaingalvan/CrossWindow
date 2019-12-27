@@ -8,23 +8,34 @@ namespace xwin
 {
 class Window;
 
-class NoopWindow
+class Window
 {
   public:
-    ~NoopWindow();
+    ~Window();
 
-    bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
+    bool create(WindowDesc& desc, EventQueue& eventQueue);
 
-    void showMouse(bool show);
+    void close();
+
+    const WindowDesc getDesc();
+
+    void updateDesc(WindowDesc& desc);
+
+    void setTitle(std::string title);
+
+    void setPosition(unsigned x, unsigned y);
 
     void setMousePosition(unsigned x, unsigned y);
 
+    void showMouse(bool show);
+
+    void setSize(unsigned width, unsigned height);
+
+    void setProgress(float progress);
+
     UVec2 getCurrentDisplaySize();
 
-    void setWindowSize(unsigned x, unsigned y);
-
-    void close();
+    // returns the current top left corner this window is located in
+    UVec2 getCurrentDisplayPosition();
 };
-
-typedef NoopWindow WindowDelegate;
 }

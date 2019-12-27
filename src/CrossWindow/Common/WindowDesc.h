@@ -32,6 +32,6 @@ struct UVec2
 {
     unsigned x;
     unsigned y;
-    UVec2(unsigned x, unsigned y) : x(x), y(y) {}
+    UVec2(unsigned x = 0, unsigned y = 0) : x(x), y(y) {}
 };
 }

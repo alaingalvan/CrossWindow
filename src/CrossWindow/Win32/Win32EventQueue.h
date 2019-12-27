@@ -10,10 +10,10 @@ namespace xwin
 {
 class Window;
 
-class Win32EventQueue
+class EventQueue
 {
   public:
-    Win32EventQueue();
+    EventQueue();
 
     void update();
 
@@ -47,6 +47,4 @@ class Win32EventQueue
         /*VK_RBUTTON 0x02*/ Key::KeysMax,
         /*VK_CANCEL 0x03*/ Key::KeysMax};
 };
-
-typedef Win32EventQueue EventQueueDelegate;
 }

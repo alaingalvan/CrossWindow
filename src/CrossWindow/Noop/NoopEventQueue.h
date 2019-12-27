@@ -4,10 +4,10 @@
 
 namespace xwin
 {
-  class NoopEventQueue
+  class EventQueue
   {
     public:
-    NoopEventQueue();
+    EventQueue();
 
     void update();
 
@@ -21,5 +21,4 @@ namespace xwin
     Event e = Event(EventType::EventTypeMax, nullptr);
   };
 
-  typedef NoopEventQueue EventQueueDelegate;
 }

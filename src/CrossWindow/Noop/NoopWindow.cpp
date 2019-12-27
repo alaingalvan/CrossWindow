@@ -2,21 +2,47 @@
 
 namespace xwin
 {
-NoopWindow::~NoopWindow() { close(); }
+Window::~Window() { close(); }
 
-bool NoopWindow::create(WindowDesc& desc, EventQueue& eventQueue,
-                        Window* parent)
+bool Window::create(WindowDesc& desc, EventQueue& eventQueue) { return false; }
+
+void Window::close() {}
+
+const WindowDesc Window::getDesc() { return WindowDesc(); }
+
+void Window::updateDesc(WindowDesc& desc) {}
+
+bool create(WindowDesc& desc, EventQueue& eventQueue) { return true; }
+
+const WindowDesc getDesc()
 {
-    return true;
+    WindowDesc wd;
+    return wd;
 }
-void NoopWindow::showMouse(bool show) {}
 
-void NoopWindow::close() {}
+void updateDesc(WindowDesc& desc) {}
 
-void NoopWindow::setWindowSize(unsigned x, unsigned y) {}
+void Window::setTitle(std::string title) {}
 
-void NoopWindow::setMousePosition(unsigned x, unsigned y) {}
+void Window::setPosition(unsigned x, unsigned y) {}
 
-UVec2 NoopWindow::getCurrentDisplaySize() { return UVec2(0, 0); }
+void Window::setMousePosition(unsigned x, unsigned y) {}
 
+void Window::showMouse(bool show) {}
+
+void Window::setSize(unsigned width, unsigned height) {}
+
+void Window::setProgress(float progress) {}
+
+UVec2 Window::getCurrentDisplaySize()
+{
+    UVec2 v;
+    return v;
+}
+
+UVec2 Window::getCurrentDisplayPosition()
+{
+    UVec2 v;
+    return v;
+}
 }
