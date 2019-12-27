@@ -52,5 +52,4 @@ TEST(Creation, Delgates)
     xwin::EventQueue eventQueue;
 	window.create(windowDesc, eventQueue);
     eventQueue.update();
-    xwin::WindowDelegate& delegate = window.getDelegate();
 }
