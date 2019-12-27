@@ -25,37 +25,39 @@ class Window;
  * https://msdn.microsoft.com/en-us/library/windows/desktop/ms644958%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
  *
  */
-class Win32Window
+class Window
 {
   public:
-    Win32Window();
+    Window();
 
-    ~Win32Window();
+    ~Window();
 
-    bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
+    bool create(WindowDesc& desc, EventQueue& eventQueue);
+
+    const WindowDesc getDesc();
 
     void updateDesc(WindowDesc& desc);
 
-    void Win32Window::setTitle(std::string title);
+    void Window::setTitle(std::string title);
 
-    void Win32Window::setPosition(unsigned x, unsigned y);
+    void Window::setPosition(unsigned x, unsigned y);
 
-    void Win32Window::setMousePosition(unsigned x, unsigned y);
+    void Window::setMousePosition(unsigned x, unsigned y);
 
-    void Win32Window::showMouse(bool show);
+    void Window::showMouse(bool show);
 
-    void Win32Window::setWindowSize(unsigned width, unsigned height);
+    void Window::setWindowSize(unsigned width, unsigned height);
 
-	void Win32Window::setProgress(float progress);
+    void Window::setProgress(float progress);
 
-    UVec2 Win32Window::getCurrentDisplaySize();
+    UVec2 Window::getCurrentDisplaySize();
 
     // returns the current top left corner this window is located in
-    UVec2 Win32Window::getCurrentDisplayPosition();
+    UVec2 Window::getCurrentDisplayPosition();
 
-    // Vec2 Win32Window::getWindowSize();
+    // UVec2 Window::getWindowSize();
 
-    // std::string Win32Window::getTitle();
+    // std::string Window::getTitle();
 
     void close();
 
@@ -77,11 +79,9 @@ class Win32Window
     std::function<void(const xwin::Event e)> mCallback;
 
   protected:
-    Window* mParent;
-
     EventQueue* mEventQueue;
 
-    WindowDesc* mDesc;
+    WindowDesc mDesc;
 
     // Window State
     WNDCLASSEX wndClass;
@@ -96,12 +96,12 @@ class Win32Window
     DWORD dwExStyle;
     DWORD dwStyle;
 
-	//Taskbar Interface
-	ITaskbarList3* mTaskbarList;
+    // Taskbar Interface
+    ITaskbarList3* mTaskbarList;
 };
 
-static thread_local Win32Window* _windowBeingCreated = nullptr;
-static thread_local std::unordered_map<HWND, Win32Window*> _hwndMap = {};
+static thread_local Window* _windowBeingCreated = nullptr;
+static thread_local std::unordered_map<HWND, Window*> _hwndMap = {};
 
-typedef Win32Window WindowDelegate;
+typedef Window WindowDelegate;
 }

@@ -205,8 +205,8 @@ Be sure to have [CMake](https://cmake.org) Installed.
 | CMake Options | Description |
 |:-------------:|:-----------:|
 | `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
-| `XWIN_PROTOCOL` | The protocol to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `APPKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
-| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple protocols, the final protocol will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_PROTOCOL` is set this option is ignored. |
+| `XWIN_API` | The OS API to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `APPKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
+| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple apis, the final api will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_API` is set this option is ignored. |
 
 
 First install [Git](https://git-scm.com/downloads), then open any terminal such as [Hyper](https://hyper.is/) in any folder and type:
