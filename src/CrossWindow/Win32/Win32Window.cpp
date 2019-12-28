@@ -49,7 +49,7 @@ bool Window::create(WindowDesc& desc, EventQueue& eventQueue)
     wndClass.hInstance = hinstance;
     wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndClass.hbrBackground = hBrush;
+    // wndClass.hbrBackground = hBrush;
     wndClass.lpszMenuName = NULL;
     wndClass.lpszClassName = mDesc.name.c_str();
     wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
@@ -196,6 +196,15 @@ void Window::setProgress(float progress)
 
 void Window::showMouse(bool show) { ShowCursor(show ? TRUE : FALSE); }
 
+std::string Window::getTitle() const
+{
+    char str[1024];
+    memset(str, 0, sizeof(char) * 1024);
+    GetWindowTextA(hwnd, str, 1024);
+    std::string outStr = std::string(str);
+    return outStr;
+}
+
 void Window::setTitle(std::string title)
 {
     mDesc.title = title;
@@ -219,7 +228,14 @@ void Window::setSize(unsigned width, unsigned height)
     AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
 }
 
-UVec2 Window::getCurrentDisplaySize()
+UVec2 Window::getWindowSize() const
+{
+    LPRECT lpRect;
+    GetWindowRect(hwnd, lpRect);
+    return UVec2(lpRect->right - lpRect->left, lpRect->bottom - lpRect->top);
+}
+
+UVec2 Window::getCurrentDisplaySize() const
 {
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -228,7 +244,7 @@ UVec2 Window::getCurrentDisplaySize()
     return r;
 }
 
-UVec2 Window::getCurrentDisplayPosition()
+UVec2 Window::getCurrentDisplayPosition() const
 {
     WINDOWPLACEMENT lpwndpl;
     GetWindowPlacement(hwnd, &lpwndpl);

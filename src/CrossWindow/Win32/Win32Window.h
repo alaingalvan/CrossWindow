@@ -50,14 +50,14 @@ class Window
 
     void setProgress(float progress);
 
-    UVec2 getCurrentDisplaySize();
+    UVec2 getCurrentDisplaySize() const;
 
     // returns the current top left corner this window is located in
-    UVec2 getCurrentDisplayPosition();
+    UVec2 getCurrentDisplayPosition() const;
 
-    // UVec2 getWindowSize();
+    UVec2 getWindowSize() const;
 
-    // std::string getTitle();
+    std::string getTitle() const;
 
     void close();
 
