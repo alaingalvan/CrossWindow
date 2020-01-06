@@ -49,7 +49,7 @@ bool Window::create(WindowDesc& desc, EventQueue& eventQueue)
     wndClass.hInstance = hinstance;
     wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    // wndClass.hbrBackground = hBrush;
+    wndClass.hbrBackground = hBrush;
     wndClass.lpszMenuName = NULL;
     wndClass.lpszClassName = mDesc.name.c_str();
     wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
