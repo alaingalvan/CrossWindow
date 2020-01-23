@@ -15,7 +15,7 @@ namespace xwin
 		
 		~Window();
 		
-		bool create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent);
+		bool create(const WindowDesc& desc, EventQueue& eventQueue);
 		
 		void close();
 		

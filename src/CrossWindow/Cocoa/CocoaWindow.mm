@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "CocoaWindow.h"
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAMetalLayer.h>
 
@@ -46,7 +46,7 @@ namespace xwin
 		}
 	}
 	
-	bool Window::create(const WindowDesc& desc, EventQueue& eventQueue, Window* parent)
+	bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 	{
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
 

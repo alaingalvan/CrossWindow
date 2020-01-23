@@ -15,7 +15,7 @@ namespace xwin
    * 
    * Events - https://developer.apple.com/documentation/appkit/nsevent
    */ 
-  class MacOSEventQueue
+  class EventQueue
   {
   public:
     void update();
@@ -31,6 +31,4 @@ namespace xwin
 
     std::queue<Event> mQueue;
   };
-
-  typedef MacOSEventQueue EventQueueDelegate;
 }

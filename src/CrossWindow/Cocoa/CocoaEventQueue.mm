@@ -3,7 +3,7 @@
 
 namespace xwin
 {
-	void MacOSEventQueue::update()
+	void EventQueue::update()
 	{
 		// Update Application
 		NSApplication* nsApp = (NSApplication*)getXWinState().application;
@@ -104,17 +104,17 @@ namespace xwin
 		[nsApp updateWindows];
 	}
 	
-	const Event& MacOSEventQueue::front()
+	const Event& EventQueue::front()
 	{
 		return mQueue.front();
 	}
 	
-	void MacOSEventQueue::pop()
+	void EventQueue::pop()
 	{
 		mQueue.pop();
 	}
 	
-	bool MacOSEventQueue::empty()
+	bool EventQueue::empty()
 	{
 		return mQueue.empty();
 	}
