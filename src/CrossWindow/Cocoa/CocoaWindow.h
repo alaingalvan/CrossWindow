@@ -28,11 +28,12 @@ namespace xwin
 		enum class LayerType
 		{
 			Metal,
+			OpenGL,
 			LayerTypeMax
 		};
 		
 		// Set the type of this window's view layer
-		void setLayer(LayerType type = LayerType::Metal);
+		void setLayer(LayerType type);
 		
 		//XWinWindow*
 		void* window;

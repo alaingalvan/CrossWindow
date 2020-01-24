@@ -1,6 +1,7 @@
 #include "CocoaWindow.h"
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAMetalLayer.h>
+#import <QuartzCore/CAOpenGLLayer.h>
 
 @interface XWinWindow : NSWindow
 {
@@ -36,6 +37,9 @@ namespace xwin
 {	
 	Window::Window()
 	{
+		window =
+		view =
+		layer = nullptr;
 	}
 	
 	Window::~Window()
@@ -94,10 +98,26 @@ namespace xwin
 	
 	void Window::setLayer(LayerType type)
 	{
-		[(XWinView*)view setWantsLayer:YES];
+		if(type == LayerType::Metal)
+		{
+		XWinView* v = (XWinView*)view;
+		[v setWantsLayer:YES];
 		
 		layer = [[CAMetalLayer alloc] init];
-							   [(XWinView*)view setLayer:(CAMetalLayer*)layer];
+							   [v setLayer:(CAMetalLayer*)layer];
+		}
+		else if(type == LayerType::OpenGL)
+		{
+
+			XWinView* v = (XWinView*)view;
+			[v setWantsLayer:YES];
+			
+			layer = [[CAOpenGLLayer alloc] init];
+								   [(XWinView*)view setLayer:(CAOpenGLLayer*)layer];
+			CAOpenGLLayer* l = ((CAOpenGLLayer*)layer);
+			l.asynchronous = false;
+			[l setNeedsDisplay];
+		}
 	}
 	
 	
