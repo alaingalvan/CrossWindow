@@ -2,9 +2,36 @@
 
 namespace xwin
 {
-    WASMWindow::WASMWindow()
+    Window::Window()
     {
-        // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
-        emscripten_set_main_loop(one_iter, 60, 1);
+
+    }
+
+    bool Window::create(WindowDesc& desc, EventQueue& eventQueue)
+    {
+        mDesc = desc;
+
+        EM_ASM(
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        canvas.id = 'MainWindow';
+        );
+        
+        emscripten_set_canvas_element_size(desc.name.c_str(), desc.width, desc.height);
+
+        return true;
+    }
+
+    void Window::close()
+    {
+        EM_ASM(
+        var canvas = document.getElementById('MainWindow');
+        document.body.removeChild(canvas);
+        );
+    }
+
+    WindowDesc Window::getDesc()
+    {
+        return mDesc;
     }
 }

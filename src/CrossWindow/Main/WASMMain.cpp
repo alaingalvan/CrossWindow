@@ -1,5 +1,6 @@
 #import "Main.h"
 #include "../Common/Init.h"
+#include "emscripten/html5.h"
 
 int main()
 {

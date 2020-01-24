@@ -1,13 +1,24 @@
 #pragma once
 
-#include "html5.h"
+#include "../Common/EventQueue.h"
+#include "../Common/Init.h"
+#include "../Common/WindowDesc.h"
+
+#include "emscripten/html5.h"
 
 namespace xwin
 {
-	class WASMWindow
+	class Window
 	{
-		WASMWindow();
+		public:
+		Window();
+
+		 bool create(WindowDesc& desc, EventQueue& eventQueue);
+
+		 WindowDesc getDesc();
+
+    	void close();
+
+		WindowDesc mDesc;
 	};
-	
-	 typedef WASMWindow WindowDelegate;
 }
