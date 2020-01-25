@@ -18,7 +18,6 @@ namespace xwin
         );
         
         emscripten_set_canvas_element_size(desc.name.c_str(), desc.width, desc.height);
-
         return true;
     }
 

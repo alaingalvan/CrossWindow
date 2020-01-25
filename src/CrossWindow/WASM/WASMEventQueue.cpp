@@ -17,7 +17,7 @@ namespace xwin
 
     bool EventQueue::empty()
     {
-        return true;
+        return false;
     }
 
     Event sEvent = Event(EventType::Paint, nullptr);
