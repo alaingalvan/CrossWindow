@@ -518,6 +518,12 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         case 0x5A:
             d = Key::Z;
             break;
+        case VK_BACK:
+            d = Key::Back;
+            break;
+        case VK_TAB:
+            d = Key::Tab;
+            break;
         case VK_NUMPAD0:
             d = Key::Numpad0;
             break;
@@ -601,6 +607,9 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             break;
         case VK_F12:
             d = Key::F12;
+            break;
+        case VK_DELETE:
+            d = Key::Del;
             break;
 
         default:

@@ -28,7 +28,6 @@ Event::Event(MouseRawData d, Window* window)
     data.mouseRaw = d;
 }
 
-
 Event::Event(MouseMoveData d, Window* window)
     : type(EventType::MouseMoved), window(window)
 {
@@ -66,7 +65,34 @@ ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
 {
 }
 
-const char* convertKeyToString(Key key) { return nullptr; }
+/**
+ * A map of the Keys enum to chars for matching keyboard event data.
+ * Convenient for converting xwin::Key(s) to strings for serialization
+ */
+static KeyToCharMap sKeyToCharMap = {
+    "Escape",  "1",           "2",        "3",       "4",        "5",
+    "6",       "7",           "8",        "9",       "0",        "-",
+    "=",       "\b",          "\t",       "Q",       "W",        "E",
+    "R",       "T",           "Y",        "U",       "I",        "O",
+    "P",       "[",           "]",        "\r",      "LControl", "A",
+    "S",       "D",           "F",        "G",       "H",        "J",
+    "K",       "L",           ";",        "'",       "Grave",    "LShift",
+    "\\",      "Z",           "X",        "C",       "V",        "B",
+    "N",       "M",           ",",        ".",       "/",        "RShift",
+    "*",       "LAlt",        "Space",    "Capital", "F1",       "F2",
+    "F3",      "F4",          "F5",       "F6",      "F7",       "F8",
+    "F9",      "F10",         "Numlock",  "Scroll",  "Numpad7",  "Numpad8",
+    "Numpad9", "Subtract",    "Numpad4",  "Numpad5", "Numpad6",  "Add",
+    "Numpad1", "Numpad2",     "Numpad3",  "Numpad0", "Decimal",  "F11",
+    "F12",     "Numpadenter", "RControl", "Divide",  "sysrq",    "RAlt",
+    "Pause",   "Home",        "Up",       "PgUp",    "Left",     "Right",
+    "End",     "Down",        "PgDn",     "Insert",  "Del",      "LWin",
+    "RWin",    "Apps"};
+
+const char* convertKeyToString(Key key)
+{
+    return sKeyToCharMap[static_cast<size_t>(key)];
+}
 
 Key convertStringToKey(const char* str) { return Key(); }
 

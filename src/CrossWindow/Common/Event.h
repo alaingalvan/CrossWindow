@@ -253,25 +253,14 @@ enum class Key : size_t
     KeysMax
 };
 
-typedef const char* KeyToCharMap[static_cast<size_t>(Key::KeysMax)];
+typedef const char charElm[256];
+typedef const charElm KeyToCharMap[static_cast<size_t>(Key::KeysMax)];
 typedef Key CharToKeyMap[static_cast<size_t>(Key::KeysMax)];
-
-/**
- * A map of the Keys enum to chars for matching keyboard event data.
- * Convenient for converting xwin::Key(s) to strings for serialization
- */
-static KeyToCharMap sKeyToCharMap;
 
 /**
  * Converts a key to a string for serialization
  */
 const char* convertKeyToString(Key key);
-
-/**
- * A map of strings to Keys for matching keyboard event data.
- * Useful for deserialization of strings to xwin::Keys
- */
-static CharToKeyMap sCharToKeyMap;
 
 /**
  * Converts a string name to a xwin::Key for deserialization
