@@ -518,8 +518,27 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         case 0x5A:
             d = Key::Z;
             break;
+        case VK_SUBTRACT:
+        case VK_OEM_MINUS:
+            d = Key::Minus;
+            break;
+        case VK_ADD:
+            d = Key::Add;
+            break;
+        case VK_MULTIPLY:
+            d = Key::Multiply;
+            break;
+        case VK_DIVIDE:
+            d = Key::Divide;
+            break;
         case VK_BACK:
             d = Key::Back;
+            break;
+        case VK_RETURN:
+            d = Key::Enter;
+            break;
+        case VK_DELETE:
+            d = Key::Del;
             break;
         case VK_TAB:
             d = Key::Tab;
@@ -607,9 +626,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             break;
         case VK_F12:
             d = Key::F12;
-            break;
-        case VK_DELETE:
-            d = Key::Del;
             break;
 
         default:
