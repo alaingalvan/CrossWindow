@@ -13,7 +13,7 @@ enum Style : DWORD
     basic_borderless = WS_POPUP | WS_VISIBLE
 };
 
-HBRUSH hBrush = CreateSolidBrush(RGB(23, 26, 30));
+HBRUSH hBrush = CreateSolidBrush(RGB(30, 30, 30));
 
 namespace xwin
 {
@@ -220,19 +220,29 @@ void Window::setPosition(unsigned x, unsigned y)
 
 void Window::setSize(unsigned width, unsigned height)
 {
-    windowRect.left = mDesc.x;
-    windowRect.top = mDesc.y;
-    windowRect.right = (long)width;
-    windowRect.bottom = (long)height;
+    RECT lpRect;
+    if (GetWindowRect(hwnd, &lpRect))
+    {
+        SetWindowPos(hwnd, nullptr, lpRect.left, lpRect.top, width, height, 0);
+        mDesc.x = lpRect.left;
+        mDesc.y = lpRect.top;
+        mDesc.width = width;
+        mDesc.height = height;
+    }
+}
 
-    AdjustWindowRectEx(&windowRect, dwStyle, FALSE, dwExStyle);
+UVec2 Window::getPosition() const
+{
+    RECT lpRect;
+    GetWindowRect(hwnd, &lpRect);
+    return UVec2(lpRect.left, lpRect.top);
 }
 
 UVec2 Window::getWindowSize() const
 {
-    LPRECT lpRect;
-    GetWindowRect(hwnd, lpRect);
-    return UVec2(lpRect->right - lpRect->left, lpRect->bottom - lpRect->top);
+    RECT lpRect;
+    GetWindowRect(hwnd, &lpRect);
+    return UVec2(lpRect.right - lpRect.left, lpRect.bottom - lpRect.top);
 }
 
 UVec2 Window::getCurrentDisplaySize() const

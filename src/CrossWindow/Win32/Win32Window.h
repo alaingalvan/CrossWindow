@@ -50,6 +50,8 @@ class Window
 
     void setProgress(float progress);
 
+    UVec2 getPosition() const;
+
     UVec2 getCurrentDisplaySize() const;
 
     // returns the current top left corner this window is located in
