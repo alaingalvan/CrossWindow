@@ -65,8 +65,9 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         // repaint window when borderless to avoid 6px resizable border.
         RECT lpRect;
         GetWindowRect(window->hwnd, &lpRect);
-        SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top, lpRect.right - lpRect.left, lpRect.bottom - lpRect.top - 32, 0);
-                   TRUE);
+        SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top,
+                     lpRect.right - lpRect.left,
+                     lpRect.bottom - lpRect.top - 32, 0);
         break;
     }
     case WM_PAINT:
@@ -643,9 +644,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
             if (msg.wParam)
             {
-
-                // sz->rgrc[1].top += 38;
-                // sz->rgrc[2].top += 38;
                 if (IsZoomed(window->hwnd))
                 {
                     sz->rgrc[0].top += -23;
@@ -654,10 +652,12 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 }
                 else
                 {
+                    // Maximized to Win + Left to Win + Right
+                    // Is currently somewhat buggy, with a height of 8 px lost
                     sz->rgrc[0].top += -32;
+                    sz->rgrc[1].top += -32;
                 }
             }
-            // result = msg.wParam ? WVR_REDRAW : 0;
         }
         break;
     }
