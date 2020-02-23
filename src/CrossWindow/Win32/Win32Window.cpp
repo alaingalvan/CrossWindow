@@ -10,7 +10,8 @@ enum Style : DWORD
 {
     windowed = WS_OVERLAPPEDWINDOW,
     aero_borderless = WS_POPUP | WS_THICKFRAME,
-    basic_borderless = WS_POPUP | WS_VISIBLE
+    basic_borderless = WS_CAPTION | WS_OVERLAPPED | WS_THICKFRAME |
+                       WS_MINIMIZEBOX | WS_MAXIMIZEBOX
 };
 
 HBRUSH hBrush = CreateSolidBrush(RGB(30, 30, 30));

@@ -14,7 +14,6 @@
 
 RAWINPUTDEVICE Rid[1];
 
-
 // some sizing border definitions
 
 #define MINX 200
@@ -56,14 +55,14 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]));
     }
 
-	xwin::Event e = xwin::Event(xwin::EventType::None, window);
+    xwin::Event e = xwin::Event(xwin::EventType::None, window);
 
     switch (message)
     {
     case WM_CREATE:
     {
         e = xwin::Event(xwin::EventType::Create, window);
-		//repaint window when borderless to avoid 6px resizable border.
+        // repaint window when borderless to avoid 6px resizable border.
         CREATESTRUCT* WindowInfo = reinterpret_cast<CREATESTRUCT*>(msg.lParam);
         MoveWindow(window->hwnd, WindowInfo->x, WindowInfo->y,
                    WindowInfo->cx - BORDERWIDTH, WindowInfo->cy - BORDERWIDTH,
@@ -72,45 +71,16 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_PAINT:
     {
-        /*
         PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(window->hwnd, &ps);
-
-        RECT rc = ps.rcPaint;
-        BP_PAINTPARAMS params = {sizeof(params), BPPF_NOCLIP | BPPF_ERASE};
-        HDC memdc;
-        HPAINTBUFFER hbuffer =
-            BeginBufferedPaint(hdc, &rc, BPBF_TOPDOWNDIB, &params, &memdc);
-
-   HBRUSH brush = CreateSolidBrush(RGB(23, 26, 30));
-        FillRect(hdc, &rc, brush);
-        DeleteObject(brush);
-
-        BufferedPaintSetAlpha(hbuffer, &rc, 255);
-        EndBufferedPaint(hbuffer, TRUE);
-
-        EndPaint(window->hwnd, &ps);
-		*/
-
-		PAINTSTRUCT ps;
         BeginPaint(window->hwnd, &ps);
-
-        RECT ClientRect;
-        GetClientRect(window->hwnd, &ClientRect);
-        RECT BorderRect = {BORDERWIDTH, BORDERWIDTH,
-                           ClientRect.right - BORDERWIDTH - BORDERWIDTH,
-                           ClientRect.bottom - BORDERWIDTH - BORDERWIDTH},
-             TitleRect = {BORDERWIDTH, BORDERWIDTH,
-                          ClientRect.right - BORDERWIDTH - BORDERWIDTH,
-                          TITLEBARWIDTH};
-
-        HBRUSH BorderBrush = CreateSolidBrush(RGB(23, 26, 30));
-        FillRect(ps.hdc, &ClientRect, BorderBrush);
-        FillRect(ps.hdc, &BorderRect, BorderBrush);
-        FillRect(ps.hdc, &TitleRect, BorderBrush);
-        DeleteObject(BorderBrush);
-
+        RECT rect;
+        GetWindowRect(window->hwnd, &rect);
+        int cxWidth = rect.right - rect.left;
+        int cyHeight = rect.bottom - rect.top;
+        HBRUSH BorderBrush = CreateSolidBrush(RGB(30, 30, 30));
+        FillRect(ps.hdc, &rect, BorderBrush);
         EndPaint(window->hwnd, &ps);
+
         e = xwin::Event(xwin::EventType::Paint, window);
         break;
     }
@@ -133,42 +103,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         e = xwin::Event(xwin::FocusData(false), window);
         break;
     }
-    case WM_NCHITTEST:
-	{
-        RECT WindowRect;
-        int x, y;
 
-        GetWindowRect(window->hwnd, &WindowRect);
-        x = GET_X_LPARAM(msg.lParam) - WindowRect.left;
-        y = GET_Y_LPARAM(msg.lParam) - WindowRect.top;
-
-        if (x >= BORDERWIDTH &&
-            x <= WindowRect.right - WindowRect.left - BORDERWIDTH &&
-            y >= BORDERWIDTH && y <= TITLEBARWIDTH)
-            result = HTCAPTION;
-        else if (x < BORDERWIDTH && y < BORDERWIDTH)
-            result = HTTOPLEFT;
-        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH &&
-                 y < BORDERWIDTH)
-            result = HTTOPRIGHT;
-        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH &&
-                 y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
-            result = HTBOTTOMRIGHT;
-        else if (x < BORDERWIDTH &&
-                 y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
-            result = HTBOTTOMLEFT;
-        else if (x < BORDERWIDTH)
-            result = HTLEFT;
-        else if (y < BORDERWIDTH)
-            result = HTTOP;
-        else if (x > WindowRect.right - WindowRect.left - BORDERWIDTH)
-            result = HTRIGHT;
-        else if (y > WindowRect.bottom - WindowRect.top - BORDERWIDTH)
-            result = HTBOTTOM;
-        else
-            result = HTCLIENT;
-        break;
-	}
     case WM_MOUSEWHEEL:
     {
         short modifiers = LOWORD(msg.wParam);
@@ -382,17 +317,18 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             }
         }*/
 
-        e = xwin::Event(xwin::MouseMoveData(
-                           static_cast<unsigned>(
-                               area.left <= x && x <= area.right ? x - area.left
-                                                                 : 0xFFFFFFFF),
-                           static_cast<unsigned>(
-                               area.top <= y && y <= area.bottom ? y - area.top
-                                                                 : 0xFFFFFFFF),
-                           static_cast<unsigned>(x), static_cast<unsigned>(y),
-                           static_cast<int>(x - prevMouseX),
-                           static_cast<int>(y - prevMouseY)),
-                       window);
+        e = xwin::Event(
+            xwin::MouseMoveData(
+                static_cast<unsigned>(area.left <= x && x <= area.right
+                                          ? x - area.left
+                                          : 0xFFFFFFFF),
+                static_cast<unsigned>(area.top <= y && y <= area.bottom
+                                          ? y - area.top
+                                          : 0xFFFFFFFF),
+                static_cast<unsigned>(x), static_cast<unsigned>(y),
+                static_cast<int>(x - prevMouseX),
+                static_cast<int>(y - prevMouseY)),
+            window);
         prevMouseX = static_cast<unsigned>(x);
         prevMouseY = static_cast<unsigned>(y);
         break;
@@ -660,7 +596,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         unsigned WIDTH = 320;
         unsigned HEIGHT = 320;
         unsigned width, height;
-			unsigned STEP = 1;
+        unsigned STEP = 1;
         PRECT rectp = (PRECT)msg.lParam;
         HWND hwnd = window->hwnd;
         // Get the window and client dimensions
@@ -670,33 +606,61 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         width = rectp->right - rectp->left;
         height = rectp->bottom - rectp->top;
 
-		RedrawWindow(hwnd, NULL, NULL,
+        RedrawWindow(hwnd, NULL, NULL,
                      RDW_INVALIDATE | RDW_NOERASE | RDW_INTERNALPAINT);
 
         e = xwin::Event(ResizeData(width, height, true), window);
+        result = WVR_REDRAW;
+        break;
+    }
+    case WM_MOVING:
+    {
+
+        break;
+    }
+    case WM_NCHITTEST:
+    {
+        RECT rect;
+        GetWindowRect(window->hwnd, &rect);
+        msg.lParam;
+        unsigned x, y;
+        x = static_cast<unsigned>(GET_X_LPARAM(msg.lParam)) - rect.left;
+        y = static_cast<unsigned>(GET_Y_LPARAM(msg.lParam)) - rect.top;
+
+        if (x > 260 && x < (rect.right - rect.left - 260) && y < 32)
+        {
+            result = HTCAPTION;
+
+            break;
+        }
+        // result = HTCLIENT;
         break;
     }
     case WM_NCCALCSIZE:
-	{
+    {
         if (msg.lParam)
         {
             NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
             if (msg.wParam)
             {
-                sz->rgrc[0].bottom +=
-                    BORDERWIDTH; // rgrc[0] is what makes this work, don't know
-                                 // what others (rgrc[1], rgrc[2]) do, but why
-                                 // not change them all?
-                sz->rgrc[0].right += BORDERWIDTH;
-                sz->rgrc[1].bottom += BORDERWIDTH;
-                sz->rgrc[1].right += BORDERWIDTH;
-                sz->rgrc[2].bottom += BORDERWIDTH;
-                sz->rgrc[2].right += BORDERWIDTH;
-                return 0;
+
+                // sz->rgrc[1].top += 38;
+                // sz->rgrc[2].top += 38;
+                if (IsZoomed(window->hwnd))
+                {
+                    sz->rgrc[0].top += -23;
+                    result = 0;
+                    break;
+                }
+                else
+                {
+                    sz->rgrc[0].top += -34;
+                }
             }
+            // result = msg.wParam ? WVR_REDRAW : 0;
         }
         break;
-	}
+    }
     case WM_GETMINMAXINFO: // It is used to restrict WS_POPUP window size
     {                      // I don't know if this works on others
         MINMAXINFO* min_max = reinterpret_cast<MINMAXINFO*>(msg.lParam);
@@ -709,10 +673,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         // Do nothing
         break;
     }
-	if (e.type != EventType::None)
-	{
+    if (e.type != EventType::None)
+    {
         mQueue.emplace(e);
-	}
+    }
     window->executeEventCallback(e);
     return result;
 }
