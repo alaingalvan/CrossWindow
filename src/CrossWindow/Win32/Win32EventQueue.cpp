@@ -63,9 +63,9 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         e = xwin::Event(xwin::EventType::Create, window);
         // repaint window when borderless to avoid 6px resizable border.
-        CREATESTRUCT* WindowInfo = reinterpret_cast<CREATESTRUCT*>(msg.lParam);
-        MoveWindow(window->hwnd, WindowInfo->x, WindowInfo->y,
-                   WindowInfo->cx - BORDERWIDTH, WindowInfo->cy - BORDERWIDTH,
+        RECT lpRect;
+        GetWindowRect(window->hwnd, &lpRect);
+        SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top, lpRect.right - lpRect.left, lpRect.bottom - lpRect.top - 32, 0);
                    TRUE);
         break;
     }
@@ -649,12 +649,12 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 if (IsZoomed(window->hwnd))
                 {
                     sz->rgrc[0].top += -23;
-                    result = 0;
+                    sz->rgrc[1].top += -23;
                     break;
                 }
                 else
                 {
-                    sz->rgrc[0].top += -34;
+                    sz->rgrc[0].top += -32;
                 }
             }
             // result = msg.wParam ? WVR_REDRAW : 0;
