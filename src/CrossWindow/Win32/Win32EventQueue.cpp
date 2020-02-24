@@ -19,7 +19,7 @@ RAWINPUTDEVICE Rid[1];
 #define MINX 200
 #define MINY 200
 #define BORDERWIDTH 5
-#define TITLEBARWIDTH 5
+#define TITLEBARHEIGHT 32
 
 namespace xwin
 {
@@ -623,7 +623,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         RECT rect;
         GetWindowRect(window->hwnd, &rect);
-        msg.lParam;
         unsigned x, y;
         x = static_cast<unsigned>(GET_X_LPARAM(msg.lParam)) - rect.left;
         y = static_cast<unsigned>(GET_Y_LPARAM(msg.lParam)) - rect.top;
@@ -634,7 +633,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
 
             break;
         }
-        // result = HTCLIENT;
+        if (x > BORDERWIDTH && y > BORDERWIDTH && x < rect.right - BORDERWIDTH && y < rect.bottom - BORDERWIDTH)
+        {
+            result = HTCLIENT;
+        }
         break;
     }
     case WM_NCCALCSIZE:
@@ -654,8 +656,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 {
                     // Maximized to Win + Left to Win + Right
                     // Is currently somewhat buggy, with a height of 8 px lost
-                    sz->rgrc[0].top += -32;
-                    sz->rgrc[1].top += -32;
+                    sz->rgrc[0].top += -TITLEBARHEIGHT;
+                    sz->rgrc[1].top += -TITLEBARHEIGHT;
                 }
             }
         }
