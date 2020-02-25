@@ -62,12 +62,13 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     case WM_CREATE:
     {
         e = xwin::Event(xwin::EventType::Create, window);
-        // repaint window when borderless to avoid 6px resizable border.
+        // repaint window when borderless to avoid titlebar.
+        
         RECT lpRect;
         GetWindowRect(window->hwnd, &lpRect);
         SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top,
                      lpRect.right - lpRect.left,
-                     lpRect.bottom - lpRect.top - 32, 0);
+                     lpRect.bottom - lpRect.top - TITLEBARHEIGHT, 0);
         break;
     }
     case WM_PAINT:
@@ -623,17 +624,19 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         RECT rect;
         GetWindowRect(window->hwnd, &rect);
-        unsigned x, y;
-        x = static_cast<unsigned>(GET_X_LPARAM(msg.lParam)) - rect.left;
-        y = static_cast<unsigned>(GET_Y_LPARAM(msg.lParam)) - rect.top;
-
-        if (x > 260 && x < (rect.right - rect.left - 260) && y < 32)
+        int x, y, width, height;
+        x = static_cast<int>(GET_X_LPARAM(msg.lParam)) - rect.left;
+        y = static_cast<int>(GET_Y_LPARAM(msg.lParam)) - rect.top;
+        width = static_cast<int>(rect.right - rect.left);
+        height = static_cast<int>(rect.bottom - rect.top);
+        unsigned topBorder = IsZoomed(window->hwnd) ? 0 : BORDERWIDTH;
+        if (y > topBorder && x > 260 && x < (width - 260) && y < 32)
         {
             result = HTCAPTION;
-
             break;
         }
-        if (x > BORDERWIDTH && y > BORDERWIDTH && x < rect.right - BORDERWIDTH && y < rect.bottom - BORDERWIDTH)
+        if (x > BORDERWIDTH && y > BORDERWIDTH && x < width - BORDERWIDTH &&
+            y < height - BORDERWIDTH)
         {
             result = HTCLIENT;
         }
@@ -655,7 +658,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 else
                 {
                     // Maximized to Win + Left to Win + Right
-                    // Is currently somewhat buggy, with a height of 8 px lost
+                    // Is currently somewhat buggy, with a height of 8 px gained
                     sz->rgrc[0].top += -TITLEBARHEIGHT;
                     sz->rgrc[1].top += -TITLEBARHEIGHT;
                 }
@@ -663,8 +666,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         }
         break;
     }
-    case WM_GETMINMAXINFO: // It is used to restrict WS_POPUP window size
-    {                      // I don't know if this works on others
+    case WM_GETMINMAXINFO:
+    {
         MINMAXINFO* min_max = reinterpret_cast<MINMAXINFO*>(msg.lParam);
 
         min_max->ptMinTrackSize.x = MINX;
