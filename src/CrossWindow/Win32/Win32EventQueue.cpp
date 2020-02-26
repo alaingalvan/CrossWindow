@@ -63,12 +63,14 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         e = xwin::Event(xwin::EventType::Create, window);
         // repaint window when borderless to avoid titlebar.
-        
-        RECT lpRect;
-        GetWindowRect(window->hwnd, &lpRect);
-        SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top,
-                     lpRect.right - lpRect.left,
-                     lpRect.bottom - lpRect.top - TITLEBARHEIGHT, 0);
+        if (!window->getDesc().frame)
+        {
+            RECT lpRect;
+            GetWindowRect(window->hwnd, &lpRect);
+            SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top,
+                         lpRect.right - lpRect.left,
+                         lpRect.bottom - lpRect.top - TITLEBARHEIGHT, 0);
+        }
         break;
     }
     case WM_PAINT:
@@ -79,7 +81,12 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         GetWindowRect(window->hwnd, &rect);
         int cxWidth = rect.right - rect.left;
         int cyHeight = rect.bottom - rect.top;
-        HBRUSH BorderBrush = CreateSolidBrush(RGB(30, 30, 30));
+        unsigned bg = window->getDesc().backgroundColor;
+        unsigned r = (bg & 0xff000000) >> 24;
+        unsigned g = (bg & 0x00ff0000) >> 16;
+        unsigned b = (bg & 0x0000ff00) >> 8;
+        HBRUSH BorderBrush =
+            CreateSolidBrush(RGB(r, g, b));
         FillRect(ps.hdc, &rect, BorderBrush);
         EndPaint(window->hwnd, &ps);
 
@@ -595,8 +602,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_SIZING:
     {
-        unsigned WIDTH = 320;
-        unsigned HEIGHT = 320;
         unsigned width, height;
         unsigned STEP = 1;
         PRECT rectp = (PRECT)msg.lParam;
@@ -644,23 +649,27 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_NCCALCSIZE:
     {
-        if (msg.lParam)
+        if (!window->getDesc().frame)
         {
-            NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
-            if (msg.wParam)
+            if (msg.lParam)
             {
-                if (IsZoomed(window->hwnd))
+                NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
+                if (msg.wParam)
                 {
-                    sz->rgrc[0].top += -23;
-                    sz->rgrc[1].top += -23;
-                    break;
-                }
-                else
-                {
-                    // Maximized to Win + Left to Win + Right
-                    // Is currently somewhat buggy, with a height of 8 px gained
-                    sz->rgrc[0].top += -TITLEBARHEIGHT;
-                    sz->rgrc[1].top += -TITLEBARHEIGHT;
+                    if (IsZoomed(window->hwnd))
+                    {
+                        sz->rgrc[0].top += -23;
+                        sz->rgrc[1].top += -23;
+                        break;
+                    }
+                    else
+                    {
+                        // Maximized to Win + Left to Win + Right
+                        // Is currently somewhat buggy, with a height of 8 px
+                        // gained
+                        sz->rgrc[0].top += -TITLEBARHEIGHT;
+                        sz->rgrc[1].top += -TITLEBARHEIGHT;
+                    }
                 }
             }
         }
@@ -670,8 +679,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         MINMAXINFO* min_max = reinterpret_cast<MINMAXINFO*>(msg.lParam);
 
-        min_max->ptMinTrackSize.x = MINX;
-        min_max->ptMinTrackSize.y = MINY;
+        min_max->ptMinTrackSize.x = window->getDesc().minWidth;
+        min_max->ptMinTrackSize.y = window->getDesc().minHeight;
         break;
     }
     default:
