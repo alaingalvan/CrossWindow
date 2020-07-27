@@ -1,7 +1,10 @@
 #include "../Common/Init.h"
 #include "Main.h"
 
-#import <AppKit/AppKit.h>
+#import <UIKit/UIKit.h>
+#import <TargetConditionals.h>
+#import <Availability.h>
+#import "AppDelegate.h"
 
 @interface XWinApplication : UIApplication
 {

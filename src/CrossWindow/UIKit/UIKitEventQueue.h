@@ -9,9 +9,9 @@ namespace xwin
   struct MacEvent
   {
 
-  }
+  };
 
-  class IOSEventQueue
+  class EventQueue
   {
   public:
     bool update();
@@ -27,6 +27,4 @@ namespace xwin
 
     std::queue<Event> mQueue;
   };
-
-  typedef IOSEventQueue EventQueueDelegate;
 }

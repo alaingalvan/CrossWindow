@@ -1,4 +1,4 @@
-#include "iOSWindow.h"
+#include "UIKitWindow.h"
 
 #import <UIKit/UIKit.h>
 
@@ -7,7 +7,7 @@
 
 @implementation XWinViewController
 {
-  CADDisplayLink* _displayLink;
+  CADisplayLink* _displayLink;
 }
 
 @end
@@ -21,7 +21,7 @@
 
 namespace xwin
 {
-  bool IOSWindow::update()
+  bool Window::update()
   {
     return false;
   }

@@ -14,36 +14,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # =============================================================
 
-
-set(DEVELOPMENT_PROJECT_NAME "Ver")                     # <== Set to your project name, e.g. project.xcodeproj
-set(DEVELOPMENT_TEAM_ID "AAAAAAAAAA")                       # <== Set to your team ID from Apple
-set(APP_NAME "Ver")                                     # <== Set To your app's name
-set(APP_BUNDLE_IDENTIFIER "com.alainxyz.app")                # <== Set to your app's bundle identifier
-set(FRAMEWORK_NAME "CoronalEngine")                                # <== Set to your framework's name
-set(FRAMEWORK_BUNDLE_IDENTIFIER "com.alainxyz.ver")    # <== Set to your framework's bundle identifier (cannot be the same as app bundle identifier)
-set(TEST_NAME "Tests")                                      # <== Set to your test's name
-set(TEST_BUNDLE_IDENTIFIER "com.alainxyz.tests")             # <== Set to your tests's bundle ID
-set(CODE_SIGN_IDENTITY "Alain Galvan")                  # <== Set to your preferred code sign identity, to see list:
-                                                            # /usr/bin/env xcrun security find-identity -v -p codesigning
-set(DEPLOYMENT_TARGET 12.0)                                  # <== Set your deployment target version of iOS
-set(DEVICE_FAMILY "2")                                      # <== Set to "1" to target iPhone, set to "2" to target iPad, set to "1,2" to target both
-set(LOGIC_ONLY_TESTS 0)                                     # <== Set to 1 if you do not want tests to be hosted by the application, speeds up pure logic tests but you can not run them on real devices
-
-set(PRODUCT_NAME ${APP_NAME})
-set(EXECUTABLE_NAME ${APP_NAME})
-set(MACOSX_BUNDLE_EXECUTABLE_NAME ${APP_NAME})
-set(MACOSX_BUNDLE_INFO_STRING ${APP_BUNDLE_IDENTIFIER})
-set(MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_BUNDLE_IDENTIFIER})
-set(MACOSX_BUNDLE_BUNDLE_NAME ${APP_BUNDLE_IDENTIFIER})
-set(MACOSX_BUNDLE_ICON_FILE "")
-set(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0")
-set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
-set(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
-set(MACOSX_BUNDLE_COPYRIGHT "Copyright Alain Galvan")
-set(MACOSX_DEPLOYMENT_TARGET ${DEPLOYMENT_TARGET})
-
-# =============================================================
-
 # Options
 set(XWIN_API AUTO CACHE STRING "A more specific platform selector to choose from, choose the exact OS API to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP.")
 set_property(
@@ -221,26 +191,34 @@ if(XWIN_API STREQUAL "COCOA")
   add_definitions("-x objective-c++")
   find_library(COCOA_LIBRARY Cocoa)
   find_library(QUARTZ_LIBRARY QuartzCore)
+  target_link_libraries(
+    ${PROJECT_NAME}
+    ${COCOA_LIBRARY}
+    ${QUARTZ_LIBRARY}
+)
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "2"
+)
+elseif(XWIN_API STREQUAL "UIKIT")
+    add_definitions("-x objective-c++")
     # Locate system libraries on iOS
     find_library(UIKIT UIKit)
     find_library(FOUNDATION Foundation)
     find_library(MOBILECORESERVICES MobileCoreServices)
     find_library(CFNETWORK CFNetwork)
     find_library(SYSTEMCONFIGURATION SystemConfiguration)
-  target_link_libraries(
+    target_link_libraries(
     ${PROJECT_NAME}
-    ${COCOA_LIBRARY}
-    ${QUARTZ_LIBRARY}
+    ${UIKIT}
+    ${FOUNDATION}
     ${CFNETWORK}
     ${SYSTEMCONFIGURATION}
-)
-set_target_properties(
+    )
+    set_target_properties(
     ${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "2"
-)
-
-# Turn on ARC
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fobjc-arc")
-
+    )
+    # Turn on ARC
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fobjc-arc")
 endif()
 # =============================================================
 

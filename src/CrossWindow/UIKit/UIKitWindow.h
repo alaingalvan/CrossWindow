@@ -2,11 +2,12 @@
 
 namespace xwin
 {
-  class IOSWindow
+  class Window
   {
+  public:
+	  bool update();
+	  
     protected:
     void* mWindow;
   };
-
-  typedef IOSWindow WindowDelegate;
 }
