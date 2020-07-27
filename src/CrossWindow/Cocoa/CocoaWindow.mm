@@ -82,8 +82,15 @@ namespace xwin
 		
 		eventQueue.update();
 		
+		mDesc = desc;
+		
 	return true;
 	}
+
+WindowDesc Window::getDesc()
+{
+	return mDesc;
+}
 	
 	void Window::close()
 	{

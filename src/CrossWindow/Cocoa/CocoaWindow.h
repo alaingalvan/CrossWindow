@@ -35,6 +35,8 @@ namespace xwin
 		// Set the type of this window's view layer
 		void setLayer(LayerType type);
 		
+		xwin::WindowDesc getDesc();
+		
 		//XWinWindow*
 		void* window;
 		
@@ -48,6 +50,8 @@ namespace xwin
 		//NSString*
 		void* mTitle;
 
+		WindowDesc mDesc;
+		
 		/**
 		 * MacOS Keycodes: 
 		 * https://stackoverflow.com/questions/3202629/where-can-i-find-a-list-of-mac-virtual-key-codes
@@ -56,8 +60,8 @@ namespace xwin
 
 
 	};
-	
-	typedef Window WindowDelegate;
+
+
 }
 
 
