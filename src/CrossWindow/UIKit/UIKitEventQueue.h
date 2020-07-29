@@ -14,7 +14,7 @@ namespace xwin
   class EventQueue
   {
   public:
-    bool update();
+    void update();
 
     const Event &front();
 

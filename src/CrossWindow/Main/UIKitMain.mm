@@ -4,7 +4,6 @@
 #import <UIKit/UIKit.h>
 #import <TargetConditionals.h>
 #import <Availability.h>
-#import "AppDelegate.h"
 
 @interface XWinApplication : UIApplication
 {
@@ -15,17 +14,10 @@
 
 @end
 
-@implementation UIApplication
+@implementation XWinApplication
 
 - (void)run
 {
-	[[NSNotificationCenter defaultCenter]
-		postNotificationName:NSApplicationWillFinishLaunchingNotification
-		object:NSApp];
-	[[NSNotificationCenter defaultCenter]
-		postNotificationName:NSApplicationDidFinishLaunchingNotification
-		object:NSApp];
-	
 	const xwin::XWinState& state = xwin::getXWinState();
 	xmain(state.argc, (const char**)state.argv);
 }
