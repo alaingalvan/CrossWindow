@@ -203,13 +203,17 @@ elseif(XWIN_API STREQUAL "UIKIT")
     add_definitions("-x objective-c++")
     # Locate system libraries on iOS
     find_library(UIKIT UIKit)
+    find_library(QUARTZ_LIBRARY QuartzCore)
+
     find_library(FOUNDATION Foundation)
     find_library(MOBILECORESERVICES MobileCoreServices)
     find_library(CFNETWORK CFNetwork)
     find_library(SYSTEMCONFIGURATION SystemConfiguration)
+    
     target_link_libraries(
     ${PROJECT_NAME}
     ${UIKIT}
+    ${QUARTZ_LIBRARY}
     ${FOUNDATION}
     ${CFNETWORK}
     ${SYSTEMCONFIGURATION}

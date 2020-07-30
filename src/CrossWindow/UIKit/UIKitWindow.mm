@@ -19,7 +19,7 @@
 @implementation XWinView
 + (Class) layerClass
 {
-    return [CAMetalLayer class];
+	return [CAMetalLayer class];
 }
 @end
 
@@ -46,18 +46,17 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
 	UIApplication* nsApp = (UIApplication*)getXWinState().application;
 	
-    // Configure view
+	// Configure view
 	view = [XWinView alloc];
-	CGRect rect = ((XWinView*)view).frame;
+	XWinView* v = (XWinView*)view;
+	CGRect rect = v.frame;
 	if( !desc.fullscreen)
 	{
 		rect.size.width = desc.width;
 		rect.size.height = desc.height;
 	}
-	view = [view initWithFrame:rect];
-    view.colorPixelFormat = MTLPixelFormatRGBA16Float;
-    view.sampleCount = 1;
-	view.drawableSize = _view.frame.size;
+	view = [v initWithFrame:rect];
+	
 	eventQueue.update();
 	
 	mDesc = desc;
@@ -91,10 +90,14 @@ void Window::setLayer(LayerType type)
 	{
 		//According to Apple Docs, you must assign this layer via
 		//an override to `+ (Class) layerClass`
+		XWinView* v = (XWinView*)view;
+		CAMetalLayer* l = (CAMetalLayer*)v.layer;
+		l.pixelFormat = MTLPixelFormatRGBA16Float;
+		l.drawableSize = v.frame.size;
 	}
 	else if(type == LayerType::OpenGL)
 	{
-		//OpenGL is currently depreciated, and unavailable in UIKit s
+		//OpenGL is currently depreciated, and unavailable in UIKit
 	}
 }
 

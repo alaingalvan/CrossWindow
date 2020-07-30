@@ -41,8 +41,6 @@ protected:
 	//XWinView*
 	void* view;
 	
-
-	
 	WindowDesc mDesc;
 	
 };

@@ -6,25 +6,25 @@
 
 namespace xwin
 {
-  struct MacEvent
-  {
+struct MacEvent
+{
+	
+};
 
-  };
-
-  class EventQueue
-  {
-  public:
-    void update();
-
-    const Event &front();
-
-    void pop();
-
-    bool empty();
-
-  protected:
-    void pushEvent(MacEvent me);
-
-    std::queue<Event> mQueue;
-  };
+class EventQueue
+{
+public:
+	void update();
+	
+	const Event &front();
+	
+	void pop();
+	
+	bool empty();
+	
+protected:
+	void pushEvent(MacEvent me);
+	
+	std::queue<Event> mQueue;
+};
 }
