@@ -6,10 +6,6 @@
 
 namespace xwin
 {
-struct MacEvent
-{
-	
-};
 
 class EventQueue
 {
@@ -22,8 +18,7 @@ public:
 	
 	bool empty();
 	
-protected:
-	void pushEvent(MacEvent me);
+	void pushEvent(Event e);
 	
 	std::queue<Event> mQueue;
 };

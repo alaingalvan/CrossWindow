@@ -7,6 +7,12 @@ void EventQueue::update()
 {
 	// Update Application
 	UIApplication* app = (UIApplication*)getXWinState().application;
+	while( CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.0001, true) == kCFRunLoopRunHandledSource);
+}
+
+void EventQueue::pushEvent(Event e)
+{
+	mQueue.push(e);
 }
 
 const Event& EventQueue::front()

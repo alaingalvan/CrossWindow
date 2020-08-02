@@ -34,14 +34,19 @@ public:
 	
 	//Any Layer Type
 	void* layer;
-protected:
+
 	//XWinWindow*
 	void* window;
 	
 	//XWinView*
 	void* view;
 	
+	//XWinViewController*
+	void* viewController;
+	
 	WindowDesc mDesc;
+	
+	xwin::EventQueue* mEventQueue;
 	
 };
 }

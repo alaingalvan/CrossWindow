@@ -1,26 +1,76 @@
 #include "UIKitWindow.h"
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/CAMetalLayer.h>
+#import <MetalKit/MetalKit.h>
 
-@interface XWinViewController : UIViewController
-@end
-
-@implementation XWinViewController
+@interface XWinWindow : UIWindow
 {
 }
+@end
+
+@implementation XWinWindow
 
 @end
 
-@interface XWinView : UIView
+@interface XWinViewController : UIViewController
+
+@end
+
+@interface XWinView : MTKView
+
+@property xwin::Window* xwinWindow;
 
 @end
 
 @implementation XWinView
-+ (Class) layerClass
+
+- (void)setFrame:(CGRect)frame
 {
-	return [CAMetalLayer class];
+	[super setFrame:frame];
+	if( _xwinWindow)
+	{
+		if( _xwinWindow->mEventQueue)
+		{
+			float s = [[UIScreen mainScreen] scale];
+			xwin::Event e = xwin::Event(xwin::ResizeData(s * frame.size.width, s * frame.size.height, false), _xwinWindow);
+			_xwinWindow->mEventQueue->pushEvent(e);
+		}
+	}
 }
+
+@end
+
+@implementation XWinViewController
+{}
+
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
+	return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+	return YES;
+}
+
+ -(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+	return UIStatusBarAnimationSlide;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(gestureDidRecognize:)];
+    [self.view addGestureRecognizer:panGesture];
+}
+
+- (void)gestureDidRecognize:(UIGestureRecognizer *)gestureRecognizer
+{
+    UIPanGestureRecognizer *panGestureRecognizer = (UIPanGestureRecognizer *)gestureRecognizer;
+    CGPoint velocity = [panGestureRecognizer velocityInView:self.view];
+}
+
 @end
 
 namespace xwin
@@ -31,7 +81,9 @@ Window::Window()
 {
 	window =
 	view =
-	layer = nullptr;
+	layer =
+	viewController =
+	mEventQueue = nullptr;
 }
 
 Window::~Window()
@@ -44,23 +96,57 @@ Window::~Window()
 
 bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
-	UIApplication* nsApp = (UIApplication*)getXWinState().application;
+	mDesc = desc;
+	UIApplication* app = (UIApplication*)getXWinState().application;
+
+	CGRect rect = [[UIScreen mainScreen] bounds];
+	CGRect nativeRect = [[UIScreen mainScreen] nativeBounds];
+	float scale = [[UIScreen mainScreen] scale];
 	
-	// Configure view
-	view = [XWinView alloc];
-	XWinView* v = (XWinView*)view;
-	CGRect rect = v.frame;
 	if( !desc.fullscreen)
 	{
 		rect.size.width = desc.width;
 		rect.size.height = desc.height;
 	}
-	view = [v initWithFrame:rect];
+	mDesc.width = (unsigned)rect.size.width;
+	mDesc.height = (unsigned)rect.size.height;
+
 	
+	// Configure view
+	view = [[XWinView alloc] initWithFrame:rect];
+	XWinView* v = (XWinView*)view;
+	[v resignFirstResponder];
+	[v setNeedsDisplay];
+	[v setHidden:NO];
+	[v setOpaque:YES];
+	[v setAutoResizeDrawable:YES];
+	v.backgroundColor = [UIColor clearColor];
+	v.xwinWindow = this;
+	
+	
+	viewController = [[XWinViewController alloc] init];
+	XWinViewController* vc = (XWinViewController*)viewController;
+	[vc setView:v];
+	[vc setNeedsUpdateOfHomeIndicatorAutoHidden];
+	[vc setNeedsStatusBarAppearanceUpdate];
+	
+	// Configure window
+	window = [[XWinWindow alloc] initWithFrame:rect];
+	XWinWindow* w = (XWinWindow*)window;
+	[w setRootViewController:vc];
+	[w setContentMode:UIViewContentModeScaleToFill];
+	[w makeKeyAndVisible];
+	[w setBounds:rect];
+
+	w.backgroundColor = [UIColor clearColor];
+	
+	float s = [[UIScreen mainScreen] scale];
+	xwin::Event e = xwin::Event(xwin::ResizeData(s * rect.size.width, s * rect.size.height, false), this);
+	eventQueue.pushEvent(e);
 	eventQueue.update();
 	
-	mDesc = desc;
-	
+	mEventQueue = &eventQueue;
+
 	return true;
 }
 
@@ -76,8 +162,9 @@ bool Window::update()
 
 void Window::close()
 {
-	//[(XWinWindow*)window release];
-	[(XWinView*)view release];
+	[(XWinWindow*)window release];
+	[(MTKView*)view release];
+	[(XWinViewController*)viewController release];
 	
 	window = nullptr;
 	view = nullptr;
@@ -88,12 +175,12 @@ void Window::setLayer(LayerType type)
 {
 	if(type == LayerType::Metal)
 	{
-		//According to Apple Docs, you must assign this layer via
-		//an override to `+ (Class) layerClass`
-		XWinView* v = (XWinView*)view;
-		CAMetalLayer* l = (CAMetalLayer*)v.layer;
-		l.pixelFormat = MTLPixelFormatRGBA16Float;
-		l.drawableSize = v.frame.size;
+		MTKView* v = (MTKView*)view;
+		[v.layer setHidden:NO];
+		[v.layer setOpaque:YES];
+		[v.layer setNeedsDisplay];
+		v.backgroundColor = [UIColor clearColor];
+		layer = v.layer;
 	}
 	else if(type == LayerType::OpenGL)
 	{
