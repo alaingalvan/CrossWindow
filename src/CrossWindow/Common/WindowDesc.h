@@ -36,6 +36,8 @@ struct WindowDesc
     bool resizable = true;
     // Whether this window is movable
     bool movable = true;
+	// Whether this window is closable
+	bool closable = true;
     // Whether this window is minimizable
     bool minimizable = true;
     //whether this window is maximizable
