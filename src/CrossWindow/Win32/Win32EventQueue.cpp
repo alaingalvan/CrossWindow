@@ -97,6 +97,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         break;
     }
+    case WM_CLOSE:
     case WM_DESTROY:
     {
         e = xwin::Event(xwin::EventType::Close, window);
