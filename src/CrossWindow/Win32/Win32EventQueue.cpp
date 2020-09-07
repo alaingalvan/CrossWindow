@@ -573,10 +573,36 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         case VK_F12:
             d = Key::F12;
             break;
-
+        case VK_SHIFT:
+        case VK_LSHIFT:
+        case VK_RSHIFT:
+            d = Key::LShift;
+            break;
+        case VK_CONTROL:
+        case VK_LCONTROL:
+        case VK_RCONTROL:
+            d = Key::LControl;
+            break;
+        case VK_MENU:
+        case VK_LMENU:
+        case VK_RMENU:
+            d = Key::LAlt;
+            break;
         default:
             d = Key::KeysMax;
             break;
+        }
+        if (d == Key::LControl && GetKeyState(VK_RCONTROL))
+        {
+            d = Key::RControl;
+        }
+        if (d == Key::LAlt && GetKeyState(VK_RMENU))
+        {
+            d = Key::RAlt;
+        }
+        if (d == Key::LShift && GetKeyState(VK_RSHIFT))
+        {
+            d = Key::RShift;
         }
         short modifiers = LOWORD(msg.wParam);
         ModifierState ms;
