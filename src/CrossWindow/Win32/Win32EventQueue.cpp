@@ -578,16 +578,23 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             d = Key::KeysMax;
             break;
         }
+        short modifiers = LOWORD(msg.wParam);
+        ModifierState ms;
+        ms.shift =
+            (GetKeyState(VK_SHIFT) & 0x8000) | (GetKeyState(VK_CAPITAL) & 0x0001);
+        ms.alt = GetKeyState(VK_MENU) & 0x8000;
+        ms.ctrl = GetKeyState(VK_CONTROL) & 0x8000;
+        ms.meta = false;
 
         if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
         {
             e = xwin::Event(
-                KeyboardData(d, ButtonState::Pressed, ModifierState()), window);
+                KeyboardData(d, ButtonState::Pressed, ms), window);
         }
         else if (message == WM_KEYUP || message == WM_SYSKEYUP)
         {
             e = xwin::Event(
-                KeyboardData(d, ButtonState::Released, ModifierState()),
+                KeyboardData(d, ButtonState::Released, ms),
                 window);
         }
         break;

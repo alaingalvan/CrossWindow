@@ -68,26 +68,28 @@ ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
 /**
  * A map of the Keys enum to chars for matching keyboard event data.
  * Convenient for converting xwin::Key(s) to strings for serialization
+ * Though for certain platforms that natively support this
+ * (Mac OS, iOS, WebAssembly) we should opt to use those functions.
  */
 static KeyToCharMap sKeyToCharMap = {
-    "Escape",  "1",           "2",        "3",       "4",        "5",
+    "\e",  "1",           "2",        "3",       "4",        "5",
     "6",       "7",           "8",        "9",       "0",        "-",
     "=",       "\b",          "\t",       "Q",       "W",        "E",
     "R",       "T",           "Y",        "U",       "I",        "O",
-    "P",       "[",           "]",        "\r",      "LControl", "A",
+    "P",       "[",           "]",        "\r",      "", "A",
     "S",       "D",           "F",        "G",       "H",        "J",
-    "K",       "L",           ";",        "'",       "Grave",    "LShift",
+    "K",       "L",           ";",        "'",       "`",    "",
     "\\",      "Z",           "X",        "C",       "V",        "B",
-    "N",       "M",           ",",        ".",       "/",        "RShift",
-    "*",       "LAlt",        "Space",    "Capital", "F1",       "F2",
-    "F3",      "F4",          "F5",       "F6",      "F7",       "F8",
-    "F9",      "F10",         "Numlock",  "Scroll",  "Numpad7",  "Numpad8",
-    "Numpad9", "Subtract",    "Numpad4",  "Numpad5", "Numpad6",  "Add",
-    "Numpad1", "Numpad2",     "Numpad3",  "Numpad0", "Decimal",  "F11",
-    "F12",     "Numpadenter", "RControl", "Divide",  "sysrq",    "RAlt",
-    "Pause",   "Home",        "Up",       "PgUp",    "Left",     "Right",
-    "End",     "Down",        "PgDn",     "Insert",  "Del",      "LWin",
-    "RWin",    "Apps"};
+    "N",       "M",           ",",        ".",       "/",        "",
+    "*",       "",        " ",       "", "",       "",
+    "",      "",          "",       "",      "",       "",
+    "",      "",         "",  "",  "7",  "8",
+    "9", "-",    "4",  "5", "6",  "+",
+    "1", "2",     "3",  "0", ".",  "",
+    "",     "\r", "", "/",  "",    "",
+    "",   "",        "",       "",    "",     "",
+    "",     "",        "",     "",  "",      "",
+    "",    ""};
 
 const char* convertKeyToString(Key key)
 {
