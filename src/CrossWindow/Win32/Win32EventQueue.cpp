@@ -469,6 +469,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             d = Key::Minus;
             break;
         case VK_ADD:
+        case VK_OEM_PLUS:
             d = Key::Add;
             break;
         case VK_MULTIPLY:
@@ -517,6 +518,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
             d = Key::Numpad8;
             break;
         case VK_NUMPAD9:
+            d = Key::Numpad9;
             d = Key::Numpad9;
             break;
         case VK_UP:
@@ -588,6 +590,30 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         case VK_RMENU:
             d = Key::LAlt;
             break;
+        case VK_OEM_PERIOD:
+            d = Key::Period;
+            break;
+        case VK_OEM_COMMA:
+            d = Key::Comma;
+            break;
+        case VK_OEM_1:
+            d = Key::Semicolon;
+            break;
+        case VK_OEM_2:
+            d = Key::Backslash;
+            break;
+        case VK_OEM_3:
+            d = Key::Grave;
+            break;
+        case VK_OEM_4:
+            d = Key::LBracket;
+            break;
+        case VK_OEM_6:
+            d = Key::RBracket;
+            break;
+        case VK_OEM_7:
+            d = Key::Apostrophe;
+            break;
         default:
             d = Key::KeysMax;
             break;
@@ -611,6 +637,22 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         ms.alt = GetKeyState(VK_MENU) & 0x8000;
         ms.ctrl = GetKeyState(VK_CONTROL) & 0x8000;
         ms.meta = false;
+
+        if (ms.shift)
+        {
+            if (d == Key::Num1)
+            {
+                
+            }
+            if (d == Key::Semicolon)
+            {
+                d = Key::Colon;
+            }
+            if (d == Key::Apostrophe)
+            {
+                d = Key::Quotation;
+            }
+        }
 
         if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
         {
