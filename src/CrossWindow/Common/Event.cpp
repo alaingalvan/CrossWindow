@@ -58,6 +58,12 @@ Event::Event(GamepadData d, Window* window)
     data.gamepad = d;
 }
 
+Event::Event(DPIData d, Window* window)
+    : type(EventType::DPI), window(window)
+{
+    data.dpi = d;
+}
+
 Event::~Event() {}
 
 ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
@@ -72,24 +78,14 @@ ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
  * (Mac OS, iOS, WebAssembly) we should opt to use those functions.
  */
 static KeyToCharMap sKeyToCharMap = {
-    "\e",  "1",           "2",        "3",       "4",        "5",
-    "6",       "7",           "8",        "9",       "0",        "-",
-    "=",       "\b",          "\t",       "Q",       "W",        "E",
-    "R",       "T",           "Y",        "U",       "I",        "O",
-    "P",       "[",           "]",        "\r",      "", "A",
-    "S",       "D",           "F",        "G",       "H",        "J",
-    "K",       "L",           ";",        ":",       "'",       "\"", "`",    "",
-    "\\",      "Z",           "X",        "C",       "V",        "B",
-    "N",       "M",           ",",        ".",       "/",        "",
-    "*",       "",        " ",       "", "",       "",
-    "",      "",          "",       "",      "",       "",
-    "",      "",         "",  "",  "7",  "8",
-    "9", "-",    "4",  "5", "6",  "+",
-    "1", "2",     "3",  "0", ".",  "",
-    "",     "\r", "", "/",  "",    "",
-    "",   "",        "",       "",    "",     "",
-    "",     "",        "",     "",  "",      "",
-    "",    ""};
+    "\e", "1", "2",  "3",  "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b",
+    "\t", "Q", "W",  "E",  "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\r",
+    "",   "A", "S",  "D",  "F", "G", "H", "J", "K", "L", ";", ":", "'", "\"",
+    "`",  "",  "\\", "Z",  "X", "C", "V", "B", "N", "M", ",", ".", "/", "",
+    "*",  "",  " ",  "",   "",  "",  "",  "",  "",  "",  "",  "",  "",  "",
+    "",   "",  "7",  "8",  "9", "-", "4", "5", "6", "+", "1", "2", "3", "0",
+    ".",  "",  "",   "\r", "",  "/", "",  "",  "",  "",  "",  "",  "",  "",
+    "",   "",  "",   "",   "",  "",  "",  ""};
 
 const char* convertKeyToString(Key key)
 {
@@ -132,4 +128,5 @@ MouseRawData::MouseRawData(int deltax, int deltay)
     : deltax(deltax), deltay(deltay)
 {
 }
+DPIData::DPIData(float scale) : scale(scale) {}
 }

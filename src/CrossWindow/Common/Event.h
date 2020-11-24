@@ -104,6 +104,8 @@ struct DPIData
 {
     float scale;
 
+    DPIData(float scale);
+
     static const EventType type = EventType::DPI;
 };
 
@@ -517,6 +519,8 @@ class Event
     Event(TouchData data, Window* window);
 
     Event(GamepadData data, Window* window);
+
+    Event(DPIData data, Window* window);
 
     ~Event();
 

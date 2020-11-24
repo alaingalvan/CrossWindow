@@ -5,6 +5,9 @@
 #include "dwmapi.h"
 #include <windowsx.h>
 
+//#include <wintab/wintab.h>
+//#include <wintab/PKTDEF.h>
+
 #ifndef HID_USAGE_PAGE_GENERIC
 #define HID_USAGE_PAGE_GENERIC ((USHORT)0x01)
 #endif
@@ -723,6 +726,13 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         }
         break;
     }
+    case WM_DPICHANGED:
+    {
+        WORD g_dpi = HIWORD(msg.wParam);
+        FLOAT fscale = (float)g_dpi / USER_DEFAULT_SCREEN_DPI;
+        e = xwin::Event(DPIData(fscale), window);
+        break;
+        }
     case WM_NCCALCSIZE:
     {
         if (!window->getDesc().frame)
@@ -759,6 +769,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         min_max->ptMinTrackSize.y = window->getDesc().minHeight;
         break;
     }
+    //case WT_PACKET:
+    //break;
     default:
         // Do nothing
         break;
