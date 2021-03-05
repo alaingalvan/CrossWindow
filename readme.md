@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/cover.png" alt="Logo"/>
+  <img src="docs/images/logo.svg" alt="Logo"/>
 </p>
 
 # CrossWindow
