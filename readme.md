@@ -30,13 +30,13 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 🍎 Mac (Cocoa)
 
-- 📱 iOS (UIKit) (In Progress)
+- 📱 iOS (UIKit) *(Currently working, but missing some functionality)*
 
 - 🐧 Linux (XCB<!--, XLib, Mir, or Wayland-->) (In Progress)
 
 - 🤖 Android (In Progress)
 
-- 🌐 WebAssembly (In Progress)
+- 🌐 WebAssembly *(Currently working, but missing some functionality)*
 
 - ❌ Noop (Headless)
 
