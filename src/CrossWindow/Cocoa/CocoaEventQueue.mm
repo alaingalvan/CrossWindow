@@ -14,7 +14,7 @@ namespace xwin
 			do
 			{
 				e = [nsApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES];
-				
+				xwin::Event curEvent = xwin::Event(xwin::EventType::None, window);
 				switch(e.type)
 				{
 					case NSEventTypeSystemDefined:
@@ -70,22 +70,60 @@ namespace xwin
 						
 						break;
 					case NSEventTypeLeftMouseDown:
-						
+						        e = xwin::Event(
+            xwin::MouseInputData(
+                MouseInput::Left, ButtonState::Pressed,
+                xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
+                                    modifiers & MK_SHIFT, modifiers & 0)),
+            window);
 						break;
 					case NSEventTypeLeftMouseUp:
-						
+						        e = xwin::Event(
+            xwin::MouseInputData(
+                MouseInput::Left, ButtonState::Pressed,
+                xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
+                                    modifiers & MK_SHIFT, modifiers & 0)),
+            window);
 						break;
 					case NSEventTypeRightMouseDown:
-						
+						        e = xwin::Event(
+            xwin::MouseInputData(
+                MouseInput::Left, ButtonState::Pressed,
+                xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
+                                    modifiers & MK_SHIFT, modifiers & 0)),
+            window);
 						break;
 					case NSEventTypeRightMouseUp:
-						
+						        e = xwin::Event(
+            xwin::MouseInputData(
+                MouseInput::Left, ButtonState::Pressed,
+                xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
+                                    modifiers & MK_SHIFT, modifiers & 0)),
+            window);
 						break;
 					case NSEventTypeOtherMouseUp:
-						
+						        e = xwin::Event(
+            xwin::MouseInputData(
+                MouseInput::Left, ButtonState::Pressed,
+                xwin::ModifierState(modifiers & MK_CONTROL, modifiers & MK_ALT,
+                                    modifiers & MK_SHIFT, modifiers & 0)),
+            window);
 						break;
 					case NSEventTypeMouseMoved:
-						
+						        curEvent = xwin::Event(
+            xwin::MouseMoveData(
+                static_cast<unsigned>(area.left <= x && x <= area.right
+                                          ? x - area.left
+                                          : 0xFFFFFFFF),
+                static_cast<unsigned>(area.top <= y && y <= area.bottom
+                                          ? y - area.top
+                                          : 0xFFFFFFFF),
+                static_cast<unsigned>(x), static_cast<unsigned>(y),
+                static_cast<int>(x - prevMouseX),
+                static_cast<int>(y - prevMouseY)),
+            window);
+        prevMouseX = static_cast<unsigned>(x);
+        prevMouseY = static_cast<unsigned>(y);
 						break;
 					case NSEventTypeScrollWheel:
 						[e deltaY];

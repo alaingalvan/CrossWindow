@@ -32,7 +32,7 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 - 📱 iOS (UIKit) *(Currently working, but missing some functionality)*
 
-- 🐧 Linux (XCB<!--, XLib, Mir, or Wayland-->) (In Progress)
+- 🐧 Linux *(Currently working, but missing some functionality)*
 
 - 🤖 Android (In Progress)
 
@@ -74,24 +74,20 @@ target_link_libraries(
 Fill out the rest of your `CMakeLists.txt` file with any other source files and dependencies you may have, then in your project root:
 
 ```bash
-# 👷 Make a build folder
-mkdir build
-cd build
-
 # 🖼️ To build your Visual Studio solution on Windows x64
-cmake .. -A x64
+cmake -B build -A x64
 
 # 🍎 To build your XCode project On Mac OS for Mac OS
-cmake .. -G Xcode
+cmake -B build -G Xcode
 
 # 📱 To build your XCode project on Mac OS for iOS / iPad OS / tvOS / watchOS
-cmake .. -G Xcode -DCMAKE_SYSTEM_NAME=iOS
+cmake -B build -G Xcode -DCMAKE_SYSTEM_NAME=iOS
 
 # 🐧 To build your .make file on Linux
-cmake ..
+cmake -B build
 
 # 🔨 Build on any platform:
-cmake --build .
+cmake -B build --build
 ```
 
 For WebAssembly you'll need to have [Emscripten](http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html) installed. Assuming you have the SDK installed, do the following to build a WebAssembly project:
@@ -181,7 +177,7 @@ void xmain(int argc, const char** argv)
         {
             const xwin::Event& event = eventQueue.front();
 
-            if (event.type == xwin::EventType::Mouse)
+            if (event.type == xwin::EventType::MouseMove)
             {
                 const xwin::MouseData mouse = event.data.mouse;
             }
@@ -235,41 +231,20 @@ From there we'll need to set up our build files. Be sure to have the following i
 Then type the following in your terminal from the repo folder:
 
 ```bash
-# 👷 Make a build folder
-mkdir build
-cd build
-
 # 🖼️ To build your Visual Studio solution on Windows x64
-cmake .. -A x64 -DXWIN_TESTS=ON
+cmake -B build -A x64 -DXWIN_TESTS=ON
 
 # 🍎 To build your XCode project on Mac OS
-cmake .. -G Xcode -DXWIN_TESTS=ON
+cmake -B build -G Xcode -DXWIN_TESTS=ON
 
 # 🐧 To build your .make file on Linux
-cmake .. -DXWIN_TESTS=ON
+cmake -B build -DXWIN_TESTS=ON
 
 # 🔨 Build on any platform:
-cmake --build .
+cmake -B build --build
 ```
 
-Whenever you add new files to the project, run `cmake ..` from your solution/project folder, and if you edit the `CMakeLists.txt` file be sure to delete the generated files and run Cmake again.
-
-## Project Goals
-
-- [ ] 🚜 XLib / Wayland support for Linux
-
-- [ ] ❎ Windows 10 Apps / Window 10 Arm / Xbox One support with Universal Windows Platform (WMP).
-
-- [ ] 🍭 Linux flavor OS targets (`XWIN_OS` can be `UBUNTU`, `DEBIAN`, `FEDORA`, etc.)
-
-- [ ] 🅿️ Playstation support
-
-- [ ] 💞 Nintendo support
-
-<!--
-- [ ] 📦 **Create-CrossWindow-App CLI Tool** similar to [Create-React-App](https://github.com/facebook/create-react-app) to auto-generate all platform specific projects and set up your seed with 0 configuration. `create-xwin-app MyGame`.
-
- > **Note:** Playstation 4 and Nintendo Switch will require that you email/direct message me to verify your licensing prior to releasing the CrossWindow source for those platforms. -->
+Whenever you add new files to the project, run `cmake ..` from your solution/project folder `/build/`, and if you edit the `CMakeLists.txt` file be sure to delete the generated files and run Cmake again.
 
 ## License
 

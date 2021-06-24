@@ -29,9 +29,9 @@ Event::Event(MouseRawData d, Window* window)
 }
 
 Event::Event(MouseMoveData d, Window* window)
-    : type(EventType::MouseMoved), window(window)
+    : type(EventType::MouseMove), window(window)
 {
-    data.mouseMoved = d;
+    data.mouseMove = d;
 }
 
 Event::Event(MouseInputData d, Window* window)

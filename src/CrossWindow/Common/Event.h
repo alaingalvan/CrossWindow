@@ -39,7 +39,7 @@ enum class EventType : size_t
     Keyboard,
 
     // Mouse moving events
-    MouseMoved,
+    MouseMove,
 
     // Raw mouse data events
     MouseRaw,
@@ -318,7 +318,7 @@ struct MouseMoveData
     // Change in y relative to previous event, used for FPS motion
     int deltay;
 
-    static const EventType type = EventType::MouseMoved;
+    static const EventType type = EventType::MouseMove;
 
     MouseMoveData(unsigned x, unsigned y, unsigned screenx, unsigned screeny,
                   int deltax, int deltay);
@@ -485,7 +485,7 @@ union EventData {
     ResizeData resize;
     DPIData dpi;
     KeyboardData keyboard;
-    MouseMoveData mouseMoved;
+    MouseMoveData mouseMove;
     MouseInputData mouseInput;
     MouseWheelData mouseWheel;
     TouchData touch;
