@@ -3,32 +3,35 @@
 
 int main(int argc, char** argv)
 {
-    xwin::init(argc, argv);
+    const xcb_setup_t* setup;
+    xcb_screen_iterator_t iter;
+    int screenNum = 0;
 
-        const xcb_setup_t *setup;
-        xcb_screen_iterator_t iter;
-        int scr;
+    xcb_connection_t* connection = xcb_connect(nullptr, &screenNum);
 
-        connection = xcb_connect(nullptr, &scr);
-        if (xcb_connection_has_error(connection) > 0) {
-            printf(
-                "Cannot find a compatible Vulkan installable client driver "
-                "(ICD).\nExiting ...\n");
-            fflush(stdout);
-            exit(1);
-        }
+    if (xcb_connection_has_error(connection) > 0)
+    {
+        return 1;
+    }
 
-        setup = xcb_get_setup(connection);
-        iter = xcb_setup_roots_iterator(setup);
-        while (scr-- > 0) xcb_screen_next(&iter);
+    /* Get the screen whose number is screenNum */
 
-        screen = iter.data;
+    const xcb_setup_t* setup = xcb_get_setup(connection);
+    xcb_screen_iterator_t iter = xcb_setup_roots_iterator(setup);
+
+    // we want the screen at index screenNum of the iterator
+    for (int i = 0; i < screenNum; ++i)
+    {
+        xcb_screen_next(&iter);
+    }
+
+    xcb_screen_t* screen = iter.data;
+
+    xwin::init(argc, argv, connection, screen);
 
     xmain(argc, argv);
 
-    xcb_destroy_window(connection, xcb_window);
     xcb_disconnect(connection);
-    free(atom_wm_delete_window);
 
     return 0;
 }

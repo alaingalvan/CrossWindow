@@ -124,6 +124,4 @@ class Window
 
 static thread_local Window* _windowBeingCreated = nullptr;
 static thread_local std::unordered_map<HWND, Window*> _hwndMap = {};
-
-typedef Window WindowDelegate;
 }

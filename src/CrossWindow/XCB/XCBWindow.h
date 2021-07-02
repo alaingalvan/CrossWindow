@@ -1,10 +1,10 @@
 #pragma once
 
-#ifdef __linux__
-#ifndef __ANDROID__
+#include "../Common/EventQueue.h"
+#include "../Common/Init.h"
+#include "../Common/WindowDesc.h"
+
 #include <xcb/xcb.h>
-#endif
-#endif
 
 namespace xwin
 {
@@ -16,16 +16,17 @@ namespace xwin
  */
 class Window
 {
-    XCBWindow();
+    Window();
 
     // Initialize this window with the XCB API.
     bool create(const WindowDesc& desc, EventQueue& eventQueue);
 
+    void close();
+
   protected:
-    xcb_connection_t mConnection = 0;
+    xcb_connection_t* mConnection = nullptr;
     xcb_screen_t* mScreen = nullptr;
-	unsigned mXcbWindowId = 0;
+    unsigned mXcbWindowId = 0;
     unsigned mDisplay = 0;
-    
 };
 }

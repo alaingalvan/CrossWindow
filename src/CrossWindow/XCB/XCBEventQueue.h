@@ -2,6 +2,8 @@
 
 #include "../Common/Event.h"
 
+#include <xcb/xcb.h>
+
 #include <queue>
 
 namespace xwin
@@ -11,10 +13,10 @@ namespace xwin
     /**
      * Events - https://xcb.freedesktop.org/tutorial/events/
      */
-    class XCBEventQueue
+    class EventQueue
     {
     public:
-        XCBEventQueue();
+        EventQueue();
 
         void update();
 
@@ -25,10 +27,8 @@ namespace xwin
         bool empty();
 
     protected:
-        void pushEvent(xcb_generic_event_t me);
+        void pushEvent(const xcb_generic_event_t* e);
 
         std::queue<Event> mQueue;
     };
-
-    typedef XCBEventQueue EventQueueDelegate;
 }

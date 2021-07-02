@@ -6,13 +6,11 @@
 
 namespace mwin
 {
-	class AndroidWindow
+	class Window
 	{
-		AndroidWindow();
+		Window();
 
 		protected:
 			ANativeWindow* mWindow;
 	};
-	
-	 typedef AndroidWindow WindowDelegate;
 }

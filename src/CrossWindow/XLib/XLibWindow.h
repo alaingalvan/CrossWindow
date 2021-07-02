@@ -2,14 +2,12 @@
 
 namespace mwin
 {
-	class XLibWindow
+	class Window
 	{
-		XLibWindow();
+		Window();
 
-		bool create(WindowDesc& desc, EventQueue& eventQueue, Window* parent);
+		bool create(const WindowDesc& desc, EventQueue& eventQueue);
 
 		bool destroy();
 	};
-	
-	 typedef XLibWindow WindowDelegate;
 }

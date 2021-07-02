@@ -7,14 +7,11 @@ namespace
 {
 XWinState xWinState;
 }
-}
 
-bool xwin::init(MainArgs)
+bool init(MainArgs)
 {
-  xWinState = XWinState(MainArgsVars);
-  return true;
+    xWinState = XWinState(MainArgsVars);
+    return true;
 }
-const xwin::XWinState& xwin::getXWinState()
-{
-  return xWinState;
+const xwin::XWinState& getXWinState() { return xWinState; }
 }

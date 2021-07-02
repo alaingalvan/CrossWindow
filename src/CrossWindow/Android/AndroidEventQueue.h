@@ -28,6 +28,4 @@ namespace xwin
 
     std::queue<Event> mQueue;
   };
-
-  typedef AndroidEventQueue EventQueueDelegate;
 }
