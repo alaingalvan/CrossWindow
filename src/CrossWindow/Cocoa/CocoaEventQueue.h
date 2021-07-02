@@ -6,21 +6,20 @@
 
 namespace xwin
 {
-  struct MacEvent
-  {
+struct MacEvent
+{
+};
 
-  };
-
-  /**
-   * 
-   * Events - https://developer.apple.com/documentation/appkit/nsevent
-   */ 
-  class EventQueue
-  {
+/**
+ * MacOS Events can be per window virtual functions or received from a queue.
+ * Events - https://developer.apple.com/documentation/appkit/nsevent
+ */
+class EventQueue
+{
   public:
     void update();
 
-    const Event &front();
+    const Event& front();
 
     void pop();
 
@@ -30,5 +29,5 @@ namespace xwin
     void pushEvent(MacEvent me);
 
     std::queue<Event> mQueue;
-  };
+};
 }

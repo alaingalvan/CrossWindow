@@ -88,8 +88,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         unsigned r = (bg & 0xff000000) >> 24;
         unsigned g = (bg & 0x00ff0000) >> 16;
         unsigned b = (bg & 0x0000ff00) >> 8;
-        HBRUSH BorderBrush =
-            CreateSolidBrush(RGB(r, g, b));
+        HBRUSH BorderBrush = CreateSolidBrush(RGB(r, g, b));
         FillRect(ps.hdc, &rect, BorderBrush);
         EndPaint(window->hwnd, &ps);
 
@@ -635,18 +634,17 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         }
         short modifiers = LOWORD(msg.wParam);
         ModifierState ms;
-        ms.shift =
-            (GetKeyState(VK_SHIFT) & 0x8000) | (GetKeyState(VK_CAPITAL) & 0x0001);
+        ms.shift = (GetKeyState(VK_SHIFT) & 0x8000) |
+                   (GetKeyState(VK_CAPITAL) & 0x0001);
         ms.alt = GetKeyState(VK_MENU) & 0x8000;
         ms.ctrl = GetKeyState(VK_CONTROL) & 0x8000;
         ms.meta = false;
 
+        // This may or may not be a good idea, adding combination keys
+        // that happen with shift. Keyboards are also important to consider
+        // here. ~ Alain
         if (ms.shift)
         {
-            if (d == Key::Num1)
-            {
-                
-            }
             if (d == Key::Semicolon)
             {
                 d = Key::Colon;
@@ -659,14 +657,11 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
 
         if (message == WM_KEYDOWN || message == WM_SYSKEYDOWN)
         {
-            e = xwin::Event(
-                KeyboardData(d, ButtonState::Pressed, ms), window);
+            e = xwin::Event(KeyboardData(d, ButtonState::Pressed, ms), window);
         }
         else if (message == WM_KEYUP || message == WM_SYSKEYUP)
         {
-            e = xwin::Event(
-                KeyboardData(d, ButtonState::Released, ms),
-                window);
+            e = xwin::Event(KeyboardData(d, ButtonState::Released, ms), window);
         }
         break;
     }
@@ -685,6 +680,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         unsigned STEP = 1;
         PRECT rectp = (PRECT)msg.lParam;
         HWND hwnd = window->hwnd;
+
         // Get the window and client dimensions
         tagRECT wind, rect;
         GetWindowRect(hwnd, &wind);
@@ -692,6 +688,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         width = rectp->right - rectp->left;
         height = rectp->bottom - rectp->top;
 
+        // Redraw window to refresh it while resizing
         RedrawWindow(hwnd, NULL, NULL,
                      RDW_INVALIDATE | RDW_NOERASE | RDW_INTERNALPAINT);
 
@@ -714,6 +711,9 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         width = static_cast<int>(rect.right - rect.left);
         height = static_cast<int>(rect.bottom - rect.top);
         unsigned topBorder = IsZoomed(window->hwnd) ? 0 : BORDERWIDTH;
+
+        // Iterate through window->mousePositionRects.
+
         if (y > topBorder && x > 260 && x < (width - 260) && y < 32)
         {
             result = HTCAPTION;
@@ -728,11 +728,11 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     }
     case WM_DPICHANGED:
     {
-        WORD g_dpi = HIWORD(msg.wParam);
-        FLOAT fscale = (float)g_dpi / USER_DEFAULT_SCREEN_DPI;
+        WORD curDPI = HIWORD(msg.wParam);
+        FLOAT fscale = (float)curDPI / USER_DEFAULT_SCREEN_DPI;
         e = xwin::Event(DPIData(fscale), window);
         break;
-        }
+    }
     case WM_NCCALCSIZE:
     {
         if (!window->getDesc().frame)
@@ -769,8 +769,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         min_max->ptMinTrackSize.y = window->getDesc().minHeight;
         break;
     }
-    //case WT_PACKET:
-    //break;
+    // case WT_PACKET:
+    // break;
     default:
         // Do nothing
         break;

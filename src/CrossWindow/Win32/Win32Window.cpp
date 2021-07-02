@@ -30,7 +30,7 @@ Window::~Window()
 
 const WindowDesc Window::getDesc() { return mDesc; }
 
-bool Window::create(WindowDesc& desc, EventQueue& eventQueue)
+bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
     mEventQueue = &eventQueue;
     const XWinState& xwinState = getXWinState();
