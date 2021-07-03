@@ -2,10 +2,7 @@
 #include "../Common/Init.h"
 namespace xwin
 {
-EventQueue::EventQueue()
-{
-
-}
+EventQueue::EventQueue() {}
 
 void EventQueue::update()
 {
@@ -24,35 +21,137 @@ void EventQueue::pushEvent(const xcb_generic_event_t* event)
 {
     Window* window = nullptr;
     uint8_t event_code = event->response_type & 0x7f;
+
+    Event e = Event(EventType::None, window);
+
     switch (event_code)
     {
     case XCB_CONFIGURE_NOTIFY:
     {
-        mQueue.emplace(xwin::EventType::Create, window);
+        e = Event(EventType::Create, window);
         break;
     }
     case XCB_EXPOSE:
     {
-        // TODO: Resize window
+        xcb_expose_event_t* expose = (xcb_expose_event_t*)event;
+        e = Event(ResizeData(expose->width, expose->height, true), window);
+        break;
+    }
+    case XCB_RESIZE_REQUEST:
+    {
+        xcb_resize_request_event_t* resize = (xcb_resize_request_event_t*)event;
+        e = Event(ResizeData(resize->width, resize->height, false), window);
         break;
     }
     case XCB_ENTER_NOTIFY:
     {
-        // focus
+        e = Event(FocusData(true), window);
         break;
     }
     case XCB_LEAVE_NOTIFY:
     {
-        // lose focus
+        e = Event(FocusData(false), window);
         break;
     }
     case XCB_CLIENT_MESSAGE:
     {
+        // Maximize / Minimize...
+        break;
+    }
+    case XCB_BUTTON_PRESS:
+    {
+        xcb_button_press_event_t* bp = (xcb_button_press_event_t*)event;
+
+        bool control = bp->state & XCB_MOD_MASK_CONTROL;
+        bool shift = bp->state & XCB_MOD_MASK_SHIFT;
+        bool lock = bp->state & XCB_MOD_MASK_LOCK;
+        ModifierState mods = ModifierState(control, lock, shift, false);
+
+        if (bp->state & XCB_BUTTON_MASK_1)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Left, ButtonState::Pressed, mods),
+                window);
+        }
+        if (bp->state & XCB_BUTTON_MASK_2)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Right, ButtonState::Pressed, mods),
+                window);
+        }
+        if (bp->state & XCB_BUTTON_MASK_3)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Middle, ButtonState::Pressed, mods),
+                window);
+        }
+        if (bp->state & XCB_BUTTON_MASK_4)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Button4, ButtonState::Pressed, mods),
+                window);
+        }
+        if (bp->state & XCB_BUTTON_MASK_5)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Button5, ButtonState::Pressed, mods),
+                window);
+        }
+        break;
+    }
+    case XCB_BUTTON_RELEASE:
+    {
+        xcb_button_release_event_t* br = (xcb_button_release_event_t*)event;
+
+        bool control = br->state & XCB_MOD_MASK_CONTROL;
+        bool shift = br->state & XCB_MOD_MASK_SHIFT;
+        bool lock = br->state & XCB_MOD_MASK_LOCK;
+        ModifierState mods = ModifierState(control, lock, shift, false);
+
+        if (br->state & XCB_BUTTON_MASK_1)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Left, ButtonState::Pressed, mods),
+                window);
+        }
+        if (br->state & XCB_BUTTON_MASK_2)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Right, ButtonState::Pressed, mods),
+                window);
+        }
+        if (br->state & XCB_BUTTON_MASK_3)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Middle, ButtonState::Pressed, mods),
+                window);
+        }
+        if (br->state & XCB_BUTTON_MASK_4)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Button4, ButtonState::Pressed, mods),
+                window);
+        }
+        if (br->state & XCB_BUTTON_MASK_5)
+        {
+            mQueue.emplace(
+                MouseInputData(MouseInput::Button5, ButtonState::Pressed, mods),
+                window);
+        }
+        break;
+    }
+    case XCB_MOTION_NOTIFY:
+    {
+        xcb_motion_notify_event_t* motion = (xcb_motion_notify_event_t*)event;
+
+        e = Event(MouseMoveData(motion->event_x, motion->event_y,
+                                motion->root_x, motion->root_y, 0, 0),
+                  window);
         break;
     }
     case XCB_KEY_PRESS:
     {
-        xcb_key_press_event_t* kp = (xcb_key_press_event_t*)event;
+        xcb_key_press_event_t* key = (xcb_key_press_event_t*)event;
         break;
     }
     case XCB_KEY_RELEASE:
@@ -78,38 +177,18 @@ void EventQueue::pushEvent(const xcb_generic_event_t* event)
             break;
         }
 
-        mQueue.emplace(KeyboardData(d, ButtonState::Pressed, ModifierState()),
-                       window);
-
-        break;
-    }
-    case XCB_BUTTON_PRESS:
-    {
-        xcb_button_press_event_t* bp = (xcb_button_press_event_t*)event;
-
-        switch (bp->detail)
-        {
-        case 4: // wheel button up
-
-            break;
-        case 5: // wheel button down
-
-            break;
-        default:
-
-            break;
-        }
-        break;
-    }
-    case XCB_BUTTON_RELEASE:
-    {
-        xcb_button_release_event_t* br = (xcb_button_release_event_t*)event;
+        e = Event(KeyboardData(d, ButtonState::Pressed, ModifierState()),
+                  window);
 
         break;
     }
 
     default:
         break;
+    }
+    if (e.type != EventType::None)
+    {
+        mQueue.emplace(e);
     }
 }
 }

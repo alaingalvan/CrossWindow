@@ -2,7 +2,7 @@
 
 #if defined(XWIN_WIN32)
 #include <Windows.h>
-#else if defined(XWIN_XCB)
+#elif defined(XWIN_XCB)
 #include <xcb/xcb.h>
 #endif
 
