@@ -1,12 +1,11 @@
 #include "../Common/Init.h"
 #include "Main.h"
 
-int main(int argc, char** argv)
-{
-    const xcb_setup_t* setup;
-    xcb_screen_iterator_t iter;
-    int screenNum = 0;
+#include <xcb/xcb.h>
 
+int main(int argc, const char** argv)
+{
+    int screenNum = 0;
     xcb_connection_t* connection = xcb_connect(nullptr, &screenNum);
 
     if (xcb_connection_has_error(connection) > 0)

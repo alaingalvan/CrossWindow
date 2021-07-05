@@ -16,6 +16,7 @@ namespace xwin
  */
 class Window
 {
+public:
     Window();
 
     // Initialize this window with the XCB API.

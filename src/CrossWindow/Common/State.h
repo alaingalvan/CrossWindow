@@ -4,6 +4,8 @@
 #include <Windows.h>
 #elif defined(XWIN_XCB)
 #include <xcb/xcb.h>
+#elif defined(XWIN_XLIB)
+#include <X11/Xlib.h>
 #endif
 
 namespace xwin
@@ -24,6 +26,16 @@ struct XWinState
           lpCmdLine(lpCmdLine), nCmdShow(nCmdShow)
     {
     }
+#elif defined(XWIN_COCOA) || defined(XWIN_UIKIT)
+
+    int argc;
+    const char** argv;
+    void* application;
+
+    XWinState(int argc, const char** argv, void* application)
+        : argc(argc), argv(argv), application(application)
+    {
+    }
 #elif defined(XWIN_XCB)
     int argc;
     const char** argv;
@@ -40,16 +52,6 @@ struct XWinState
     android_app* app;
 
     XWinState(android_app* app) : app(app) {}
-#elif defined(XWIN_COCOA) || defined(XWIN_UIKIT)
-
-    int argc;
-    const char** argv;
-    void* application;
-
-    XWinState(int argc, const char** argv, void* application)
-        : argc(argc), argv(argv), application(application)
-    {
-    }
 
 #else
 

@@ -2,43 +2,38 @@
 
 namespace xwin
 {
-  bool XLibWindow::create(WindowDesc& desc, EventQueue& eventQueue, Window* parent)
-  {
+bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
+{
     XInitThreads();
-    demo->display = XOpenDisplay(NULL);
+    display = XOpenDisplay(NULL);
     long visualMask = VisualScreenMask;
     int numberOfVisuals;
-    XVisualInfo vInfoTemplate={};
-    vInfoTemplate.screen = DefaultScreen(demo->display);
-    XVisualInfo *visualInfo = XGetVisualInfo(demo->display, visualMask,
-                                             &vInfoTemplate, &numberOfVisuals);
+    XVisualInfo vInfoTemplate = {};
+    vInfoTemplate.screen = DefaultScreen(display);
+    XVisualInfo* visualInfo =
+        XGetVisualInfo(display, visualMask, &vInfoTemplate, &numberOfVisuals);
 
-    Colormap colormap = XCreateColormap(
-                demo->display, RootWindow(demo->display, vInfoTemplate.screen),
-                visualInfo->visual, AllocNone);
+    Colormap colormap =
+        XCreateColormap(display, RootWindow(display, vInfoTemplate.screen),
+                        visualInfo->visual, AllocNone);
 
-    XSetWindowAttributes windowAttributes={};
+    XSetWindowAttributes windowAttributes = {};
     windowAttributes.colormap = colormap;
     windowAttributes.background_pixel = 0xFFFFFFFF;
     windowAttributes.border_pixel = 0;
     windowAttributes.event_mask =
-            KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask;
+        KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask;
 
-    demo->xlib_window = XCreateWindow(
-                demo->display, RootWindow(demo->display, vInfoTemplate.screen), 0, 0,
-                demo->width, demo->height, 0, visualInfo->depth, InputOutput,
-                visualInfo->visual,
-                CWBackPixel | CWBorderPixel | CWEventMask | CWColormap, &windowAttributes);
+    window = XCreateWindow(
+        display, RootWindow(display, vInfoTemplate.screen), 0, 0, desc.width,
+        desc.height, 0, visualInfo->depth, InputOutput, visualInfo->visual,
+        CWBackPixel | CWBorderPixel | CWEventMask | CWColormap,
+        &windowAttributes);
 
-    XSelectInput(demo->display, demo->xlib_window, ExposureMask | KeyPressMask);
-    XMapWindow(demo->display, demo->xlib_window);
-    XFlush(demo->display);
-    demo->xlib_wm_delete_window =
-XInternAtom(demo->display, "WM_DELETE_WINDOW", False);
-  }
+    XSelectInput(display, *window, ExposureMask | KeyPressMask);
+    XMapWindow(display, *window);
+    XFlush(display);
+}
 
-  bool XLibWindow::destroy()
-  {
-    XDestroyWindow(gfx::GetXDisplay(), window);
-  }
+bool Window::destroy() { XDestroyWindow(display, window); }
 }

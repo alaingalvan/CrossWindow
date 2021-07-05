@@ -2,6 +2,8 @@
 
 namespace xwin
 {
+Window::Window() {}
+
 bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
     const XWinState& xwinState = getXWinState();

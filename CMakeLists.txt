@@ -1,6 +1,6 @@
 # Project Info
-cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
-cmake_policy(VERSION 3.7)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+cmake_policy(VERSION 3.18)
 project(CrossWindow)
 enable_language(C)
 enable_language(CXX)
@@ -71,6 +71,8 @@ elseif(XWIN_API STREQUAL "UIKIT")
     set(XWIN_API_PATH "UIKit")
 elseif(XWIN_API STREQUAL "XCB")
     set(XWIN_API_PATH "XCB")
+elseif(XWIN_API STREQUAL "XLIB")
+    set(XWIN_API_PATH "XLIB")
 elseif(XWIN_API STREQUAL "ANDROID")
     set(XWIN_API_PATH "Android")
 elseif(XWIN_API STREQUAL "UIKIT")
@@ -148,7 +150,7 @@ function(xwin_add_executable targetProject targetSources)
             ${XWIN_FILES}
 
         )
-    elseif(XWIN_API STREQUAL "XCB")
+    elseif(XWIN_API STREQUAL "XCB" OR XWIN_API STREQUAL "XLIB")
         add_executable(
             ${targetProject}
             ${XWIN_FILES}
@@ -223,6 +225,22 @@ elseif(XWIN_API STREQUAL "UIKIT")
     )
     # Turn on ARC
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fobjc-arc")
+elseif(XWIN_API STREQUAL "XLIB")
+    find_package(X11 REQUIRED)
+    if(X11_FOUND)
+        message("Found X11 Libraries.")
+        message("X11 includes = ${X11_INCLUDE_DIR}")
+        message("X11 Libraries = ${X11_LIBRARIES}")
+        target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
+        target_include_directories(${PROJECT_NAME} PUBLIC ${X11_INCLUDE_DIR})
+    endif()
+elseif(XWIN_API STREQUAL "XCB")
+    find_package(X11 REQUIRED)
+    message("Found XCB Libraries.")
+    message("XCB Include Path = ${X11_xcb_INCLUDE_PATH}")
+    message("XCB Lib = ${X11_xcb_LIB}")
+    target_link_libraries(${PROJECT_NAME} ${X11_xcb_LIB})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${X11_xcb_INCLUDE_PATH})
 endif()
 # =============================================================
 

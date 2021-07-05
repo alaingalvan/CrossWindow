@@ -17,6 +17,21 @@ void EventQueue::update()
     }
 }
 
+const Event& EventQueue::front() 
+{
+    return mQueue.front();
+}
+
+void EventQueue::pop() 
+{
+    mQueue.pop();
+}
+
+bool EventQueue::empty() 
+{
+    return mQueue.empty();
+}
+
 void EventQueue::pushEvent(const xcb_generic_event_t* event)
 {
     Window* window = nullptr;

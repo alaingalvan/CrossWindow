@@ -250,7 +250,7 @@ Whenever you add new files to the project, run `cmake ..` from your solution/pro
 
 CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would prefer.
 
-[cmake-img]: https://img.shields.io/badge/cmake-3.6-1f9948.svg?style=flat-square
+[cmake-img]: https://img.shields.io/badge/cmake-3.18-1f9948.svg?style=flat-square
 [cmake-url]: https://cmake.org/
 [license-img]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
