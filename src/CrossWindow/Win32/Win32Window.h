@@ -9,11 +9,7 @@
 
 #include <functional>
 
-class ITaskbarList3;
-
-namespace xwin
-{
-class Window;
+struct ITaskbarList3;
 
 /**
  * Currently Win32Window uses the Win32 windowing protocol for the best
@@ -25,6 +21,10 @@ class Window;
  * https://msdn.microsoft.com/en-us/library/windows/desktop/ms644958%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
  *
  */
+
+namespace xwin
+{
+
 class Window
 {
   public:
@@ -87,6 +87,8 @@ class Window
     // Get this window hwnd handle.
     HWND getHwnd();
 
+    friend class EventQueue;
+
   protected:
     // Executes an event callback asynchronously, use this for non-blocking
     // events (resizing while rendering, etc.)
@@ -98,6 +100,10 @@ class Window
                                              LPARAM lparam);
 
     LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
+
+    HWND hwnd;
+
+    HINSTANCE hinstance;
 
     // Pointer to this window's event queue
     EventQueue* mEventQueue;

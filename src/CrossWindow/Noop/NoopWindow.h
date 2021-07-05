@@ -13,7 +13,7 @@ class Window
   public:
     ~Window();
 
-    bool create(WindowDesc& desc, EventQueue& eventQueue);
+    bool create(const WindowDesc& desc, EventQueue& eventQueue);
 
     void close();
 

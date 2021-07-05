@@ -26,17 +26,17 @@ A basic cross platform system abstraction library for managing windows and perfo
 
 ### Supported Platforms
 
-- 🖼️ Windows (Win32<!--or UWP-->)
+- 🖼️ Windows (Win32)
 
 - 🍎 Mac (Cocoa)
 
-- 📱 iOS (UIKit) *(Currently working, but missing some functionality)*
+- 📱 iOS (UIKit)
 
-- 🐧 Linux *(Currently working, but missing some functionality)*
+- 🐧 Linux (XCB or XLib)
 
 - 🤖 Android (In Progress)
 
-- 🌐 WebAssembly *(Currently working, but missing some functionality)*
+- 🌐 WebAssembly (Emscripten)
 
 - ❌ Noop (Headless)
 

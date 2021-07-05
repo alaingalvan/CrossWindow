@@ -2,5 +2,9 @@
 
 namespace xwin
 {
-  
+class Window
+{
+public:
+    Window();    
+};
 }

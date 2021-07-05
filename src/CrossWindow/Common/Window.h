@@ -10,10 +10,6 @@
 #include "../XCB/XCBWindow.h"
 #elif XWIN_XLIB
 #include "../XLib/XLibWindow.h"
-#elif XWIN_MIR
-#include "../Mir/MirWindow.h"
-#elif XWIN_WAYLAND
-#include "../Wayland/WaylandWindow.h"
 #elif XWIN_ANDROID
 #include "../Android/AndroidWindow.h"
 #elif XWIN_UIKIT

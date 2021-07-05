@@ -2,5 +2,9 @@
 
 namespace xwin
 {
-  
+class EventQueue
+{
+public:
+    EventQueue();    
+};
 }

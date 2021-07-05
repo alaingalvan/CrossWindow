@@ -8,17 +8,17 @@
 
 namespace xwin
 {
-	class Window
-	{
-		public:
-		Window();
+class Window
+{
+  public:
+    Window();
 
-		 bool create(WindowDesc& desc, EventQueue& eventQueue);
+    bool create(WindowDesc& desc, EventQueue& eventQueue);
 
-		 WindowDesc getDesc();
+    WindowDesc getDesc();
 
-    	void close();
+    void close();
 
-		WindowDesc mDesc;
-	};
+    WindowDesc mDesc;
+};
 }

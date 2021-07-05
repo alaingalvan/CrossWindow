@@ -14,10 +14,6 @@
 #include "../XCB/XCBEventQueue.h"
 #elif XWIN_XLIB
 #include "../XLib/XLibEventQueue.h"
-#elif XWIN_MIR
-#include "../Mir/MirEventQueue.h"
-#elif XWIN_WAYLAND
-#include "../Wayland/WaylandEventQueue.h"
 #elif XWIN_ANDROID
 #include "../Android/AndroidEventQueue.h"
 #elif XWIN_UIKIT

@@ -9,6 +9,9 @@
 
 namespace xwin
 {
+/**
+ * Wrapper Window for a NSWindow and it's various children.
+ */ 
 class Window
 {
   public:

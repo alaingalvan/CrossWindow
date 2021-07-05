@@ -710,7 +710,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         y = static_cast<int>(GET_Y_LPARAM(msg.lParam)) - rect.top;
         width = static_cast<int>(rect.right - rect.left);
         height = static_cast<int>(rect.bottom - rect.top);
-        unsigned topBorder = IsZoomed(window->hwnd) ? 0 : BORDERWIDTH;
+        int topBorder = IsZoomed(window->hwnd) ? 0 : BORDERWIDTH;
 
         // Iterate through window->mousePositionRects.
 
