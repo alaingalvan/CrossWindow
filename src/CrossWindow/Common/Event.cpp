@@ -1,5 +1,7 @@
 #include "Event.h"
 
+#include <unordered_map>
+
 namespace xwin
 {
 Event::Event(EventType type, Window* window) : type(type), window(window) {}
@@ -58,8 +60,7 @@ Event::Event(GamepadData d, Window* window)
     data.gamepad = d;
 }
 
-Event::Event(DPIData d, Window* window)
-    : type(EventType::DPI), window(window)
+Event::Event(DPIData d, Window* window) : type(EventType::DPI), window(window)
 {
     data.dpi = d;
 }
@@ -87,12 +88,93 @@ static KeyToCharMap sKeyToCharMap = {
     ".",  "",  "",   "\r", "",  "/", "",  "",  "",  "",  "",  "",  "",  "",
     "",   "",  "",   "",   "",  "",  "",  ""};
 
+static std::unordered_map<const char*, Key> sCharToKeyMap = {
+    {"\e", Key::Escape},
+    {"1", Key::Num1},
+    {"2", Key::Num2},
+    {"3", Key::Num3},
+    {"4", Key::Num4},
+    {"5", Key::Num5},
+    {"6", Key::Num6},
+    {"7", Key::Num7},
+    {"8", Key::Num8},
+    {"9", Key::Num9},
+    {"0", Key::Num0},
+    {"-", Key::Subtract},
+    {"=", Key::Equals},
+    {"\b", Key::Back},
+    {"\t", Key::Tab},
+    {"Q", Key::Q},
+    {"W", Key::W},
+    {"E", Key::E},
+    {"R", Key::R},
+    {"T", Key::T},
+    {"Y", Key::Y},
+    {"U", Key::U},
+    {"I", Key::I},
+    {"O", Key::O},
+    {"P", Key::P},
+    {"[", Key::LBracket},
+    {"]", Key::RBracket},
+    {"\r", Key::Enter},
+    {"A", Key::A},
+    {"S", Key::S},
+    {"D", Key::D},
+    {"F", Key::F},
+    {"G", Key::G},
+    {"H", Key::H},
+    {"J", Key::J},
+    {"K", Key::K},
+    {"L", Key::L},
+    {";", Key::Semicolon},
+    {":", Key::Colon},
+    {"'", Key::Apostrophe},
+    {"\"", Key::Semicolon},
+    {"`", Key::Grave},
+    {"Left Shift", Key::LShift},
+    {"\\", Key::Backslash},
+    {"Z", Key::Z},
+    {"X", Key::X},
+    {"C", Key::C},
+    {"V", Key::V},
+    {"B", Key::B},
+    {"N", Key::N},
+    {"M", Key::M},
+    {".", Key::Period},
+    {"/", Key::Slash},
+    {"Right Shift", Key::RShift},
+    {"*", Key::Multiply},
+    {"Left Alt", Key::LAlt},
+    {" ", Key::Space},
+    {"Captial", Key::Capital},
+    {"F1", Key::F1},
+    {"F2", Key::F2},
+    {"F3", Key::F3},
+    {"F4", Key::F4},
+    {"F5", Key::F5},
+    {"F6", Key::F6},
+    {"F7", Key::F7},
+    {"F8", Key::F8},
+    {"F9", Key::F9},
+    {"F10", Key::F10},
+    {"Numlock", Key::Numlock},
+};
+
 const char* convertKeyToString(Key key)
 {
     return sKeyToCharMap[static_cast<size_t>(key)];
 }
 
-Key convertStringToKey(const char* str) { return Key(); }
+Key convertStringToKey(const char* str)
+{
+    Key k = Key::KeysMax;
+    auto itr = sCharToKeyMap.find(str);
+    if (itr != sCharToKeyMap.end())
+    {
+        k = (*itr).second;
+    }
+    return k;
+}
 
 FocusData::FocusData(bool focused) : focused(focused) {}
 

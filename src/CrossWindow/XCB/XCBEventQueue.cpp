@@ -1,5 +1,6 @@
 #include "XCBEventQueue.h"
 #include "../Common/Init.h"
+
 namespace xwin
 {
 EventQueue::EventQueue() {}
@@ -17,19 +18,32 @@ void EventQueue::update()
     }
 }
 
-const Event& EventQueue::front() 
-{
-    return mQueue.front();
-}
+const Event& EventQueue::front() { return mQueue.front(); }
 
-void EventQueue::pop() 
-{
-    mQueue.pop();
-}
+void EventQueue::pop() { mQueue.pop(); }
 
-bool EventQueue::empty() 
+bool EventQueue::empty() { return mQueue.empty(); }
+
+Key getKey(xcb_keycode_t detail)
 {
-    return mQueue.empty();
+    Key d = Key::KeysMax;
+
+    switch (detail)
+    {
+    case 0x9: // Escape
+        d = Key::Escape;
+        break;
+    case 0x71: // left arrow key
+        d = Key::Left;
+        break;
+    case 0x72: // right arrow key
+        d = Key::Right;
+        break;
+    case 0x41: // space bar
+        d = Key::Space;
+        break;
+    }
+    return d;
 }
 
 void EventQueue::pushEvent(const xcb_generic_event_t* event)
@@ -166,7 +180,15 @@ void EventQueue::pushEvent(const xcb_generic_event_t* event)
     }
     case XCB_KEY_PRESS:
     {
-        xcb_key_press_event_t* key = (xcb_key_press_event_t*)event;
+        const xcb_key_press_event_t* key = (xcb_key_press_event_t*)event;
+
+        bool control = key->state & XCB_MOD_MASK_CONTROL;
+        bool shift = key->state & XCB_MOD_MASK_SHIFT;
+        bool lock = key->state & XCB_MOD_MASK_LOCK;
+        ModifierState mods = ModifierState(control, lock, shift, false);
+
+        e = Event(KeyboardData(getKey(key->detail), ButtonState::Pressed, mods),
+                  window);
         break;
     }
     case XCB_KEY_RELEASE:
@@ -174,25 +196,12 @@ void EventQueue::pushEvent(const xcb_generic_event_t* event)
         const xcb_key_release_event_t* key =
             (const xcb_key_release_event_t*)event;
 
-        Key d = Key::KeysMax;
+        bool control = key->state & XCB_MOD_MASK_CONTROL;
+        bool shift = key->state & XCB_MOD_MASK_SHIFT;
+        bool lock = key->state & XCB_MOD_MASK_LOCK;
+        ModifierState mods = ModifierState(control, lock, shift, false);
 
-        switch (key->detail)
-        {
-        case 0x9: // Escape
-            d = Key::Escape;
-            break;
-        case 0x71: // left arrow key
-            d = Key::Left;
-            break;
-        case 0x72: // right arrow key
-            d = Key::Right;
-            break;
-        case 0x41: // space bar
-            d = Key::Space;
-            break;
-        }
-
-        e = Event(KeyboardData(d, ButtonState::Pressed, ModifierState()),
+        e = Event(KeyboardData(getKey(key->detail), ButtonState::Pressed, mods),
                   window);
 
         break;
