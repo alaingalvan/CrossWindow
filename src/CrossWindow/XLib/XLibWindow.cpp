@@ -6,16 +6,12 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
     XInitThreads();
     display = XOpenDisplay(NULL);
-    long visualMask = VisualScreenMask;
-    int numberOfVisuals;
-    XVisualInfo vInfoTemplate = {};
-    vInfoTemplate.screen = DefaultScreen(display);
-    XVisualInfo* visualInfo =
-        XGetVisualInfo(display, visualMask, &vInfoTemplate, &numberOfVisuals);
+    int screen = DefaultScreen(display);
+    Visual* visual = DefaultVisual(display, screen);
+    int depth = DefaultDepth(display, screen);
 
-    Colormap colormap =
-        XCreateColormap(display, RootWindow(display, vInfoTemplate.screen),
-                        visualInfo->visual, AllocNone);
+    Colormap colormap = XCreateColormap(display, RootWindow(display, screen),
+                                        visual, AllocNone);
 
     XSetWindowAttributes windowAttributes = {};
     windowAttributes.colormap = colormap;
@@ -24,14 +20,14 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
     windowAttributes.event_mask =
         KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask;
 
-    window = XCreateWindow(
-        display, RootWindow(display, vInfoTemplate.screen), 0, 0, desc.width,
-        desc.height, 0, visualInfo->depth, InputOutput, visualInfo->visual,
-        CWBackPixel | CWBorderPixel | CWEventMask | CWColormap,
-        &windowAttributes);
+    window =
+        XCreateWindow(display, RootWindow(display, screen), 0, 0, desc.width,
+                      desc.height, 0, depth, InputOutput, visual,
+                      CWBackPixel | CWBorderPixel | CWEventMask | CWColormap,
+                      &windowAttributes);
 
-    XSelectInput(display, *window, ExposureMask | KeyPressMask);
-    XMapWindow(display, *window);
+    XSelectInput(display, window, ExposureMask | KeyPressMask);
+    XMapWindow(display, window);
     XFlush(display);
 }
 

@@ -3,7 +3,7 @@
 
 namespace xwin
 {
-void XLibEventQueue::update()
+void EventQueue::update()
 {
     XEvent event;
 
@@ -14,7 +14,7 @@ void XLibEventQueue::update()
     }
 }
 
-void XLibEventQueue::pushEvent(const XEvent* event, Window* window)
+void EventQueue::pushEvent(const XEvent* event, Window* window)
 {
     switch (event->type)
     {
@@ -34,8 +34,7 @@ void XLibEventQueue::pushEvent(const XEvent* event, Window* window)
     }
     case ClientMessage:
     {
-        if ((Atom)event->xclient.data.l[0] == demo->xlib_wm_delete_window)
-            mQueue.emplace(xwin::EventType::Close, window);
+        mQueue.emplace(xwin::EventType::Close, window);
         break;
     }
     case KeyPress:
@@ -46,7 +45,7 @@ void XLibEventQueue::pushEvent(const XEvent* event, Window* window)
         case 0x9: // Escape
             d = Key::Escape;
             break;
-        case 0x71: // left arrow key
+        case XK_KP_Left: // left arrow key
             d = Key::Left;
             break;
         case 0x72: // right arrow key

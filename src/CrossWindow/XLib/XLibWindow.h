@@ -21,6 +21,6 @@ class Window
 
   protected:
     Display* display = nullptr;
-    XLibWindow* window = nullptr;
+    XLibWindow window;
 };
 }
