@@ -11,13 +11,27 @@ addons:
     update: true
     sources:
       - ubuntu-toolchain-r-test
-      - kalakris-cmake
     packages:
       - lcov
-      - cmake
-      - cmake-data
+      - gcc-7
+      - g++-7
 before_install:
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+install:
+  - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-6.0" CC="clang-6.0"; fi
+  - echo ${PATH}
+  - echo ${CXX}
+  - ${CXX} --version
+  - ${CXX} -v
+  - sudo pip install codecov
+  # Download and install recent cmake
+  - |
+    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+      CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz"
+      mkdir -p ${DEPS_DIR}/cmake
+      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
+      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+    fi
 script:
   - git submodule update --init --recursive
   - mkdir make
