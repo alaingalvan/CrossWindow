@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="docs/images/logo.svg" alt="Logo"/>
+  <a href="https://alain.xyz/libraries/crosswindow"><img src="docs/images/logo.svg" alt="Logo"/></a>
 </p>
 
-# CrossWindow
+<h1 align="center">CrossWindow</h1>
+
+<div align="center">
 
 [![cmake-img]][cmake-url]
 [![License][license-img]][license-url]
@@ -10,50 +12,51 @@
 [![Appveyor Tests][appveyor-img]][appveyor-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
-A basic cross platform system abstraction library for managing windows and performing OS tasks.
+[Documentation](/docs) | [Demos](https://github.com/alaingalvan/crosswindow-demos) | [Other Libraries](https://github.com/alaingalvan/CrossWindow-Graphics)
+
+</div>
+
+**Cross Window** is a cross platform system abstraction library for managing windows and performing OS tasks. It's designed to be easy to integrate, intuitive, and support everything you might need for your apps.
 
 ## Features
 
-- 🌟 Simple Window, File Dialog, and Message Dialog Creation
+-   🌟 Simple Window, File Dialog, and Message Dialog Creation.
 
-- ⌨️ 🖱️ 👆 🎮 Basic Input (Keyboard, Mouse, Touch, and Gamepad)
+-   ⌨️ 🖱️ 👆 🎮 Basic Input (Keyboard, Mouse, Touch, and Gamepad).
 
-- 👻 Platform specific features (Mac Transparency, Mobile Accelerometer, etc.)
+-   👻 Platform specific features (Mac Transparency, Mobile Accelerometer, etc.).
 
-- 💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**)
-
-- 😎 Well maintained C++ 11, with a promise to evolve as the standard evolves. (C++ Modules, Package Managers, etc.)
+-   💊 Unit Tests + Test Coverage ([Appveyor][appveyor-url] for **Windows**, [CircleCI][circleci-url] for **Android / MacOS / iOS**, [Travis][travis-url] for **Linux/Noop**).
 
 ### Supported Platforms
 
-- 🖼️ Windows (Win32)
+-   🖼️ Windows - `Win32`
 
-- 🍎 Mac (Cocoa)
+-   🍎 Mac - `Cocoa`
 
-- 📱 iOS (UIKit)
+-   📱 iOS - `UIKit`
 
-- 🐧 Linux (XCB or XLib)
+-   🐧 Linux - `XCB` or `XLib`
 
-- 🤖 Android (In Progress)
+-   🤖 Android (In Progress)
 
-- 🌐 WebAssembly (Emscripten)
+-   🌐 WebAssembly - `Emscripten`
 
-- ❌ Noop (Headless)
-
+-   ❌ Noop (Headless)
 
 ## Installation
 
-First add the repo as a submodule in your dependencies folder such as `external/`:
+First add the **repo as a submodule** in your dependencies folder such as `external/`:
 
 ```bash
-cd external
-git submodule add https://github.com/alaingalvan/crosswindow.git
+# ⤵️ Add your dependency as a git submodule:
+git submodule add https://github.com/alaingalvan/crosswindow.git external/crosswindow
 ```
 
 Then in your `CMakeLists.txt` file, include the following:
 
 ```cmake
-# ⬇ Add your dependency:
+# ⤵️ Add to your CMake Project:
 add_subdirectories(external/crosswindow)
 
 # ❎ When creating your executable use CrossWindow's abstraction function:
@@ -193,20 +196,17 @@ void xmain(int argc, const char** argv)
 }
 ```
 
-This `xmain` function will be called from a *platform specific main function* that will be included in your main project by CMake. If you ever need to access something from the platform specific main function for whatever reason, you'll find it in `xwin::getXWinState()`.
-
-For more examples visit the [Documentation](/docs) or try out the [examples](https://github.com/alaingalvan/crosswindow-demos).
+This `xmain` function will be called from a _platform specific main function_ that will be included in your main project by CMake. If you ever need to access something from the platform specific main function for whatever reason, you'll find it in `xwin::getXWinState()`.
 
 ## Development
 
 Be sure to have [CMake](https://cmake.org) Installed.
 
-| CMake Options | Description |
-|:-------------:|:-----------:|
-| `XWIN_TESTS` | Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`. |
-| `XWIN_API` | The OS API to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `UIKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`. |
-| `XWIN_OS` | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple apis, the final api will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_API` is set this option is ignored. |
-
+| CMake Options |                                                                                                                                                                                            Description                                                                                                                                                                                             |
+| :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `XWIN_TESTS`  |                                                                                                                                                          Whether or not unit tests are enabled. Defaults to `OFF`, Can be `ON` or `OFF`.                                                                                                                                                           |
+|  `XWIN_API`   |                                                                                                      The OS API to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `UIKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`.                                                                                                      |
+|   `XWIN_OS`   | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple apis, the final api will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_API` is set this option is ignored. |
 
 First install [Git](https://git-scm.com/downloads), then open any terminal such as [Hyper](https://hyper.is/) in any folder and type:
 
@@ -224,9 +224,9 @@ git submodule update --init
 
 From there we'll need to set up our build files. Be sure to have the following installed:
 
-- [CMake](https://cmake.org/)
+-   [CMake](https://cmake.org/)
 
-- An IDE such as [Visual Studio](https://visualstudio.microsoft.com/downloads/), [XCode](https://developer.apple.com/xcode/), or a compiler such as [GCC](https://gcc.gnu.org/).
+-   An IDE such as [Visual Studio](https://visualstudio.microsoft.com/downloads/), [XCode](https://developer.apple.com/xcode/), or a compiler such as [GCC](https://gcc.gnu.org/).
 
 Then type the following in your terminal from the repo folder:
 

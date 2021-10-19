@@ -74,7 +74,8 @@ bool showOpenDialog(const OpenSaveDialogDesc& odesc, std::string& outPath)
                     spec.pszSpec = filters[i].second.c_str();
                     specs[i] = spec;
                 }
-                pFileOpen->SetFileTypes(specs.size(), specs.data());
+                pFileOpen->SetFileTypes(static_cast<UINT>(specs.size()),
+                                        specs.data());
             }
             FILEOPENDIALOGOPTIONS opts;
             opts = pFileOpen->GetOptions(&opts);
@@ -91,7 +92,7 @@ bool showOpenDialog(const OpenSaveDialogDesc& odesc, std::string& outPath)
                 hr = pFileOpen->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
-                    PWSTR pszFilePath;
+                    PWSTR pszFilePath = L"";
                     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
                     std::wstring outPathW = pszFilePath;
                     std::string op =
@@ -167,7 +168,8 @@ bool showSaveDialog(const OpenSaveDialogDesc& sdesc, std::string& outPath)
                     spec.pszSpec = filters[i].second.c_str();
                     specs[i] = spec;
                 }
-                pFileSave->SetFileTypes(specs.size(), specs.data());
+                pFileSave->SetFileTypes(static_cast<UINT>(specs.size()),
+                                        specs.data());
             }
             hr = pFileSave->Show(NULL);
 
