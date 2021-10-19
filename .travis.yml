@@ -11,6 +11,7 @@ addons:
     update: true
     sources:
       - ubuntu-toolchain-r-test
+      - kalakris-cmake
     packages:
       - lcov
       - cmake
