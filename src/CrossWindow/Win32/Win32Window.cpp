@@ -188,6 +188,11 @@ void Window::close()
     }
 }
 
+void Window::trackEventsAsync(const std::function<void(const xwin::Event e)>& fun)
+{
+    mCallback = fun;
+}
+
 void Window::setProgress(float progress)
 {
     unsigned max = 10000;
@@ -264,6 +269,16 @@ UVec2 Window::getCurrentDisplayPosition() const
 }
 
 void Window::setMousePosition(unsigned x, unsigned y) { SetCursorPos(x, y); }
+
+HINSTANCE Window::getHinstance()
+{
+    return hinstance;
+}
+
+HWND Window::getHwnd()
+{
+    return hwnd;
+}
 
 void Window::executeEventCallback(const xwin::Event e)
 {
