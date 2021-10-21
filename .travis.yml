@@ -17,6 +17,7 @@ addons:
       - g++-7
 before_install:
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+  - export DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
 install:
   - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-6.0" CC="clang-6.0"; fi
   - echo ${PATH}
@@ -24,7 +25,6 @@ install:
   - ${CXX} --version
   - ${CXX} -v
   - sudo pip install codecov
-  # Download and install recent cmake
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
       CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz"
