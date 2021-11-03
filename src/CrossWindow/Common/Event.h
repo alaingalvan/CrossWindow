@@ -500,30 +500,6 @@ union EventData {
 class Event
 {
   public:
-    Event(EventType type, Window* window);
-
-    Event(FocusData data, Window* window);
-
-    Event(ResizeData data, Window* window);
-
-    Event(KeyboardData data, Window* window);
-
-    Event(MouseMoveData data, Window* window);
-
-	Event(MouseRawData data, Window* window);
-
-    Event(MouseInputData data, Window* window);
-
-    Event(MouseWheelData data, Window* window);
-
-    Event(TouchData data, Window* window);
-
-    Event(GamepadData data, Window* window);
-
-    Event(DPIData data, Window* window);
-
-    ~Event();
-
     // The event's type
     EventType type;
 
@@ -532,5 +508,36 @@ class Event
 
     // Inner data of the event
     EventData data;
+    
+    Event(EventType type = EventType::None, Window* window = nullptr);
+
+    Event(FocusData data, Window* window = nullptr);
+
+    Event(ResizeData data, Window* window = nullptr);
+
+    Event(KeyboardData data, Window* window = nullptr);
+
+    Event(MouseMoveData data, Window* window = nullptr);
+
+	Event(MouseRawData data, Window* window = nullptr);
+
+    Event(MouseInputData data, Window* window = nullptr);
+
+    Event(MouseWheelData data, Window* window = nullptr);
+
+    Event(TouchData data, Window* window = nullptr);
+
+    Event(GamepadData data, Window* window = nullptr);
+
+    Event(DPIData data, Window* window = nullptr);
+
+    ~Event();
+    
+    bool operator==(const Event& other) const
+    {
+        return type == other.type && window == other.window;
+    }
+
+
 };
 }

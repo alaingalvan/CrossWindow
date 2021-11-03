@@ -186,7 +186,6 @@ void Window::setLayer(LayerType type)
 		
 		XWinView* v = (XWinView*)view;
 		[v setWantsLayer:YES];
-		
 		layer = [[CAOpenGLLayer alloc] init];
 		[(XWinView*)view setLayer:(CAOpenGLLayer*)layer];
 		CAOpenGLLayer* l = ((CAOpenGLLayer*)layer);

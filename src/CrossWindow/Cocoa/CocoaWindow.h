@@ -4,7 +4,6 @@
 #include "../Common/Init.h"
 #include "../Common/WindowDesc.h"
 
-
 #include <vector>
 
 namespace xwin
