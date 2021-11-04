@@ -10,7 +10,7 @@ enum Style : DWORD
 {
     windowed = WS_OVERLAPPEDWINDOW,
     aero_borderless = WS_POPUP | WS_THICKFRAME,
-    basic_borderless = WS_CAPTION | WS_OVERLAPPED | WS_THICKFRAME |
+    basicBorderless = WS_CAPTION | WS_OVERLAPPED | WS_THICKFRAME |
                        WS_MINIMIZEBOX | WS_MAXIMIZEBOX
 };
 
@@ -104,9 +104,15 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
     else
     {
         dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-        // dwExStyle &=
-        //    ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-        dwStyle = Style::basic_borderless;
+        if (mDesc.frame)
+        {
+            dwStyle = Style::windowed;
+        }
+        else
+        {
+            dwStyle = Style::basicBorderless;
+        }
+        
     }
 
     RECT windowRect;
