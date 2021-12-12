@@ -11,14 +11,14 @@ enum Style : DWORD
     windowed = WS_OVERLAPPEDWINDOW,
     aero_borderless = WS_POPUP | WS_THICKFRAME,
     basicBorderless = WS_CAPTION | WS_OVERLAPPED | WS_THICKFRAME |
-                       WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+                      WS_MINIMIZEBOX | WS_MAXIMIZEBOX
 };
 
 HBRUSH hBrush = CreateSolidBrush(RGB(30, 30, 30));
 
 namespace xwin
 {
-Window::Window() { hwnd = nullptr; };
+Window::Window(){};
 
 Window::~Window()
 {
@@ -83,12 +83,7 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
             if (ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN) !=
                 DISP_CHANGE_SUCCESSFUL)
             {
-                if (MessageBox(NULL,
-                               "Fullscreen Mode not supported!\n Switch to "
-                               "window mode?",
-                               "Error", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
-                {
-                }
+                // Stay in Windowed mode
             }
         }
     }
@@ -112,8 +107,11 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
         {
             dwStyle = Style::basicBorderless;
         }
-        
     }
+
+    // Store the current thread's DPI-awareness context
+    DPI_AWARENESS_CONTEXT previousDpiContext = SetThreadDpiAwarenessContext(
+        DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
     RECT windowRect;
     windowRect.left = mDesc.x;
@@ -142,10 +140,20 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 
     if (!mDesc.fullscreen)
     {
-        // Center on screen
+        // Adjust size to match DPI
+        int iDpi = GetDpiForWindow(hwnd);
+        if (iDpi != USER_DEFAULT_SCREEN_DPI)
+        {
+            windowRect.bottom =
+                MulDiv(windowRect.bottom, iDpi, USER_DEFAULT_SCREEN_DPI);
+            windowRect.right =
+                MulDiv(windowRect.right, iDpi, USER_DEFAULT_SCREEN_DPI);
+        }
         unsigned x = (GetSystemMetrics(SM_CXSCREEN) - windowRect.right) / 2;
         unsigned y = (GetSystemMetrics(SM_CYSCREEN) - windowRect.bottom) / 2;
-        SetWindowPos(hwnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+
+        // Center on screen
+        SetWindowPos(hwnd, 0, x, y, windowRect.right, windowRect.bottom, 0);
     }
 
     if (mDesc.visible)
@@ -158,7 +166,7 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
     static const DWM_BLURBEHIND blurBehind{{0}, {TRUE}, {NULL}, {TRUE}};
     DwmEnableBlurBehindWindow(hwnd, &blurBehind);
     static const MARGINS shadow_state[2]{{0, 0, 0, 0}, {1, 1, 1, 1}};
-    ::DwmExtendFrameIntoClientArea(hwnd, &shadow_state[0]);
+    DwmExtendFrameIntoClientArea(hwnd, &shadow_state[0]);
 
     RegisterWindowMessage("TaskbarButtonCreated");
     HRESULT hrf =
@@ -185,6 +193,20 @@ void Window::updateDesc(WindowDesc& desc)
     SetWindowPos(hwnd, 0, desc.x, desc.y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 }
 
+void Window::minimize() { ShowWindow(hwnd, SW_MINIMIZE); }
+
+void Window::maximize()
+{
+    if (!IsZoomed(hwnd))
+    {
+        ShowWindow(hwnd, SW_MAXIMIZE);
+    }
+    else
+    {
+        ShowWindow(hwnd, SW_RESTORE);
+    }
+}
+
 void Window::close()
 {
     if (hwnd != nullptr)
@@ -194,7 +216,8 @@ void Window::close()
     }
 }
 
-void Window::trackEventsAsync(const std::function<void(const xwin::Event e)>& fun)
+void Window::trackEventsAsync(
+    const std::function<void(const xwin::Event e)>& fun)
 {
     mCallback = fun;
 }
@@ -207,6 +230,14 @@ void Window::setProgress(float progress)
 }
 
 void Window::showMouse(bool show) { ShowCursor(show ? TRUE : FALSE); }
+
+float Window::getDpiScale() const
+{
+    int currentDpi = GetDpiForWindow(hwnd);
+    int defaultDpi = USER_DEFAULT_SCREEN_DPI;
+
+    return static_cast<float>(currentDpi) / static_cast<float>(defaultDpi);
+}
 
 std::string Window::getTitle() const
 {
@@ -243,6 +274,19 @@ void Window::setSize(unsigned width, unsigned height)
     }
 }
 
+// clang-format off
+unsigned Window::getBackgroundColor()
+{
+    return mBackgroundColor;
+}
+
+void Window::setBackgroundColor(unsigned color)
+{
+    mBackgroundColor = color;
+}
+
+// clang-format on
+
 UVec2 Window::getPosition() const
 {
     RECT lpRect;
@@ -268,7 +312,7 @@ UVec2 Window::getCurrentDisplaySize() const
 
 UVec2 Window::getCurrentDisplayPosition() const
 {
-    WINDOWPLACEMENT lpwndpl;
+    WINDOWPLACEMENT lpwndpl = {0};
     GetWindowPlacement(hwnd, &lpwndpl);
     UVec2 r = UVec2(lpwndpl.ptMinPosition.x, lpwndpl.ptMinPosition.y);
     return r;
@@ -276,15 +320,9 @@ UVec2 Window::getCurrentDisplayPosition() const
 
 void Window::setMousePosition(unsigned x, unsigned y) { SetCursorPos(x, y); }
 
-HINSTANCE Window::getHinstance()
-{
-    return hinstance;
-}
+HINSTANCE Window::getHinstance() { return hinstance; }
 
-HWND Window::getHwnd()
-{
-    return hwnd;
-}
+HWND Window::getHwnd() { return hwnd; }
 
 void Window::executeEventCallback(const xwin::Event e)
 {

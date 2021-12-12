@@ -17,7 +17,7 @@ struct WindowDesc
     long y = 0;
     // Window Width
     unsigned width = 1920;
-    //Window Height
+    // Window Height
     unsigned height = 1080;
     // Window minimum width
     unsigned minWidth = 0;
@@ -32,15 +32,15 @@ struct WindowDesc
 
     // Should this window be centered on creation?
     bool centered = true;
-    //Whether this window is resizable
+    // Whether this window is resizable
     bool resizable = true;
     // Whether this window is movable
     bool movable = true;
-	// Whether this window is closable
-	bool closable = true;
+    // Whether this window is closable
+    bool closable = true;
     // Whether this window is minimizable
     bool minimizable = true;
-    //whether this window is maximizable
+    // whether this window is maximizable
     bool maximizable = true;
     // Whether this window can be fullscreened
     bool canFullscreen = true;
@@ -49,11 +49,11 @@ struct WindowDesc
 
     // Hexidecimal background color (0xffffffff = white)
     unsigned backgroundColor = 0xFFFFFFFF;
-    //makes this window transparent
+    // makes this window transparent
     bool transparent = false;
-    //does this window feature a frame?
+    // does this window feature a frame?
     bool frame = true;
-    //if this window has a shadow
+    // if this window has a shadow
     bool hasShadow = true;
 
     // States
@@ -64,7 +64,7 @@ struct WindowDesc
     bool fullscreen = false;
     // Is this window a modal?
     bool modal = false;
-    
+
     // App Data
 
     // Window Title
@@ -80,5 +80,20 @@ struct UVec2
     unsigned x;
     unsigned y;
     UVec2(unsigned x = 0, unsigned y = 0) : x(x), y(y) {}
+
+    template <typename T> UVec2 operator*(T b) const
+    {
+        UVec2 self = *this;
+        self.x = static_cast<unsigned>(static_cast<T>(self.x) * b);
+        self.y = static_cast<unsigned>(static_cast<T>(self.y) * b);
+        return self;
+    }
+    template <typename T> UVec2 operator/(T b) const
+    {
+        UVec2 self = *this;
+        self.x = static_cast<unsigned>(static_cast<T>(self.x) / b);
+        self.y = static_cast<unsigned>(static_cast<T>(self.y) / b);
+        return self;
+    }
 };
 }

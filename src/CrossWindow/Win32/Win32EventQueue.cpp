@@ -15,14 +15,24 @@
 #define HID_USAGE_GENERIC_MOUSE ((USHORT)0x02)
 #endif
 
-RAWINPUTDEVICE Rid[1];
-
 // some sizing border definitions
 
 #define MINX 200
 #define MINY 200
 #define BORDERWIDTH 5
 #define TITLEBARHEIGHT 32
+#define TITLEBARZOOMHEIGHT 23
+
+/**
+ * Various globals that don't need to be private members.
+ * Win32 is a bit unweildy, so there's a couple of global
+ * objects that we need to keep around. ~ alain
+ */
+namespace
+{
+    RAWINPUTDEVICE rawInputDevice[1];
+    float oldDpiScale = 1.f;
+}
 
 namespace xwin
 {
@@ -51,11 +61,11 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     if (!initialized)
     {
         initialized = true;
-        Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
-        Rid[0].usUsage = HID_USAGE_GENERIC_MOUSE;
-        Rid[0].dwFlags = RIDEV_INPUTSINK;
-        Rid[0].hwndTarget = window->hwnd;
-        RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]));
+        rawInputDevice[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
+        rawInputDevice[0].usUsage = HID_USAGE_GENERIC_MOUSE;
+        rawInputDevice[0].dwFlags = RIDEV_INPUTSINK;
+        rawInputDevice[0].hwndTarget = window->hwnd;
+        RegisterRawInputDevices(rawInputDevice, 1, sizeof(rawInputDevice[0]));
     }
 
     xwin::Event e = xwin::Event(xwin::EventType::None, window);
@@ -65,15 +75,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     case WM_CREATE:
     {
         e = xwin::Event(xwin::EventType::Create, window);
-        // repaint window when borderless to avoid titlebar.
-        if (!window->getDesc().frame)
-        {
-            RECT lpRect;
-            GetWindowRect(window->hwnd, &lpRect);
-            SetWindowPos(window->hwnd, 0, lpRect.left, lpRect.top,
-                         lpRect.right - lpRect.left,
-                         lpRect.bottom - lpRect.top - TITLEBARHEIGHT, 0);
-        }
+        oldDpiScale = window->getDpiScale();
         break;
     }
     case WM_PAINT:
@@ -724,39 +726,37 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         {
             result = HTCLIENT;
         }
+
         break;
     }
     case WM_DPICHANGED:
     {
         WORD curDPI = HIWORD(msg.wParam);
         FLOAT fscale = (float)curDPI / USER_DEFAULT_SCREEN_DPI;
-        e = xwin::Event(DPIData(fscale), window);
+        e = xwin::Event(DpiData(oldDpiScale, fscale), window);
+        oldDpiScale = fscale;
         break;
     }
     case WM_NCCALCSIZE:
     {
         if (!window->getDesc().frame)
         {
-            if (msg.lParam)
+            if (msg.lParam && msg.wParam)
             {
                 NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)msg.lParam;
-                if (msg.wParam)
+                int titleHeight = TITLEBARHEIGHT;
+                if (IsZoomed(window->hwnd))
                 {
-                    if (IsZoomed(window->hwnd))
-                    {
-                        sz->rgrc[0].top += -23;
-                        sz->rgrc[1].top += -23;
-                        break;
-                    }
-                    else
-                    {
-                        // Maximized to Win + Left to Win + Right
-                        // Is currently somewhat buggy, with a height of 8 px
-                        // gained
-                        sz->rgrc[0].top += -TITLEBARHEIGHT;
-                        sz->rgrc[1].top += -TITLEBARHEIGHT;
-                    }
+                    titleHeight = TITLEBARZOOMHEIGHT;
                 }
+
+                int iDpi = GetDpiForWindow(window->hwnd);
+                if (iDpi != USER_DEFAULT_SCREEN_DPI)
+                {
+                    titleHeight =
+                        MulDiv(titleHeight, iDpi, USER_DEFAULT_SCREEN_DPI);
+                }
+                sz->rgrc[0].top += -titleHeight;
             }
         }
         break;
@@ -778,8 +778,8 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     if (e.type != EventType::None)
     {
         mQueue.emplace(e);
+        window->executeEventCallback(e);
     }
-    window->executeEventCallback(e);
     return result;
 }
 

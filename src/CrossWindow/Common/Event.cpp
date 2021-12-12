@@ -60,7 +60,7 @@ Event::Event(GamepadData d, Window* window)
     data.gamepad = d;
 }
 
-Event::Event(DPIData d, Window* window) : type(EventType::DPI), window(window)
+Event::Event(DpiData d, Window* window) : type(EventType::DPI), window(window)
 {
     data.dpi = d;
 }
@@ -210,5 +210,8 @@ MouseRawData::MouseRawData(int deltax, int deltay)
     : deltax(deltax), deltay(deltay)
 {
 }
-DPIData::DPIData(float scale) : scale(scale) {}
+DpiData::DpiData(float oldScale, float newScale)
+    : oldScale(oldScale), newScale(newScale)
+{
+}
 }

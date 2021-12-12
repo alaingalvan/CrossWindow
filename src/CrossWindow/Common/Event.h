@@ -100,11 +100,12 @@ struct ResizeData
 /**
  * DPI data passed with DPI events
  */
-struct DPIData
+struct DpiData
 {
-    float scale;
+    float oldScale;
+    float newScale;
 
-    DPIData(float scale);
+    DpiData(float oldScale, float newScale);
 
     static const EventType type = EventType::DPI;
 };
@@ -483,7 +484,7 @@ struct GamepadData
 union EventData {
     FocusData focus;
     ResizeData resize;
-    DPIData dpi;
+    DpiData dpi;
     KeyboardData keyboard;
     MouseMoveData mouseMove;
     MouseInputData mouseInput;
@@ -529,7 +530,7 @@ class Event
 
     Event(GamepadData data, Window* window = nullptr);
 
-    Event(DPIData data, Window* window = nullptr);
+    Event(DpiData data, Window* window = nullptr);
 
     ~Event();
     
