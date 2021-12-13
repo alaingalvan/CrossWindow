@@ -102,10 +102,9 @@ struct ResizeData
  */
 struct DpiData
 {
-    float oldScale;
-    float newScale;
+    float scale;
 
-    DpiData(float oldScale, float newScale);
+    DpiData(float scale);
 
     static const EventType type = EventType::DPI;
 };

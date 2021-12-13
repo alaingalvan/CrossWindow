@@ -30,8 +30,7 @@
  */
 namespace
 {
-    RAWINPUTDEVICE rawInputDevice[1];
-    float oldDpiScale = 1.f;
+RAWINPUTDEVICE rawInputDevice[1];
 }
 
 namespace xwin
@@ -54,6 +53,7 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
 {
     UINT message = msg.message;
     LRESULT result = 0;
+    RECT currentWindowRect = {-1, -1, -1, -1};
     // TODO: hwnd to xwin::Window unordered_map, when xwin::Window closes, it
     // sends a message to the event queue to remove that hwnd
     // and any remaining events that match that xwin::Window
@@ -75,7 +75,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     case WM_CREATE:
     {
         e = xwin::Event(xwin::EventType::Create, window);
-        oldDpiScale = window->getDpiScale();
         break;
     }
     case WM_PAINT:
@@ -733,8 +732,15 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         WORD curDPI = HIWORD(msg.wParam);
         FLOAT fscale = (float)curDPI / USER_DEFAULT_SCREEN_DPI;
-        e = xwin::Event(DpiData(oldDpiScale, fscale), window);
-        oldDpiScale = fscale;
+        e = xwin::Event(DpiData(fscale), window);
+        if (!IsZoomed(window->hwnd))
+        {
+            RECT* const prcNewWindow = (RECT*)msg.lParam;
+            if (prcNewWindow)
+            {
+                currentWindowRect = *prcNewWindow;
+            }
+        }
         break;
     }
     case WM_NCCALCSIZE:
@@ -749,7 +755,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 {
                     titleHeight = TITLEBARZOOMHEIGHT;
                 }
-
                 int iDpi = GetDpiForWindow(window->hwnd);
                 if (iDpi != USER_DEFAULT_SCREEN_DPI)
                 {
@@ -769,8 +774,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         min_max->ptMinTrackSize.y = window->getDesc().minHeight;
         break;
     }
-    // case WT_PACKET:
-    // break;
     default:
         // Do nothing
         break;
@@ -779,6 +782,22 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
     {
         mQueue.emplace(e);
         window->executeEventCallback(e);
+    }
+
+    // Some events may require resizing the current window,
+    // such as DPI events.
+    if (
+        !(currentWindowRect.right == currentWindowRect.left &&
+        currentWindowRect.right == currentWindowRect.top &&
+        currentWindowRect.right == currentWindowRect.bottom &&
+        currentWindowRect.right == -1))
+    {
+        RECT* const prcNewWindow = (RECT*)msg.lParam;
+        SetWindowPos(window->hwnd, NULL, currentWindowRect.left,
+                     currentWindowRect.top,
+                     currentWindowRect.right - currentWindowRect.left,
+                     currentWindowRect.bottom - currentWindowRect.top,
+                     SWP_NOZORDER | SWP_NOACTIVATE);
     }
     return result;
 }

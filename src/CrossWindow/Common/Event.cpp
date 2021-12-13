@@ -210,8 +210,5 @@ MouseRawData::MouseRawData(int deltax, int deltay)
     : deltax(deltax), deltay(deltay)
 {
 }
-DpiData::DpiData(float oldScale, float newScale)
-    : oldScale(oldScale), newScale(newScale)
-{
-}
+DpiData::DpiData(float scale) : scale(scale) {}
 }

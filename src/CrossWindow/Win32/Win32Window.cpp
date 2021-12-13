@@ -263,15 +263,8 @@ void Window::setPosition(unsigned x, unsigned y)
 
 void Window::setSize(unsigned width, unsigned height)
 {
-    RECT lpRect;
-    if (GetWindowRect(hwnd, &lpRect))
-    {
-        SetWindowPos(hwnd, nullptr, lpRect.left, lpRect.top, width, height, 0);
-        mDesc.x = lpRect.left;
-        mDesc.y = lpRect.top;
-        mDesc.width = width;
-        mDesc.height = height;
-    }
+    SetWindowPos(hwnd, nullptr, -1, -1, width, height,
+                 SWP_NOMOVE | SWP_NOREDRAW);
 }
 
 // clang-format off
