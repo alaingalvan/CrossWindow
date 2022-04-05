@@ -4,7 +4,10 @@ namespace xwin
 {
 Window::~Window() { close(); }
 
-bool Window::create(WindowDesc& desc, EventQueue& eventQueue) { return false; }
+bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
+{
+    return false;
+}
 
 void Window::close() {}
 

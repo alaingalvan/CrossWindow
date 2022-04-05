@@ -79,7 +79,7 @@ ResizeData::ResizeData(unsigned width, unsigned height, bool resizing)
  * (Mac OS, iOS, WebAssembly) we should opt to use those functions.
  */
 static KeyToCharMap sKeyToCharMap = {
-    "\e", "1", "2",  "3",  "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b",
+    "\x1B", "1", "2",  "3",  "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b",
     "\t", "Q", "W",  "E",  "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\r",
     "",   "A", "S",  "D",  "F", "G", "H", "J", "K", "L", ";", ":", "'", "\"",
     "`",  "",  "\\", "Z",  "X", "C", "V", "B", "N", "M", ",", ".", "/", "",
@@ -89,7 +89,7 @@ static KeyToCharMap sKeyToCharMap = {
     "",   "",  "",   "",   "",  "",  "",  ""};
 
 static std::unordered_map<const char*, Key> sCharToKeyMap = {
-    {"\e", Key::Escape},
+    {"\x1B", Key::Escape},
     {"1", Key::Num1},
     {"2", Key::Num2},
     {"3", Key::Num3},
