@@ -37,5 +37,8 @@ class Window
 
     // returns the current top left corner this window is located in
     UVec2 getCurrentDisplayPosition();
+
+  protected:
+    WindowDesc mDesc;
 };
 }
