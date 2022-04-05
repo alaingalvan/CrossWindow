@@ -8,7 +8,6 @@
 
 [![cmake-img]][cmake-url]
 [![License][license-img]][license-url]
-[![Travis Tests][travis-img]][travis-url]
 [![Appveyor Tests][appveyor-img]][appveyor-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
@@ -254,8 +253,6 @@ CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would
 [cmake-url]: https://cmake.org/
 [license-img]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
-[travis-img]: https://img.shields.io/travis/com/alaingalvan/crosswindow?style=flat-square
-[travis-url]: https://app.travis-ci.com/github/alaingalvan/CrossWindow
 [appveyor-img]: https://img.shields.io/appveyor/ci/alaingalvan/CrossWindow.svg?style=flat-square&logo=windows
 [appveyor-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
 [circleci-img]: https://img.shields.io/circleci/project/github/alaingalvan/CrossWindow.svg?style=flat-square&logo=appveyor
