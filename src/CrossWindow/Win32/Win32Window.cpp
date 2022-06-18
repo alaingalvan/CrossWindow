@@ -263,7 +263,19 @@ void Window::setPosition(unsigned x, unsigned y)
 
 void Window::setSize(unsigned width, unsigned height)
 {
-    SetWindowPos(hwnd, nullptr, -1, -1, width, height,
+    RECT rect, frame, border;
+    GetWindowRect(hwnd, &rect);
+    DwmGetWindowAttribute(hwnd, DWMWA_EXTENDED_FRAME_BOUNDS, &frame, sizeof(RECT));
+
+    border.left = frame.left - rect.left;
+    border.top = frame.top - rect.top;
+    border.right = rect.right - frame.right;
+    border.bottom = rect.bottom - frame.bottom;
+
+    int titlebarHeight = (GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CYCAPTION) +
+        GetSystemMetrics(SM_CXPADDEDBORDER));
+
+    SetWindowPos(hwnd, nullptr, -1, -1, width + border.right + border.left, height + border.top + border.bottom + titlebarHeight,
                  SWP_NOMOVE | SWP_NOREDRAW);
 }
 
@@ -290,8 +302,9 @@ UVec2 Window::getPosition() const
 UVec2 Window::getWindowSize() const
 {
     RECT lpRect;
-    GetWindowRect(hwnd, &lpRect);
-    return UVec2(lpRect.right - lpRect.left, lpRect.bottom - lpRect.top);
+    DwmGetWindowAttribute(hwnd, DWMWA_EXTENDED_FRAME_BOUNDS, &lpRect, sizeof(lpRect));
+    int titlebarHeight = (GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CXPADDEDBORDER));
+    return UVec2(lpRect.right - lpRect.left, lpRect.bottom - lpRect.top - titlebarHeight);
 }
 
 UVec2 Window::getCurrentDisplaySize() const
