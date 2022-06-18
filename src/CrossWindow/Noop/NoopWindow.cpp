@@ -4,23 +4,18 @@ namespace xwin
 {
 Window::~Window() { close(); }
 
-bool Window::create(WindowDesc& desc, EventQueue& eventQueue) { return false; }
+bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
+{
+    mDesc = desc;
+    return false;
+}
 
 void Window::close() {}
 
-const WindowDesc Window::getDesc() { return WindowDesc(); }
+
+const WindowDesc Window::getDesc() { return mDesc; }
 
 void Window::updateDesc(WindowDesc& desc) {}
-
-bool create(WindowDesc& desc, EventQueue& eventQueue) { return true; }
-
-const WindowDesc getDesc()
-{
-    WindowDesc wd;
-    return wd;
-}
-
-void updateDesc(WindowDesc& desc) {}
 
 void Window::setTitle(std::string title) {}
 

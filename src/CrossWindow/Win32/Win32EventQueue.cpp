@@ -786,11 +786,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
 
     // Some events may require resizing the current window,
     // such as DPI events.
-    if (
-        !(currentWindowRect.right == currentWindowRect.left &&
-        currentWindowRect.right == currentWindowRect.top &&
-        currentWindowRect.right == currentWindowRect.bottom &&
-        currentWindowRect.right == -1))
+    if (!(currentWindowRect.right == currentWindowRect.left &&
+          currentWindowRect.right == currentWindowRect.top &&
+          currentWindowRect.right == currentWindowRect.bottom &&
+          currentWindowRect.right == -1))
     {
         RECT* const prcNewWindow = (RECT*)msg.lParam;
         SetWindowPos(window->hwnd, NULL, currentWindowRect.left,

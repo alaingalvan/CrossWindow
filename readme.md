@@ -8,7 +8,6 @@
 
 [![cmake-img]][cmake-url]
 [![License][license-img]][license-url]
-[![Travis Tests][travis-img]][travis-url]
 [![Appveyor Tests][appveyor-img]][appveyor-url]
 [![Coverage Tests][codecov-img]][codecov-url]
 
@@ -180,9 +179,9 @@ void xmain(int argc, const char** argv)
         {
             const xwin::Event& event = eventQueue.front();
 
-            if (event.type == xwin::EventType::MouseMove)
+            if (event.type == xwin::EventType::MouseInput)
             {
-                const xwin::MouseData mouse = event.data.mouse;
+                const xwin::MouseInputData mouse = event.data.mouseInput;
             }
             if (event.type == xwin::EventType::Close)
             {
@@ -208,7 +207,7 @@ Be sure to have [CMake](https://cmake.org) Installed.
 |  `XWIN_API`   |                                                                                                      The OS API to use for window generation, defaults to `AUTO`, can be can be `NOOP`, `WIN32`<!--, `UWP`-->, `COCOA`, `UIKIT`, `XCB` <!--`XLIB`, `MIR`, `WAYLAND`-->, `ANDROID`, or `WASM`.                                                                                                      |
 |   `XWIN_OS`   | **Optional** - What Operating System to build for, functions as a quicker way of setting target platforms. Defaults to `AUTO`, can be `NOOP`, `WINDOWS`, `MACOS`, `LINUX`, `ANDROID`, `IOS`, `WASM`. If your platform supports multiple apis, the final api will be automatically set to CrossWindow defaults ( `WIN32` on Windows, `XCB` on Linux ). If `XWIN_API` is set this option is ignored. |
 
-First install [Git](https://git-scm.com/downloads), then open any terminal such as [Hyper](https://hyper.is/) in any folder and type:
+First install [Git](https://git-scm.com/downloads), then open any terminal in any folder and type:
 
 ```bash
 # 🐑 Clone the repo
@@ -254,8 +253,6 @@ CrossWindow is licensed as either **MIT** or **Apache-2.0**, whichever you would
 [cmake-url]: https://cmake.org/
 [license-img]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
-[travis-img]: https://img.shields.io/travis/com/alaingalvan/crosswindow?style=flat-square
-[travis-url]: https://app.travis-ci.com/github/alaingalvan/CrossWindow
 [appveyor-img]: https://img.shields.io/appveyor/ci/alaingalvan/CrossWindow.svg?style=flat-square&logo=windows
 [appveyor-url]: https://ci.appveyor.com/project/alaingalvan/crosswindow
 [circleci-img]: https://img.shields.io/circleci/project/github/alaingalvan/CrossWindow.svg?style=flat-square&logo=appveyor
