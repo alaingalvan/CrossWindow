@@ -25,9 +25,18 @@ class EventQueue
 
 	size_t size();
 
-    LRESULT pushEvent(MSG msg, Window* window);
+    enum class ProcessingMode
+    {
+        Poll,
+        Dispatch,
+        ProcessingModeMax
+    };
+    void setProcessingMode(ProcessingMode mode);
 
   protected:
+    LRESULT pushEvent(MSG msg, Window* window);
+
+    ProcessingMode processingMode = ProcessingMode::Poll;
     bool initialized;
 
     unsigned prevMouseX;

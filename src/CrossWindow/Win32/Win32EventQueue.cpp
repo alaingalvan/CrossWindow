@@ -41,12 +41,27 @@ void EventQueue::update()
 {
     MSG msg = {};
 
-    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    for (;;)
     {
-        // Translate virtual key messages
+        if (processingMode == ProcessingMode::Poll)
+        {
+            if (!PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+                break;
+        }
+        else
+            GetMessage(&msg, NULL, 0, 0);
+
+        if (msg.message == WM_QUIT)
+            return;
+
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+}
+
+void EventQueue::setProcessingMode(ProcessingMode mode)
+{
+    processingMode = mode;
 }
 
 LRESULT EventQueue::pushEvent(MSG msg, Window* window)
@@ -262,9 +277,6 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
                 xwin::MouseRawData(static_cast<int>(raw->data.mouse.lLastX),
                                    static_cast<int>(raw->data.mouse.lLastY)),
                 window);
-
-            // printf("%.3f, %.3f\n",
-            // raw->data.mouse.lLastX,raw->data.mouse.lLastY)
         }
 
         delete[] lpb;
