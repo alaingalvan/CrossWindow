@@ -1,14 +1,16 @@
 #include "Win32Dialogs.h"
 #include "../Common/Dialogs.h"
 
+#include <codecvt>
+#include <locale>
+
 namespace xwin
 {
-
+// Based on Microsoft Win32 Open Dialog examples and documentation.
 // https://docs.microsoft.com/en-us/windows/desktop/learnwin32/example--the-open-dialog-box
 
 void showMessageBox(const MessageDesc& mdesc)
 {
-
     UINT flags = MB_APPLMODAL | MB_SETFOREGROUND | MB_ICONINFORMATION;
     flags |= MB_OK;
     MessageBox(nullptr, "Text", "Title", flags);
@@ -94,11 +96,15 @@ bool showOpenDialog(const OpenSaveDialogDesc& odesc, std::string& outPath)
                 {
                     PWSTR pszFilePath = L"";
                     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-                    std::wstring outPathW = pszFilePath;
-                    std::string op =
-                        std::string(outPathW.begin(), outPathW.end());
-                    outPath = op;
-                    success = true;
+                    if (pszFilePath != 0x0)
+                    {
+                        std::wstring outPathW = pszFilePath;
+                        using convert_type = std::codecvt_utf8<wchar_t>;
+                        std::wstring_convert<convert_type, wchar_t> converter;
+                        std::string op = converter.to_bytes(outPathW);
+                        outPath = op;
+                        success = true;
+                    }
 
                     pItem->Release();
                 }
@@ -180,17 +186,22 @@ bool showSaveDialog(const OpenSaveDialogDesc& sdesc, std::string& outPath)
                 hr = pFileSave->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
-                    PWSTR pszFilePath;
+                    PWSTR pszFilePath = L"";
                     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-                    std::wstring outPathW = pszFilePath;
-                    std::string op =
-                        std::string(outPathW.begin(), outPathW.end());
-                    outPath = op;
-                    success = true;
+                    if (pszFilePath != 0x0)
+                    {
+                        std::wstring outPathW = pszFilePath;
+                        using convert_type = std::codecvt_utf8<wchar_t>;
+                        std::wstring_convert<convert_type, wchar_t> converter;
+                        std::string op = converter.to_bytes(outPathW);
+                        outPath = op;
+                        success = true;
+                    }
 
                     pItem->Release();
                 }
             }
+
             pFileSave->Release();
         }
         CoUninitialize();
