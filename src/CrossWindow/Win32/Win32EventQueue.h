@@ -33,6 +33,8 @@ class EventQueue
     };
     void setProcessingMode(ProcessingMode mode);
 
+    friend class Window;
+
   protected:
     LRESULT pushEvent(MSG msg, Window* window);
 
