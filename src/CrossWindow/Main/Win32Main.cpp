@@ -2,50 +2,54 @@
 #include "Main.h"
 #include <stdio.h>
 
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+INT WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+                   _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
 #ifdef _DEBUG
     AllocConsole();
-    FILE* pCout;
-    FILE* pCerr;
+    FILE* pCout = nullptr;
+    FILE* pCerr = nullptr;
     freopen_s(&pCout, "CONOUT$", "w+", stdout);
     freopen_s(&pCerr, "CONOUT$", "w+", stderr);
 #endif
-    //setup cmdline
-    MSG msg;    // message
-    int argc;
-    char **argv;
 
-    // Ensure wParam is initialized.
-    msg.wParam = 0;
+    // Setup command line arguments.
+    int argc = 0;
+    char** argv = 0;
 
-    // Use the CommandLine functions to get the command line arguments.
-    // Unfortunately, Microsoft outputs
-    // this information as wide characters for Unicode, and we simply want the
-    // Ascii version to be compatible
-    // with the non-Windows side.  So, we have to convert the information to
-    // Ascii character strings.
-    LPWSTR *commandLineArgs = CommandLineToArgvW(GetCommandLineW(), &argc);
-    if (NULL == commandLineArgs) {
+    // Use the CommandLine functions to get the command line arguments,
+    // and convert w_char to utf8 chars.
+    LPWSTR* commandLineArgs = CommandLineToArgvW(GetCommandLineW(), &argc);
+    if (NULL == commandLineArgs)
+    {
         argc = 0;
     }
 
-    if (argc > 0) {
-        argv = (char **)malloc(sizeof(char *) * argc);
-        if (argv == NULL) {
+    if (argc > 0)
+    {
+        argv = (char**)malloc(sizeof(char*) * argc);
+        if (argv == NULL)
+        {
             argc = 0;
-        } else {
-            for (int iii = 0; iii < argc; iii++) {
+        }
+        else
+        {
+            for (int iii = 0; iii < argc; iii++)
+            {
                 size_t wideCharLen = wcslen(commandLineArgs[iii]);
                 size_t numConverted = 0;
 
-                argv[iii] = (char *)malloc(sizeof(char) * (wideCharLen + 1));
-                if (argv[iii] != NULL) {
-                    wcstombs_s(&numConverted, argv[iii], wideCharLen + 1, commandLineArgs[iii], wideCharLen + 1);
+                argv[iii] = (char*)malloc(sizeof(char) * (wideCharLen + 1));
+                if (argv[iii] != NULL)
+                {
+                    wcstombs_s(&numConverted, argv[iii], wideCharLen + 1,
+                               commandLineArgs[iii], wideCharLen + 1);
                 }
             }
         }
-    } else {
+    }
+    else
+    {
         argv = NULL;
     }
 
@@ -53,9 +57,13 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     xmain(argc, (const char**)argv);
 
     // Free up the items we had to allocate for the command line arguments.
-    if (argc > 0 && argv != NULL) {
-        for (int iii = 0; iii < argc; iii++) {
-            if (argv[iii] != NULL) {
+    if (argc > 0 && argv != NULL)
+    {
+        for (int iii = 0; iii < argc; iii++)
+        {
+            char* arg = argv[iii];
+            if (arg != NULL)
+            {
                 free(argv[iii]);
             }
         }
@@ -63,9 +71,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
 #ifdef _DEBUG
-        FreeConsole();
-        fclose(pCout);
-        fclose(pCerr);
+    FreeConsole();
+    if (pCout != nullptr) fclose(pCout);
+    if (pCerr != nullptr) fclose(pCerr);
 #endif
 
     return 0;

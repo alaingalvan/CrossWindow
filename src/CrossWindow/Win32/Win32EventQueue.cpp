@@ -605,6 +605,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         case VK_RMENU:
             d = Key::LAlt;
             break;
+        case VK_LWIN:
+        case VK_RWIN:
+            d = Key::LWin;
+            break;
         case VK_OEM_PERIOD:
             d = Key::Period;
             break;
@@ -644,6 +648,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         if (d == Key::LShift && GetKeyState(VK_RSHIFT))
         {
             d = Key::RShift;
+        }
+        if (d == Key::LShift && GetKeyState(VK_RWIN))
+        {
+            d = Key::RWin;
         }
         short modifiers = LOWORD(msg.wParam);
         ModifierState ms;
