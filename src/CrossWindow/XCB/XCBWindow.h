@@ -16,7 +16,7 @@ namespace xwin
  */
 class Window
 {
-public:
+  public:
     Window();
 
     // Initialize this window with the XCB API.
@@ -24,10 +24,9 @@ public:
 
     void close();
 
-  protected:
-    xcb_connection_t* mConnection = nullptr;
-    xcb_screen_t* mScreen = nullptr;
-    unsigned mXcbWindowId = 0;
-    unsigned mDisplay = 0;
+    xcb_connection_t* connection = nullptr;
+    xcb_screen_t* screen = nullptr;
+    xcb_window_t window = 0;
+    unsigned display = 0;
 };
 }
