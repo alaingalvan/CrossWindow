@@ -146,12 +146,14 @@ class Window
 
     LRESULT WindowProc(UINT msg, WPARAM wparam, LPARAM lparam);
 
+  public:
     // This window handle
     HWND hwnd = nullptr;
 
     // This window's application instance.
     HINSTANCE hinstance = nullptr;
 
+  protected:
     // Pointer to this window's event queue
     EventQueue* mEventQueue = nullptr;
 
