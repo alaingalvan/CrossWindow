@@ -23,7 +23,7 @@ class EventQueue
 
     bool empty();
 
-	size_t size();
+    size_t size();
 
     enum class ProcessingMode
     {

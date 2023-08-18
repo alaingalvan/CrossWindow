@@ -8,27 +8,27 @@
 
 namespace xwin
 {
-    class Window;
+class Window;
 
-    /**
-     * Events - https://xcb.freedesktop.org/tutorial/events/
-     */
-    class EventQueue
-    {
-    public:
-        EventQueue();
+/**
+ * Events - https://xcb.freedesktop.org/tutorial/events/
+ */
+class EventQueue
+{
+  public:
+    EventQueue();
 
-        void update();
+    void update();
 
-        const Event &front();
+    const Event& front();
 
-        void pop();
+    void pop();
 
-        bool empty();
+    bool empty();
 
-    protected:
-        void pushEvent(const xcb_generic_event_t* e);
+  protected:
+    void pushEvent(const xcb_generic_event_t* e);
 
-        std::queue<Event> mQueue;
-    };
+    std::queue<Event> mQueue;
+};
 }
