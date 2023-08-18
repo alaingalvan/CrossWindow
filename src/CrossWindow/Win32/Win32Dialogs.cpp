@@ -94,7 +94,7 @@ bool showOpenDialog(const OpenSaveDialogDesc& odesc, std::string& outPath)
                 hr = pFileOpen->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
-                    PWSTR pszFilePath = L"";
+                    PWSTR pszFilePath = (PWSTR)L"";
                     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
                     if (pszFilePath != 0x0)
                     {
@@ -186,7 +186,7 @@ bool showSaveDialog(const OpenSaveDialogDesc& sdesc, std::string& outPath)
                 hr = pFileSave->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
-                    PWSTR pszFilePath = L"";
+                    PWSTR pszFilePath = (PWSTR)L"";
                     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
                     if (pszFilePath != 0x0)
                     {
