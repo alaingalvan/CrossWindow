@@ -17,9 +17,11 @@ class Window
 
     bool create(const WindowDesc& desc, EventQueue& eventQueue);
 
-    bool destroy();
+    bool close();
 
-  protected:
+    const WindowDesc getDesc();
+
+    WindowDesc mDesc;
     Display* display = nullptr;
     XLibWindow window;
 };

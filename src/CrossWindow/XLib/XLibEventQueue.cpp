@@ -1,5 +1,6 @@
 #include "XLibEventQueue.h"
 #include "../Common/Window.h"
+#include "CrossWindow/Common/WindowDesc.h"
 
 namespace xwin
 {
@@ -7,12 +8,22 @@ void EventQueue::update()
 {
     XEvent event;
 
-    while (XPending(demo->display) > 0)
+    while (XPending(mParent->display) > 0)
     {
-        XNextEvent(demo->display, &event);
-        pushEvent(event, mParent);
+        XNextEvent(mParent->display, &event);
+        pushEvent(&event, mParent);
     }
 }
+
+EventQueue::EventQueue() {}
+
+EventQueue::EventQueue(Window* parent) : mParent(parent) {}
+
+const Event& EventQueue::front() { return mQueue.front(); }
+
+void EventQueue::pop() { mQueue.pop(); }
+
+bool EventQueue::empty() { return mQueue.empty(); }
 
 void EventQueue::pushEvent(const XEvent* event, Window* window)
 {
