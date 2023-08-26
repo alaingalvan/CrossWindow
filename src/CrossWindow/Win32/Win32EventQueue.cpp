@@ -105,6 +105,10 @@ LRESULT EventQueue::pushEvent(MSG msg, Window* window)
         unsigned g = (bg & 0x00ff0000) >> 16;
         unsigned b = (bg & 0x0000ff00) >> 8;
         HBRUSH BorderBrush = CreateSolidBrush(RGB(r, g, b));
+        rect.left = 0;
+        rect.top = 0;
+        rect.right = cxWidth;
+        rect.bottom = cyHeight;
         FillRect(ps.hdc, &rect, BorderBrush);
         EndPaint(window->hwnd, &ps);
 
