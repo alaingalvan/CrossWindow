@@ -3,6 +3,7 @@
 #include <emscripten.h>
 #include <emscripten/html5.h>
 #include <emscripten/key_codes.h>
+#include <queue>
 
 
 #include "../Common/Event.h"
@@ -32,18 +33,13 @@ class EventQueue
 
     const Event& front();
 
-    void pop() {}
+    void pop();
 
     bool empty();
 
     // Key pressed / released events
     static EM_BOOL keyCallback(int eventType, const EmscriptenKeyboardEvent* e,
                                void* userData);
-
-    // Mouse movement / buttons
-    static EM_BOOL mouseCallback(int eventType,
-                                 const EmscriptenMouseEvent* mouseEvent,
-                                 void* userData);
 
     // Mouse Scrolling
     static EM_BOOL mouseWheelCallback(int eventType,
@@ -105,5 +101,10 @@ class EventQueue
     static EM_BOOL batteryCallback(int eventType,
                                    const EmscriptenBatteryEvent* batteryEvent,
                                    void* userData);
+
+protected:
+
+    std::queue<Event> mQueue;
+
 };
 }
