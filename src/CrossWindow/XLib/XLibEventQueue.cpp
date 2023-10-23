@@ -1,6 +1,7 @@
 #include "XLibEventQueue.h"
 #include "../Common/Window.h"
 #include "CrossWindow/Common/WindowDesc.h"
+#include <X11/X.h>
 
 namespace xwin
 {
@@ -27,49 +28,56 @@ bool EventQueue::empty() { return mQueue.empty(); }
 
 void EventQueue::pushEvent(const XEvent* event, Window* window)
 {
+    xwin::Event e = xwin::Event(window); // xwin::EventType::None, window);
+
     switch (event->type)
     {
-    case ConfigureNotify:
+    case CreateNotify:
     {
-        WindowDesc desc = window->getDesc();
-        if ((desc.width != event->xconfigure.width) ||
-            (desc.height != event->xconfigure.height))
-        {
-            unsigned width, height;
-            width = static_cast<unsigned>(event->xconfigure.width);
-            height = static_cast<unsigned>(event->xconfigure.height);
+        e = xwin::Event(xwin::EventType::Create, window);
+        break;
+    }
+    case ResizeRequest:
+    {
+        unsigned width, height;
+        width = static_cast<unsigned>(event->xconfigure.width);
+        height = static_cast<unsigned>(event->xconfigure.height);
 
-            mQueue.emplace(ResizeData(width, height, true), window);
-        }
+        e = xwin::Event(ResizeData(width, height, false), window);
         break;
     }
-    case ClientMessage:
+    case DestroyNotify:
     {
-        mQueue.emplace(xwin::EventType::Close, window);
+        e = xwin::Event(xwin::EventType::Close, window);
         break;
     }
+    case KeyRelease:
     case KeyPress:
     {
         Key d = Key::KeysMax;
         switch (event->xkey.keycode)
         {
-        case 0x9: // Escape
+        case XK_Escape: // Escape
             d = Key::Escape;
             break;
         case XK_KP_Left: // left arrow key
             d = Key::Left;
             break;
-        case 0x72: // right arrow key
+        case XK_KP_Right: // right arrow key
             d = Key::Right;
             break;
-        case 0x41: // space bar
+        case XK_KP_Space: // space bar
             d = Key::Space;
             break;
         }
         break;
 
-        mQueue.emplace(KeyboardData(d, ButtonState::Pressed, ModifierState()),
-                       window);
+        e = xwin::Event(KeyboardData(d,
+                                     event->type == KeyPress
+                                         ? ButtonState::Pressed
+                                         : ButtonState::Released,
+                                     ModifierState()),
+                        window);
     }
     }
 }

@@ -4,6 +4,62 @@ namespace xwin
 {
 Window::Window() {}
 
+// Request that this window be minimized.
+void Window::minimize() {}
+
+// Request that this window be maximized.
+void Window::maximize() {}
+
+// Set callback func
+void Window::trackEventsAsync(
+    const std::function<void(const xwin::Event e)>& fun)
+{
+    mCallback = fun;
+}
+
+// Executes an event callback asynchronously, use this for non-blocking
+// events (resizing while rendering, etc.)
+void Window::executeEventCallback(const xwin::Event e)
+{
+    switch (e.type)
+    {
+    case EventType::Create:
+        break;
+    case EventType::Close:
+        break;
+    case EventType::Focus:
+        break;
+    case EventType::Paint:
+        break;
+    case EventType::Resize:
+        break;
+    case EventType::DPI:
+        break;
+    case EventType::Keyboard:
+        break;
+    case EventType::MouseMove:
+        break;
+    case EventType::MouseRaw:
+        break;
+    case EventType::MouseWheel:
+        break;
+    case EventType::MouseInput:
+        break;
+    case EventType::Touch:
+        break;
+    case EventType::Gamepad:
+        break;
+    case EventType::DropFile:
+        break;
+    case EventType::HoverFile:
+        break;
+    default:
+        // EventType::None
+        // EventType::EventTypeMax
+        break;
+    }
+}
+
 bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
     const XWinState& xwinState = getXWinState();
