@@ -3,6 +3,7 @@
 #include "../Common/Event.h"
 
 #include <queue>
+#include <wayland-client-core.h>
 
 namespace xwin
 {
@@ -26,6 +27,7 @@ class EventQueue
 
   protected:
     // void pushEvent();
+    struct wl_event_queue* event_queue;
 
     std::queue<Event> mQueue;
 };

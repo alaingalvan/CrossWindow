@@ -6,6 +6,9 @@
 #include <xcb/xcb.h>
 #elif defined(XWIN_XLIB)
 #include <X11/Xlib.h>
+#elif defined(XWIN_WAYLAND)
+#include <wayland-client-protocol.h>
+#include <wayland-client.h>
 #endif
 
 namespace xwin
@@ -44,6 +47,19 @@ struct XWinState
     XWinState(int argc, const char** argv, xcb_connection_t* connection,
               xcb_screen_t* screen)
         : argc(argc), argv(argv), connection(connection), screen(screen)
+    {
+    }
+#elif defined(XWIN_WAYLAND)
+    int argc;
+    const char** argv;
+    struct wl_display* display;
+    struct wl_registry* registry;
+    struct wl_compositor* compositor;
+    struct wl_surface* surface;
+    struct wl_list* monitors;
+
+    XWinState(int argc, const char** argv, struct wl_display* display)
+        : argc(argc), argv(argv), display(display)
     {
     }
 
