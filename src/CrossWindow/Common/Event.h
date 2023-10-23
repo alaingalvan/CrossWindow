@@ -14,7 +14,7 @@ class Window;
 
 enum class EventType : size_t
 {
-    None = 0,
+    None,
 
     // Closing a window
     Close,
@@ -89,8 +89,8 @@ struct ResizeData
     // New height of window viewport
     unsigned height;
 
-	// In the process of resizing
-	bool resizing;
+    // In the process of resizing
+    bool resizing;
 
     ResizeData(unsigned width, unsigned height, bool resizing);
 
@@ -480,7 +480,8 @@ struct GamepadData
  * SDL does something similar:
  * <https://www.libsdl.org/release/SDL-1.2.15/docs/html/sdlevent.html>
  */
-union EventData {
+union EventData
+{
     FocusData focus;
     ResizeData resize;
     DpiData dpi;
@@ -508,8 +509,10 @@ class Event
 
     // Inner data of the event
     EventData data;
-    
-    Event(EventType type = EventType::None, Window* window = nullptr);
+
+    Event(Window* window = nullptr) { Event(EventType::None, window); }
+
+    Event(EventType type, Window* window = nullptr);
 
     Event(FocusData data, Window* window = nullptr);
 
@@ -519,7 +522,7 @@ class Event
 
     Event(MouseMoveData data, Window* window = nullptr);
 
-	Event(MouseRawData data, Window* window = nullptr);
+    Event(MouseRawData data, Window* window = nullptr);
 
     Event(MouseInputData data, Window* window = nullptr);
 
@@ -532,12 +535,10 @@ class Event
     Event(DpiData data, Window* window = nullptr);
 
     ~Event();
-    
+
     bool operator==(const Event& other) const
     {
         return type == other.type && window == other.window;
     }
-
-
 };
 }
