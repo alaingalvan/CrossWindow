@@ -1,10 +1,10 @@
 #include "Win32Window.h"
-
-#include "Shobjidl.h"
-#include "dwmapi.h"
+#include "../Main/mingw_loader.h"
+#include <Shobjidl.h>
+#include <dwmapi.h>
 #include <windowsx.h>
-#pragma comment(lib, "dwmapi.lib")
-#pragma comment(lib, "uxtheme.lib")
+//#pragma comment(lib, "dwmapi.lib")
+//#pragma comment(lib, "uxtheme.lib")
 
 enum Style : DWORD
 {

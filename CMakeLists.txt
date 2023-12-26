@@ -22,7 +22,7 @@ set_property(
     STRINGS AUTO WIN32 UWP COCOA UIKIT XCB XLIB MIR WAYLAND ANDROID WASM NOOP
 )
 
-set(XWIN_OS AUTO CACHE STRING "Optional: Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM.") 
+set(XWIN_OS AUTO CACHE STRING "Optional: Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM.")
 set_property(
     CACHE
     XWIN_OS PROPERTY
@@ -117,6 +117,10 @@ file(GLOB_RECURSE MAIN_SOURCES RELATIVE
     ${CMAKE_HOME_DIRECTORY}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_API_PATH}Main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/${XWIN_API_PATH}Main.mm
+    if (MINGW)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/mingw_loader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/CrossWindow/Main/mingw_loader.h
+    endif()
 )
 
 set(XMAIN_SOURCES ${MAIN_SOURCES} CACHE STRING "Global Variable - The source files for the currently active protocol.")
@@ -186,6 +190,15 @@ add_library(
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
+# set _DEBUG on all compilers. Not only MSVC
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG)
+endif()
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} PUBLIC dwmapi.lib uxtheme.lib)
+endif()
+
 # =============================================================
 
 # CrossWindow Dependencies
@@ -211,7 +224,7 @@ elseif(XWIN_API STREQUAL "UIKIT")
     find_library(MOBILECORESERVICES MobileCoreServices)
     find_library(CFNETWORK CFNetwork)
     find_library(SYSTEMCONFIGURATION SystemConfiguration)
-    
+
     target_link_libraries(
     ${PROJECT_NAME}
     ${UIKIT}

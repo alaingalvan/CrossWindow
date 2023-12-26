@@ -2,6 +2,10 @@
 #include "Main.h"
 #include <stdio.h>
 
+#if defined(__MINGW32__)
+    #include "mingw_loader.h"
+#endif
+
 INT WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
                    _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -11,6 +15,10 @@ INT WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     FILE* pCerr = nullptr;
     freopen_s(&pCout, "CONOUT$", "w+", stdout);
     freopen_s(&pCerr, "CONOUT$", "w+", stderr);
+#endif
+
+#if defined(__MINGW32__)
+    LoadDWMAPI loadDWMAPI;
 #endif
 
     // Setup command line arguments.
