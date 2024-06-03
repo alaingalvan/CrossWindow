@@ -1,7 +1,12 @@
 #include "XLibWindow.h"
+#include "CrossWindow/Common/WindowDesc.h"
 
 namespace xwin
 {
+Window::Window() {}
+
+const WindowDesc Window::getDesc() { return mDesc; }
+
 bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 {
     XInitThreads();
@@ -29,7 +34,12 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
     XSelectInput(display, window, ExposureMask | KeyPressMask);
     XMapWindow(display, window);
     XFlush(display);
+
+    return window;
 }
 
-bool Window::destroy() { XDestroyWindow(display, window); }
+bool Window::close()
+{
+    return (XDestroyWindow(display, window)) || XCloseDisplay(display);
+}
 }

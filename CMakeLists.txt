@@ -1,4 +1,3 @@
-# Project Info
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 cmake_policy(VERSION 3.18)
 project(CrossWindow)
@@ -7,10 +6,10 @@ enable_language(CXX)
 
 # CMake Settings
 set(CMAKE_SUPPRESS_REGENERATION true)
-set(DCMAKE_GENERATOR_PLATFORM "x64")
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # =============================================================
 
@@ -22,12 +21,36 @@ set_property(
     STRINGS AUTO WIN32 UWP COCOA UIKIT XCB XLIB MIR WAYLAND ANDROID WASM NOOP
 )
 
-set(XWIN_OS AUTO CACHE STRING "Optional: Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM.") 
+set(XWIN_OS AUTO CACHE STRING "Optional: Choose the OS to build for, defaults to AUTO, but can be WINDOWS, MACOS, LINUX, ANDROID, IOS, WASM.")
 set_property(
     CACHE
     XWIN_OS PROPERTY
     STRINGS AUTO WINDOWS MACOS LINUX ANDROID IOS WASM NOOP
 )
+
+function(deduce_linux_display_server)
+  message( STATUS "XDG session type: " "$ENV{XDG_SESSION_TYPE}" )
+  if ("$ENV{XDG_SESSION_TYPE}" STREQUAL "wayland")
+    set(XWIN_API "WAYLAND" PARENT_SCOPE)
+  elseif ("$ENV{XDG_SESSION_TYPE}" STREQUAL "x11")
+    set(XWIN_API "XCB" PARENT_SCOPE)
+  else()
+    execute_process (
+      COMMAND bash -c "env | awk -F= '$2 ~ /wayland/ {count++} END {print count}'"
+      OUTPUT_VARIABLE WaylandCount
+      )
+    execute_process (
+      COMMAND bash -c "env | awk -F= '$2 ~ /x11/ {count++} END {print count}'"
+      OUTPUT_VARIABLE X11Count
+      )
+    message(STATUS "Display server counts: " ${X11Count} " " ${WaylandCount})
+    if (${X11Count} LESS ${WaylandCount})
+      set(XWIN_API "WAYLAND" PARENT_SCOPE)
+    else()
+      set(XWIN_API "XCB" PARENT_SCOPE)
+    endif()
+  endif()
+endfunction()
 
 if( NOT (XWIN_OS STREQUAL "AUTO") AND XWIN_API STREQUAL "AUTO")
     if(XWIN_OS STREQUAL "WINDOWS")
@@ -35,7 +58,7 @@ if( NOT (XWIN_OS STREQUAL "AUTO") AND XWIN_API STREQUAL "AUTO")
     elseif(XWIN_OS STREQUAL "MACOS")
         set(XWIN_API "COCOA")
     elseif(XWIN_OS STREQUAL "LINUX")
-        set(XWIN_API "XLIB")
+        deduce_linux_display_server()
     elseif(XWIN_OS STREQUAL "ANDROID")
         set(XWIN_API "ANDROID")
     elseif(XWIN_OS STREQUAL "IOS")
@@ -51,11 +74,11 @@ endif()
 
 if(XWIN_API STREQUAL "AUTO")
     if (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
-    set(XWIN_API "WIN32" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+      set(XWIN_API "WIN32" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
     elseif (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
-    set(XWIN_API "COCOA" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+      set(XWIN_API "COCOA" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
     elseif (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
-    set(XWIN_API "XCB" CACHE STRING "A more specific platform selector to choose from, choose the exact OS protocol to use, can be WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, WASM, NOOP." FORCE)
+      deduce_linux_display_server()
     endif()
 endif()
 
@@ -72,7 +95,9 @@ elseif(XWIN_API STREQUAL "UIKIT")
 elseif(XWIN_API STREQUAL "XCB")
     set(XWIN_API_PATH "XCB")
 elseif(XWIN_API STREQUAL "XLIB")
-    set(XWIN_API_PATH "XLIB")
+    set(XWIN_API_PATH "XLib")
+elseif(XWIN_API STREQUAL "WAYLAND")
+    set(XWIN_API_PATH "Wayland")
 elseif(XWIN_API STREQUAL "ANDROID")
     set(XWIN_API_PATH "Android")
 elseif(XWIN_API STREQUAL "UIKIT")
@@ -82,7 +107,7 @@ elseif(XWIN_API STREQUAL "WASM")
 elseif(XWIN_API STREQUAL "NOOP")
     set(XWIN_API_PATH "Noop")
 else()
-    message( SEND_ERROR "XWIN_API can only be either AUTO, NOOP, WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, or WASM.")
+    message( SEND_ERROR "Detected: ${XWIN_API}; XWIN_API can only be either AUTO, NOOP, WIN32, UWP, COCOA, UIKIT, XCB, XLIB, MIR, WAYLAND, ANDROID, or WASM.")
 endif()
 
 message( STATUS "Building CrossWindow for " ${XWIN_API_PATH} )
@@ -123,58 +148,7 @@ set(XMAIN_SOURCES ${MAIN_SOURCES} CACHE STRING "Global Variable - The source fil
 
 # =============================================================
 
-# CrossWindow Functions
-function(xwin_setup versionMajor versionMinor versionPatch versionRevision companyName iconPath)
-    # @TODO - implement
-    message("Warning: xwin_setup has not yet been implemented.")
-endfunction()
-
-function(xwin_add_executable targetProject targetSources)
-    message("Creating CrossWindow executable:")
-
-    foreach(source IN LISTS XMAIN_SOURCES)
-        source_group("" FILES "${source}")
-    endforeach()
-    set(XWIN_FILES "${XMAIN_SOURCES}" "${targetSources}")
-
-    if(XWIN_API STREQUAL "WIN32" OR XWIN_API STREQUAL "UWP")
-        add_executable(
-            ${targetProject}
-            WIN32
-            "${XWIN_FILES}"
-        )
-    elseif(XWIN_API STREQUAL "COCOA" OR XWIN_API STREQUAL "UIKIT")
-        add_executable(
-            ${targetProject}
-            MACOSX_BUNDLE
-            ${XWIN_FILES}
-
-        )
-    elseif(XWIN_API STREQUAL "XCB" OR XWIN_API STREQUAL "XLIB")
-        add_executable(
-            ${targetProject}
-            ${XWIN_FILES}
-        )
-    elseif(XWIN_API STREQUAL "ANDROID")
-        add_executable(
-            ${targetProject}
-            ${XWIN_FILES}
-        )
-    elseif(XWIN_API STREQUAL "WASM")
-        add_executable(
-            ${targetProject}
-            ${XWIN_FILES}
-        )
-    elseif(XWIN_API STREQUAL "NOOP")
-        add_executable(
-            ${targetProject}
-            ${XWIN_FILES}
-        )
-    endif()
-
-    target_compile_definitions(${targetProject} PRIVATE XWIN_${XWIN_API}=1)
-
-endfunction()
+set(XWIN_DEFINITIONS XWIN_${XWIN_API}=1 CACHE STRING "Global Variable - The compile definitions for the currently active protocol.")
 
 # =============================================================
 
@@ -211,7 +185,7 @@ elseif(XWIN_API STREQUAL "UIKIT")
     find_library(MOBILECORESERVICES MobileCoreServices)
     find_library(CFNETWORK CFNetwork)
     find_library(SYSTEMCONFIGURATION SystemConfiguration)
-    
+
     target_link_libraries(
     ${PROJECT_NAME}
     ${UIKIT}
@@ -234,13 +208,24 @@ elseif(XWIN_API STREQUAL "XLIB")
         target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
         target_include_directories(${PROJECT_NAME} PUBLIC ${X11_INCLUDE_DIR})
     endif()
+elseif(XWIN_API STREQUAL "WAYLAND")
+    find_package(Wayland REQUIRED)
+    if(Wayland_FOUND)
+        message("Found Wayland Libraries.")
+        message("Wayland includes = ${Wayland_INCLUDE_DIRS}")
+        message("Wayland Libraries = ${Wayland_LIBRARIES}")
+        target_link_libraries(${PROJECT_NAME} ${Wayland_LIBRARIES})
+        target_include_directories(${PROJECT_NAME} PUBLIC ${Wayland_INCLUDE_DIRS})
+    endif()
 elseif(XWIN_API STREQUAL "XCB")
     find_package(X11 REQUIRED)
-    message("Found XCB Libraries.")
-    message("XCB Include Path = ${X11_xcb_INCLUDE_PATH}")
-    message("XCB Lib = ${X11_xcb_LIB}")
-    target_link_libraries(${PROJECT_NAME} ${X11_xcb_LIB})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${X11_xcb_INCLUDE_PATH})
+    if(X11_FOUND)
+        message("Found XCB Libraries.")
+        message("XCB Include Path = ${X11_xcb_INCLUDE_PATH}")
+        message("XCB Lib = ${X11_xcb_LIB}")
+        target_link_libraries(${PROJECT_NAME} ${X11_xcb_LIB})
+        target_include_directories(${PROJECT_NAME} PUBLIC ${X11_xcb_INCLUDE_PATH})
+    endif()
 endif()
 # =============================================================
 

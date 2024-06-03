@@ -19,8 +19,8 @@
 #define MainArgsVars argc, argv, connection, screen
 #elif defined(XWIN_XLIB) || defined(XWIN_MIR) || defined(XWIN_WAYLAND) ||      \
     defined(XWIN_WASM) || defined(XWIN_NOOP)
-#define MainArgs int argc, const char *argv[]
-#define MainArgsVars argc, argv
+#define MainArgs int argc, const char** argv, struct wl_display* display
+#define MainArgsVars argc, argv, display
 #endif
 
 namespace xwin

@@ -14,9 +14,21 @@ class Window;
 class EventQueue
 {
   public:
+    EventQueue();
+    EventQueue(Window* parent);
+
+    void update();
+
+    const Event& front();
+
+    void pop();
+
+    bool empty();
+
     void pushEvent(const XEvent* event, Window* window);
 
   protected:
     std::queue<Event> mQueue;
+    Window* mParent;
 };
 }
