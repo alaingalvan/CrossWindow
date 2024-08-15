@@ -12,6 +12,60 @@
 
 @end
 
+@interface XWinWindowDelegate : NSObject <NSWindowDelegate>
+{
+}
+
+@property (assign) XWinWindow* window;
+
+-(void) postEvent: (xwin::EventType)type data1:(NSInteger)data1 data2:(NSInteger)data2;
+
+@end
+
+@implementation XWinWindowDelegate
+
+- (void) postEvent:(xwin::EventType)type data1:(NSInteger)data1 data2:(NSInteger)data2
+{
+	NSPoint point;
+	NSTimeInterval timestamp;
+	NSEvent* event = [NSEvent
+		otherEventWithType:NSEventTypeApplicationDefined
+		location:point
+		modifierFlags:0
+		timestamp:timestamp
+		windowNumber:self.window.windowNumber
+		context:nil
+		subtype:(short) type
+		data1:data1
+		data2:data2
+	];
+	[self.window postEvent:event atStart:false];
+}
+
+- (void)windowDidBecomeMain:(NSNotification *)notification
+{
+	[self postEvent: xwin::EventType::Focus data1: 1 data2: 0];
+}
+
+- (void)windowDidResignMain:(NSNotification *)notification
+{
+	[self postEvent: xwin::EventType::Focus data1: 0 data2: 0];
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+	[self postEvent: xwin::EventType::Close data1: 0 data2: 0];
+}
+
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
+{
+	CGSize contentSize = [[self.window contentView] frame].size;
+	[self postEvent: xwin::EventType::Resize data1: contentSize.width data2: contentSize.height];
+	return frameSize;
+}
+
+@end
+
 @interface XWinView : NSView
 - (BOOL)	acceptsFirstResponder;
 - (BOOL)	isOpaque;
@@ -118,6 +172,13 @@ bool Window::create(const WindowDesc& desc, EventQueue& eventQueue)
 	mTitle = [NSString stringWithCString:desc.title.c_str()
 								encoding:[NSString defaultCStringEncoding]];
 	XWinWindow* w = ((XWinWindow*)window);
+
+	// Setup NSWindowDelegate
+	windowDelegate = [XWinWindowDelegate alloc];
+	XWinWindowDelegate* wd = ((XWinWindowDelegate*)windowDelegate);
+	[w setDelegate: wd];
+	[wd setWindow: w];
+
 	if(!desc.title.empty())
 	{ [w setTitle: (NSString*)mTitle]; }
 	if(desc.centered)

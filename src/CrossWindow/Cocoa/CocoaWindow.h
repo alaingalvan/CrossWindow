@@ -54,6 +54,9 @@ class Window
     // XWinWindow*
     void* window;
 
+    // XWinWindowDelegate*
+    void* windowDelegate;
+
     // XWinView*
     void* view;
 

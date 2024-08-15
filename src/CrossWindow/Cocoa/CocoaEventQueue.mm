@@ -107,7 +107,23 @@ void EventQueue::update()
                     break;
                 case NSEventTypeScrollWheel:
                     [nsEvent deltaY];
-                    
+                    break;
+
+                case NSEventTypeApplicationDefined:
+                    switch((EventType) nsEvent.subtype) {
+                        case EventType::Close: {
+                            curEvent = xwin::Event(EventType::Close);
+                        } break;
+                        case EventType::Resize: {
+                            curEvent = xwin::Event(xwin::ResizeData(nsEvent.data1, nsEvent.data2, true));
+                        } break;
+                        case EventType::Focus: {
+                            curEvent = xwin::Event(xwin::FocusData(nsEvent.data1 ? true : false));
+                        } break;
+                        default: {
+
+                        } break;
+                    }
                     break;
                 default:
                     break;
